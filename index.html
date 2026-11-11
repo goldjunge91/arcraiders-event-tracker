@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="de" class="dark">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ARC Raiders · World Region Map Conditions & Rotation Analyzer</title>
+  <title>ARC Raiders · Map Conditions & Rotation Analyzer</title>
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
   <style>
     :root {
@@ -23,25 +23,22 @@
       color: var(--foreground);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
-    .pulse-glow {
-      box-shadow: 0 0 15px rgba(16, 185, 129, 0.25);
-    }
   </style>
 </head>
 <body class="p-3 md:p-6 min-h-screen">
   <div class="max-w-7xl mx-auto space-y-6">
 
-    <!-- Top World Clocks Bar (Europe, North America, South America, Oceania, Asia) -->
+    <!-- Top World Clocks Bar -->
     <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 shadow-xl">
       <div class="flex items-center justify-between mb-3 border-b border-[var(--border)] pb-2.5">
         <div class="flex items-center gap-2">
           <span class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            Weltweite Server- & Event-Zeiten
+            Global Server & Event Clocks
           </span>
         </div>
         <div class="text-[11px] text-[var(--muted)] flex items-center gap-1">
-          <span>Automatisch synchronisiert</span>
+          <span>Live Synchronized</span>
         </div>
       </div>
 
@@ -50,17 +47,17 @@
         <!-- Europe -->
         <div class="bg-slate-900/80 border border-[var(--border)] rounded-xl p-3 flex flex-col justify-between">
           <div class="flex items-center justify-between text-xs">
-            <span class="font-bold text-white flex items-center gap-1.5">🇪🇺 Europa</span>
+            <span class="font-bold text-white flex items-center gap-1.5">🇪🇺 Europe</span>
             <span class="text-[10px] text-amber-400 font-mono font-semibold">CET (UTC+1)</span>
           </div>
           <div id="clock-europe" class="text-xl font-black font-mono mt-1 text-white">--:--:--</div>
-          <div class="text-[10px] text-[var(--muted)]">Berlin / Paris / Rom</div>
+          <div class="text-[10px] text-[var(--muted)]">London / Berlin / Paris</div>
         </div>
 
         <!-- North America -->
         <div class="bg-slate-900/80 border border-[var(--border)] rounded-xl p-3 flex flex-col justify-between">
           <div class="flex items-center justify-between text-xs">
-            <span class="font-bold text-white flex items-center gap-1.5">🇺🇸 Nordamerika</span>
+            <span class="font-bold text-white flex items-center gap-1.5">🇺🇸 North America</span>
             <span class="text-[10px] text-sky-400 font-mono font-semibold">ET (UTC-5)</span>
           </div>
           <div id="clock-na" class="text-xl font-black font-mono mt-1 text-white">--:--:--</div>
@@ -70,7 +67,7 @@
         <!-- South America -->
         <div class="bg-slate-900/80 border border-[var(--border)] rounded-xl p-3 flex flex-col justify-between">
           <div class="flex items-center justify-between text-xs">
-            <span class="font-bold text-white flex items-center gap-1.5">🇧🇷 Südamerika</span>
+            <span class="font-bold text-white flex items-center gap-1.5">🇧🇷 South America</span>
             <span class="text-[10px] text-emerald-400 font-mono font-semibold">BRT (UTC-3)</span>
           </div>
           <div id="clock-sa" class="text-xl font-black font-mono mt-1 text-white">--:--:--</div>
@@ -80,7 +77,7 @@
         <!-- Oceania -->
         <div class="bg-slate-900/80 border border-[var(--border)] rounded-xl p-3 flex flex-col justify-between">
           <div class="flex items-center justify-between text-xs">
-            <span class="font-bold text-white flex items-center gap-1.5">🇦🇺 Ozeanien</span>
+            <span class="font-bold text-white flex items-center gap-1.5">🇦🇺 Oceania</span>
             <span class="text-[10px] text-purple-400 font-mono font-semibold">AEDT (UTC+11)</span>
           </div>
           <div id="clock-oceania" class="text-xl font-black font-mono mt-1 text-white">--:--:--</div>
@@ -90,11 +87,11 @@
         <!-- Asia -->
         <div class="bg-slate-900/80 border border-[var(--border)] rounded-xl p-3 flex flex-col justify-between">
           <div class="flex items-center justify-between text-xs">
-            <span class="font-bold text-white flex items-center gap-1.5">🇯🇵 Asien</span>
+            <span class="font-bold text-white flex items-center gap-1.5">🇯🇵 Asia</span>
             <span class="text-[10px] text-rose-400 font-mono font-semibold">JST (UTC+9)</span>
           </div>
           <div id="clock-asia" class="text-xl font-black font-mono mt-1 text-white">--:--:--</div>
-          <div class="text-[10px] text-[var(--muted)]">Tokio / Seoul / Singapur</div>
+          <div class="text-[10px] text-[var(--muted)]">Tokyo / Seoul / Singapore</div>
         </div>
       </div>
     </div>
@@ -109,10 +106,10 @@
           <span class="text-xs text-[var(--muted)]">Map Conditions & Rotation Analyzer</span>
         </div>
         <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight mt-1 text-white">
-          Event Timer & Weltweite Zonen
+          Event Timers & Global Regions
         </h1>
         <p class="text-xs md:text-sm text-[var(--muted)] mt-0.5">
-          Verfolge, wie oft welche Events aktiv sind, welche Kombinationen laufen und wann sie in deiner Zeitzone starten.
+          Track active event frequencies, concurrent sector combinations, and local start times across all global regions.
         </p>
       </div>
 
@@ -120,14 +117,14 @@
       <div class="flex flex-wrap items-center gap-3">
         <!-- Region Switcher -->
         <div class="flex items-center bg-[var(--card)] border border-[var(--border)] rounded-xl p-1 text-xs">
-          <span class="text-[11px] text-[var(--muted)] px-2.5 font-semibold">Ansicht:</span>
+          <span class="text-[11px] text-[var(--muted)] px-2.5 font-semibold">Timezone:</span>
           <select id="selectedRegion" onchange="renderAll()" class="bg-slate-900 text-white font-medium rounded-lg px-2.5 py-1.5 focus:outline-none border border-slate-700 cursor-pointer">
-            <option value="ALL">🌍 Alle Regionen (Weltweit)</option>
-            <option value="Europe" selected>🇪🇺 Europa (CET)</option>
-            <option value="NorthAmerica">🇺🇸 Nordamerika (ET)</option>
-            <option value="SouthAmerica">🇧🇷 Südamerika (BRT)</option>
-            <option value="Oceania">🇦🇺 Ozeanien (AEDT)</option>
-            <option value="Asia">🇯🇵 Asien (JST)</option>
+            <option value="ALL">🌍 All Regions (Global View)</option>
+            <option value="Europe" selected>🇪🇺 Europe (CET)</option>
+            <option value="NorthAmerica">🇺🇸 North America (ET)</option>
+            <option value="SouthAmerica">🇧🇷 South America (BRT)</option>
+            <option value="Oceania">🇦🇺 Oceania (AEDT)</option>
+            <option value="Asia">🇯🇵 Asia (JST)</option>
           </select>
         </div>
 
@@ -135,7 +132,7 @@
         <input 
           id="searchInput" 
           type="text" 
-          placeholder="Filter nach Event oder Map..." 
+          placeholder="Filter by event or map..." 
           class="bg-[var(--card)] border border-[var(--border)] rounded-xl px-3.5 py-2 text-xs text-white placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400 w-52 transition"
           oninput="renderAll()"
         />
@@ -144,7 +141,7 @@
         <button 
           onclick="toggleImportModal()" 
           class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3.5 py-2 rounded-xl text-xs flex items-center gap-1.5 transition shadow-lg shadow-amber-500/10">
-          <span>+</span> Import
+          <span>+</span> Import Data
         </button>
       </div>
     </header>
@@ -152,53 +149,53 @@
     <!-- Metrics Cards -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
       <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4">
-        <p class="text-[11px] uppercase font-bold text-[var(--muted)] tracking-wider">Getrackte Events</p>
+        <p class="text-[11px] uppercase font-bold text-[var(--muted)] tracking-wider">Tracked Events</p>
         <p id="metricTotalEvents" class="text-2xl font-black mt-1 text-white">0</p>
-        <p class="text-[11px] text-[var(--muted)] mt-1">in der Rotation</p>
+        <p class="text-[11px] text-[var(--muted)] mt-1">in current rotation</p>
       </div>
       <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4">
-        <p class="text-[11px] uppercase font-bold text-[var(--muted)] tracking-wider">Bedingungen</p>
+        <p class="text-[11px] uppercase font-bold text-[var(--muted)] tracking-wider">Unique Conditions</p>
         <p id="metricUniqueConditions" class="text-2xl font-black mt-1 text-amber-400">0</p>
         <p class="text-[11px] text-[var(--muted)] mt-1">Night Raid, Frigate etc.</p>
       </div>
       <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4">
-        <p class="text-[11px] uppercase font-bold text-[var(--muted)] tracking-wider">Aktive Sektoren</p>
+        <p class="text-[11px] uppercase font-bold text-[var(--muted)] tracking-wider">Active Sectors</p>
         <p id="metricUniqueMaps" class="text-2xl font-black mt-1 text-sky-400">0</p>
         <p class="text-[11px] text-[var(--muted)] mt-1">Buried City, Spaceport...</p>
       </div>
       <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4">
-        <p class="text-[11px] uppercase font-bold text-[var(--muted)] tracking-wider">Ø Slot-Dauer</p>
+        <p class="text-[11px] uppercase font-bold text-[var(--muted)] tracking-wider">Avg Slot Duration</p>
         <p id="metricAvgDuration" class="text-2xl font-black mt-1 text-emerald-400">60 Min</p>
-        <p class="text-[11px] text-[var(--muted)] mt-1">feste 1h Fenster</p>
+        <p class="text-[11px] text-[var(--muted)] mt-1">fixed 1h windows</p>
       </div>
     </div>
 
     <!-- Navigation Tabs -->
     <div class="flex border-b border-[var(--border)] gap-6 text-xs md:text-sm font-semibold">
       <button onclick="setTab('combinations')" id="tab-combinations" class="pb-3 text-amber-400 border-b-2 border-amber-400 transition flex items-center gap-1.5">
-        👥 Event-Kombinationen (Slots)
+        👥 Concurrent Combinations (Slots)
       </button>
       <button onclick="setTab('frequency')" id="tab-frequency" class="pb-3 text-[var(--muted)] hover:text-white transition flex items-center gap-1.5">
-        📊 Häufigkeit & Dauer
+        📊 Frequency & Uptime
       </button>
       <button onclick="setTab('matrix')" id="tab-matrix" class="pb-3 text-[var(--muted)] hover:text-white transition flex items-center gap-1.5">
         🗺️ Map & Condition Matrix
       </button>
       <button onclick="setTab('schedule')" id="tab-schedule" class="pb-3 text-[var(--muted)] hover:text-white transition flex items-center gap-1.5">
-        ⏰ Live & Welt-Zeitplan
+        ⏰ Global Schedule
       </button>
     </div>
 
-    <!-- Tab 1: Kombinationen pro Zeitfenster mit Live-Countdown -->
+    <!-- Tab 1: Combinations per Slot -->
     <div id="view-combinations" class="space-y-4">
       <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
           <div>
-            <h2 class="text-base font-bold text-white">Gleichzeitige Karten-Kombinationen</h2>
-            <p class="text-xs text-[var(--muted)]">Welche 5 Events laufen parallel im selben Zeitfenster in allen Regionen?</p>
+            <h2 class="text-base font-bold text-white">Concurrent Sector Combinations</h2>
+            <p class="text-xs text-[var(--muted)]">Which 5 conditions are active simultaneously during the same 1-hour window across global regions?</p>
           </div>
           <span class="text-xs bg-slate-800 text-slate-300 px-3 py-1 rounded-lg border border-slate-700 w-fit">
-            5 Sektoren gleichzeitig
+            5 Parallel Sectors
           </span>
         </div>
         <div id="combinationsContainer" class="space-y-4">
@@ -207,17 +204,17 @@
       </div>
     </div>
 
-    <!-- Tab 2: Häufigkeiten & Statistiken -->
+    <!-- Tab 2: Frequency & Stats -->
     <div id="view-frequency" class="hidden space-y-4">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5">
-          <h2 class="text-base font-bold text-white mb-1">Top Events nach Häufigkeit</h2>
-          <p class="text-xs text-[var(--muted)] mb-4">Wie oft und wie viele Stunden war jedes Event aktiv?</p>
+          <h2 class="text-base font-bold text-white mb-1">Top Conditions by Frequency</h2>
+          <p class="text-xs text-[var(--muted)] mb-4">How often and for how many hours has each condition been active?</p>
           <div id="frequencyBars" class="space-y-3"></div>
         </div>
         <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5">
-          <h2 class="text-base font-bold text-white mb-1">Aktivste Sektoren (Maps)</h2>
-          <p class="text-xs text-[var(--muted)] mb-4">Welche Maps erhalten die meisten Modifikatoren?</p>
+          <h2 class="text-base font-bold text-white mb-1">Most Active Sectors (Maps)</h2>
+          <p class="text-xs text-[var(--muted)] mb-4">Which maps receive the most active condition modifiers?</p>
           <div id="mapBars" class="space-y-3"></div>
         </div>
       </div>
@@ -226,8 +223,8 @@
     <!-- Tab 3: Matrix Map x Condition -->
     <div id="view-matrix" class="hidden">
       <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 overflow-x-auto">
-        <h2 class="text-base font-bold text-white mb-1">Map & Condition Kreuz-Matrix</h2>
-        <p class="text-xs text-[var(--muted)] mb-4">Auf welchen Karten sind welche Modifikatoren schon aufgetreten?</p>
+        <h2 class="text-base font-bold text-white mb-1">Map & Condition Cross-Matrix</h2>
+        <p class="text-xs text-[var(--muted)] mb-4">On which maps have specific modifiers occurred?</p>
         <table class="w-full text-left text-xs border-collapse">
           <thead>
             <tr id="matrixHeader" class="border-b border-[var(--border)] text-[var(--muted)]">
@@ -239,13 +236,13 @@
       </div>
     </div>
 
-    <!-- Tab 4: Live & Zeitplan mit Welt-Zeitzonen -->
+    <!-- Tab 4: Global Schedule Table -->
     <div id="view-schedule" class="hidden space-y-4">
       <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5">
         <div class="flex items-center justify-between mb-4">
           <div>
-            <h2 class="text-base font-bold text-white">Chronologischer Zeitplan aller Regionen</h2>
-            <p class="text-xs text-[var(--muted)]">Start- und Endzeiten für Europa, Nordamerika, Südamerika, Ozeanien und Asien.</p>
+            <h2 class="text-base font-bold text-white">Chronological Global Schedule</h2>
+            <p class="text-xs text-[var(--muted)]">Start and end times across Europe, North America, South America, Oceania, and Asia.</p>
           </div>
         </div>
         <div class="overflow-x-auto">
@@ -254,12 +251,12 @@
               <tr class="border-b border-[var(--border)] text-[var(--muted)]">
                 <th class="py-2.5 px-3">Status</th>
                 <th class="py-2.5 px-3">Condition</th>
-                <th class="py-2.5 px-3">Karte</th>
-                <th class="py-2.5 px-3">🇪🇺 Europa (CET)</th>
+                <th class="py-2.5 px-3">Sector</th>
+                <th class="py-2.5 px-3">🇪🇺 Europe (CET)</th>
                 <th class="py-2.5 px-3">🇺🇸 NA (ET)</th>
                 <th class="py-2.5 px-3">🇧🇷 SA (BRT)</th>
-                <th class="py-2.5 px-3">🇦🇺 Ozeanien (AEDT)</th>
-                <th class="py-2.5 px-3">🇯🇵 Asien (JST)</th>
+                <th class="py-2.5 px-3">🇦🇺 Oceania (AEDT)</th>
+                <th class="py-2.5 px-3">🇯🇵 Asia (JST)</th>
                 <th class="py-2.5 px-3">Live Timer</th>
               </tr>
             </thead>
@@ -275,11 +272,11 @@
   <div id="importModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
     <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 max-w-lg w-full space-y-4 shadow-2xl">
       <div class="flex items-center justify-between">
-        <h3 class="text-base font-bold text-white">Neue Timer-Daten importieren</h3>
+        <h3 class="text-base font-bold text-white">Import Timer Data</h3>
         <button onclick="toggleImportModal()" class="text-[var(--muted)] hover:text-white">&times;</button>
       </div>
       <p class="text-xs text-[var(--muted)]">
-        Kopiere den Text von <code class="text-amber-400">arcraiders.com/de/map-conditions</code> und füge ihn hier ein:
+        Paste copied text from <code class="text-amber-400">arcraiders.com/de/map-conditions</code> or <code class="text-amber-400">arcraiders.com/en/map-conditions</code> below:
       </p>
       <textarea 
         id="rawPasteInput" 
@@ -287,20 +284,20 @@
         class="w-full bg-slate-900 border border-[var(--border)] rounded-xl p-3 text-xs text-[var(--foreground)] font-mono focus:outline-none focus:border-amber-400"
         placeholder="Active now&#10;[3:07ARC FrigateBuried City11. Nov. · 14:00 - 15:00]..."></textarea>
       <div class="flex justify-end gap-2">
-        <button onclick="toggleImportModal()" class="px-4 py-2 text-xs font-semibold text-[var(--muted)] hover:text-white">Abbrechen</button>
-        <button onclick="handleManualImport()" class="px-4 py-2 text-xs font-semibold bg-amber-500 text-slate-950 rounded-lg hover:bg-amber-400 transition">Importieren & Speichern</button>
+        <button onclick="toggleImportModal()" class="px-4 py-2 text-xs font-semibold text-[var(--muted)] hover:text-white">Cancel</button>
+        <button onclick="handleManualImport()" class="px-4 py-2 text-xs font-semibold bg-amber-500 text-slate-950 rounded-lg hover:bg-amber-400 transition">Import & Save</button>
       </div>
     </div>
   </div>
 
   <script>
-    // Region Definitions & Timezone Offsets (relativ zu CET / UTC+1)
+    // Region Definitions & Timezone Offsets
     const REGIONS = {
-      Europe: { name: "Europa", tag: "CET", timeZone: "Europe/Berlin", flag: "🇪🇺", diffHours: 0 },
-      NorthAmerica: { name: "Nordamerika", tag: "ET", timeZone: "America/New_York", flag: "🇺🇸", diffHours: -6 },
-      SouthAmerica: { name: "Südamerika", tag: "BRT", timeZone: "America/Sao_Paulo", flag: "🇧🇷", diffHours: -4 },
-      Oceania: { name: "Ozeanien", tag: "AEDT", timeZone: "Australia/Sydney", flag: "🇦🇺", diffHours: +10 },
-      Asia: { name: "Asien", tag: "JST", timeZone: "Asia/Tokyo", flag: "🇯🇵", diffHours: +8 }
+      Europe: { name: "Europe", tag: "CET", timeZone: "Europe/Berlin", flag: "🇪🇺", diffHours: 0 },
+      NorthAmerica: { name: "North America", tag: "ET", timeZone: "America/New_York", flag: "🇺🇸", diffHours: -6 },
+      SouthAmerica: { name: "South America", tag: "BRT", timeZone: "America/Sao_Paulo", flag: "🇧🇷", diffHours: -4 },
+      Oceania: { name: "Oceania", tag: "AEDT", timeZone: "Australia/Sydney", flag: "🇦🇺", diffHours: +10 },
+      Asia: { name: "Asia", tag: "JST", timeZone: "Asia/Tokyo", flag: "🇯🇵", diffHours: +8 }
     };
 
     function updateWorldClocks() {
@@ -309,7 +306,7 @@
         const reg = REGIONS[key];
         const clockEl = document.getElementById(`clock-${key.toLowerCase() === 'northamerica' ? 'na' : key.toLowerCase() === 'southamerica' ? 'sa' : key.toLowerCase()}`);
         if (clockEl) {
-          clockEl.innerText = now.toLocaleTimeString("de-DE", { timeZone: reg.timeZone, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+          clockEl.innerText = now.toLocaleTimeString("en-GB", { timeZone: reg.timeZone, hour: '2-digit', minute: '2-digit', second: '2-digit' });
         }
       });
     }
@@ -330,7 +327,6 @@ Coming up (next per condition)
 
     let eventStore = JSON.parse(localStorage.getItem("arc_events") || "null") || [];
 
-    // Helper: Converts a "14:00 - 15:00" CET slot into another timezone
     function convertTimeSlot(startH, startM, endH, endM, diffHours) {
       function shift(h, m) {
         let total = (h + diffHours) % 24;
@@ -374,7 +370,6 @@ Coming up (next per condition)
           }
         }
 
-        // Generate converted times for each region
         const regionalSlots = {};
         Object.keys(REGIONS).forEach(rk => {
           regionalSlots[rk] = convertTimeSlot(startH, startM, endH, endM, REGIONS[rk].diffHours);
@@ -445,14 +440,13 @@ Coming up (next per condition)
         e.timeSlotCET.includes(query)
       );
 
-      // Top metrics
       document.getElementById("metricTotalEvents").innerText = filtered.length;
       const uniqueConds = new Set(filtered.map(e => e.condition));
       const uniqueMaps = new Set(filtered.map(e => e.map));
       document.getElementById("metricUniqueConditions").innerText = uniqueConds.size;
       document.getElementById("metricUniqueMaps").innerText = uniqueMaps.size;
 
-      // Group by Time Slot (Combinations)
+      // Group Combinations
       const slotGroups = {};
       filtered.forEach(e => {
         let displaySlot = e.timeSlotCET;
@@ -477,7 +471,6 @@ Coming up (next per condition)
                 <span class="text-sm font-bold text-white">${slotTitle}</span>
               </div>
               
-              <!-- Multi-region badges on each slot -->
               <div class="flex flex-wrap items-center gap-1.5 text-[11px] font-mono">
                 <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300">🇪🇺 ${origEvent.regionalSlots.Europe}</span>
                 <span class="px-2 py-0.5 rounded bg-slate-800 text-sky-300">🇺🇸 ${origEvent.regionalSlots.NorthAmerica}</span>
@@ -487,7 +480,6 @@ Coming up (next per condition)
               </div>
             </div>
 
-            <!-- Concurrent Cards (5 maps parallel) -->
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
               ${items.map(it => `
                 <div class="bg-[var(--card)] border border-[var(--border)] hover:border-amber-400/50 rounded-xl p-3 transition shadow-sm">
@@ -504,7 +496,7 @@ Coming up (next per condition)
         `;
       }).join('');
 
-      // Frequency counts
+      // Frequency
       const condCounts = {};
       const condHours = {};
       filtered.forEach(e => {
@@ -520,7 +512,7 @@ Coming up (next per condition)
             <div>
               <div class="flex justify-between text-xs mb-1">
                 <span class="font-semibold text-white">${cond}</span>
-                <span class="text-[var(--muted)]">${count}x (${condHours[cond]} Std. Uptime)</span>
+                <span class="text-[var(--muted)]">${count}x (${condHours[cond]}h Uptime)</span>
               </div>
               <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
                 <div class="bg-gradient-to-r from-amber-500 to-amber-300 h-2 rounded-full" style="width: ${pct}%"></div>
@@ -529,11 +521,9 @@ Coming up (next per condition)
           `;
         }).join('');
 
-      // Map counts
+      // Map
       const mapCounts = {};
-      filtered.forEach(e => {
-        mapCounts[e.map] = (mapCounts[e.map] || 0) + 1;
-      });
+      filtered.forEach(e => { mapCounts[e.map] = (mapCounts[e.map] || 0) + 1; });
       const maxMapCount = Math.max(...Object.values(mapCounts), 1);
       document.getElementById("mapBars").innerHTML = Object.entries(mapCounts)
         .sort((a,b) => b[1] - a[1])
@@ -553,13 +543,11 @@ Coming up (next per condition)
         }).join('');
 
       // Matrix
-      const matrixHeader = document.getElementById("matrixHeader");
       const activeMaps = Array.from(uniqueMaps).sort();
-      matrixHeader.innerHTML = `<th class="py-2.5 px-3 font-semibold text-white">Condition</th>` + 
+      document.getElementById("matrixHeader").innerHTML = `<th class="py-2.5 px-3 font-semibold text-white">Condition</th>` + 
         activeMaps.map(m => `<th class="py-2.5 px-3 font-semibold text-center text-slate-300">${m}</th>`).join('');
 
-      const matrixBody = document.getElementById("matrixBody");
-      matrixBody.innerHTML = Array.from(uniqueConds).sort().map(cond => {
+      document.getElementById("matrixBody").innerHTML = Array.from(uniqueConds).sort().map(cond => {
         return `
           <tr class="hover:bg-slate-800/40 transition">
             <td class="py-2.5 px-3 font-medium text-white">${cond}</td>
@@ -575,9 +563,8 @@ Coming up (next per condition)
         `;
       }).join('');
 
-      // Schedule Table with all 5 World Regions!
-      const schedBody = document.getElementById("scheduleTableBody");
-      schedBody.innerHTML = filtered.map(e => `
+      // Schedule Table
+      document.getElementById("scheduleTableBody").innerHTML = filtered.map(e => `
         <tr class="hover:bg-slate-800/40 transition">
           <td class="py-2.5 px-3">
             <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${e.timeSlotCET.startsWith('14:00') ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-slate-800 text-slate-300'}">
