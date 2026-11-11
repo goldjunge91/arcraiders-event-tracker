@@ -144,16 +144,9 @@
           id="searchInput" 
           type="text" 
           placeholder="Filter by event or map..." 
-          class="bg-[var(--card)] border border-[var(--border)] rounded-xl px-3.5 py-2 text-xs text-white placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400 w-52 transition"
+          class="bg-[var(--card)] border border-[var(--border)] rounded-xl px-3.5 py-2 text-xs text-white placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400 w-64 transition"
           oninput="renderAll()"
         />
-
-        <!-- Import Button -->
-        <button 
-          onclick="toggleImportModal()" 
-          class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3.5 py-2 rounded-xl text-xs flex items-center gap-1.5 transition shadow-lg shadow-amber-500/10">
-          <span>+</span> Import Data
-        </button>
       </div>
     </header>
 
@@ -279,28 +272,6 @@
 
   </div>
 
-  <!-- Import Modal -->
-  <div id="importModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-    <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 max-w-lg w-full space-y-4 shadow-2xl">
-      <div class="flex items-center justify-between">
-        <h3 class="text-base font-bold text-white">Import Timer Data</h3>
-        <button onclick="toggleImportModal()" class="text-[var(--muted)] hover:text-white">&times;</button>
-      </div>
-      <p class="text-xs text-[var(--muted)]">
-        Paste copied text from <code class="text-amber-400">arcraiders.com/de/map-conditions</code> or <code class="text-amber-400">arcraiders.com/en/map-conditions</code> below:
-      </p>
-      <textarea 
-        id="rawPasteInput" 
-        rows="8" 
-        class="w-full bg-slate-900 border border-[var(--border)] rounded-xl p-3 text-xs text-[var(--foreground)] font-mono focus:outline-none focus:border-amber-400"
-        placeholder="Active now&#10;[3:07ARC FrigateBuried City11. Nov. · 14:00 - 15:00]..."></textarea>
-      <div class="flex justify-end gap-2">
-        <button onclick="toggleImportModal()" class="px-4 py-2 text-xs font-semibold text-[var(--muted)] hover:text-white">Cancel</button>
-        <button onclick="handleManualImport()" class="px-4 py-2 text-xs font-semibold bg-amber-500 text-slate-950 rounded-lg hover:bg-amber-400 transition">Import & Save</button>
-      </div>
-    </div>
-  </div>
-
   <script>
     // Region Definitions & Timezone Offsets
     const REGIONS = {
@@ -406,76 +377,6 @@ Coming up (next per condition)
     if (eventStore.length === 0) {
       eventStore = parseRawText(initialRawText);
       localStorage.setItem("arc_events", JSON.stringify(eventStore));
-    }
-
-    function toggleImportModal() {
-      const modal = document.getElementById("importModal");
-      modal.classList.toggle("hidden");
-      modal.classList.toggle("flex");
-    }
-
-    function handleManualImport() {
-      const val = document.getElementById("rawPasteInput").value;
-      if (!val) return;
-      const newItems = parseRawText(val);
-      const mapById = new Map();
-      eventStore.forEach(e => mapById.set(e.id, e));
-      newItems.forEach(e => mapById.set(e.id, e));
-      eventStore = Array.from(mapById.values());
-      localStorage.setItem("arc_events", JSON.stringify(eventStore));
-      toggleImportModal();
-      document.getElementById("rawPasteInput").value = "";
-      async function loadRemoteHistory() {
-      try {
-        const resp = await fetch('./data/events.json');
-        if (resp.ok) {
-          const remoteData = await resp.json();
-          if (Array.isArray(remoteData) && remoteData.length > 0) {
-            const mapById = new Map();
-            eventStore.forEach(e => mapById.set(e.id, e));
-
-            remoteData.forEach(d => {
-              const startDt = new Date(d.startTime);
-              const endDt = new Date(d.endTime);
-              const startH = startDt.getHours();
-              const startM = startDt.getMinutes();
-              const endH = endDt.getHours();
-              const endM = endDt.getMinutes();
-              const id = `${d.condition}_${d.map}_${startH}:${startM}`;
-
-              const regionalSlots = {};
-              Object.keys(REGIONS).forEach(rk => {
-                regionalSlots[rk] = convertTimeSlot(startH, startM, endH, endM, REGIONS[rk].diffHours);
-              });
-
-              mapById.set(id, {
-                id,
-                condition: d.condition,
-                map: d.map,
-                timer: d.timer || "0:00",
-                startH, startM, endH, endM,
-                timeSlotCET: `${String(startH).padStart(2,'0')}:${String(startM).padStart(2,'0')} - ${String(endH).padStart(2,'0')}:${String(endM).padStart(2,'0')}`,
-                regionalSlots,
-                date: `${startDt.getDate()}. ${startDt.toLocaleString('en-US', { month: 'short' })}`,
-                fullDate: d.startTime,
-                duration: d.durationMinutes || 60,
-                slug: d.slug,
-                url: d.url
-              });
-            });
-
-            eventStore = Array.from(mapById.values());
-            localStorage.setItem("arc_events", JSON.stringify(eventStore));
-            renderAll();
-          }
-        }
-      } catch (err) {
-        console.log("Remote dataset offline or local view:", err);
-      }
-    }
-
-    renderAll();
-    loadRemoteHistory();
     }
 
     function setTab(tabName) {
