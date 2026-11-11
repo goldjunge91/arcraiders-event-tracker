@@ -1,0 +1,28 @@
+# Environment Variables (Secrets)
+.env
+.env.local
+*.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+
+# Databases
+*.db
+*.sqlite3
+
+# Node / Convex
+node_modules/
+.convex/
+dist/
+
+# OS / Editor
+.DS_Store
+.idea/
+.vscode/
