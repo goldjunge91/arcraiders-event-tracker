@@ -3,25 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ARC Raiders · Map Conditions & Rotation Analyzer</title>
+  <title>ARC Raiders · Map Conditions & Interactive Timeline</title>
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
   <style>
     :root {
-      --background: #0b0d13;
-      --card: #151822;
-      --card-hover: #1c2130;
-      --border: #262c3e;
+      --background: #0a0c10;
+      --card: #12151e;
+      --card-hover: #181d29;
+      --border: #212638;
+      --border-light: #2d344b;
       --foreground: #f1f5f9;
-      --muted: #94a3b8;
+      --muted: #8b9bb4;
       --accent: #f59e0b;
-      --accent-glow: rgba(245, 158, 11, 0.15);
       --primary: #38bdf8;
       --success: #10b981;
+      --ended: #333a4d;
     }
     body {
       background-color: var(--background);
       color: var(--foreground);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    /* Custom scrollbar for timeline */
+    .timeline-scroll::-webkit-scrollbar {
+      height: 6px;
+    }
+    .timeline-scroll::-webkit-scrollbar-track {
+      background: #0f121a;
+    }
+    .timeline-scroll::-webkit-scrollbar-thumb {
+      background: #252b3d;
+      border-radius: 3px;
+    }
+    .timeline-scroll::-webkit-scrollbar-thumb:hover {
+      background: #38425d;
     }
   </style>
 </head>
@@ -42,9 +57,7 @@
         </div>
       </div>
 
-      <!-- 5 World Regions Grid -->
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-        <!-- Europe -->
         <div class="bg-slate-900/80 border border-[var(--border)] rounded-xl p-3 flex flex-col justify-between">
           <div class="flex items-center justify-between text-xs">
             <span class="font-bold text-white flex items-center gap-1.5">🇪🇺 Europe</span>
@@ -54,7 +67,6 @@
           <div class="text-[10px] text-[var(--muted)]">London / Berlin / Paris</div>
         </div>
 
-        <!-- North America -->
         <div class="bg-slate-900/80 border border-[var(--border)] rounded-xl p-3 flex flex-col justify-between">
           <div class="flex items-center justify-between text-xs">
             <span class="font-bold text-white flex items-center gap-1.5">🇺🇸 North America</span>
@@ -64,7 +76,6 @@
           <div class="text-[10px] text-[var(--muted)]">New York / Toronto</div>
         </div>
 
-        <!-- South America -->
         <div class="bg-slate-900/80 border border-[var(--border)] rounded-xl p-3 flex flex-col justify-between">
           <div class="flex items-center justify-between text-xs">
             <span class="font-bold text-white flex items-center gap-1.5">🇧🇷 South America</span>
@@ -74,7 +85,6 @@
           <div class="text-[10px] text-[var(--muted)]">São Paulo / Buenos Aires</div>
         </div>
 
-        <!-- Oceania -->
         <div class="bg-slate-900/80 border border-[var(--border)] rounded-xl p-3 flex flex-col justify-between">
           <div class="flex items-center justify-between text-xs">
             <span class="font-bold text-white flex items-center gap-1.5">🇦🇺 Oceania</span>
@@ -84,7 +94,6 @@
           <div class="text-[10px] text-[var(--muted)]">Sydney / Melbourne</div>
         </div>
 
-        <!-- Asia -->
         <div class="bg-slate-900/80 border border-[var(--border)] rounded-xl p-3 flex flex-col justify-between">
           <div class="flex items-center justify-between text-xs">
             <span class="font-bold text-white flex items-center gap-1.5">🇯🇵 Asia</span>
@@ -106,16 +115,15 @@
           <span class="text-xs text-[var(--muted)]">Map Conditions & Rotation Analyzer</span>
         </div>
         <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight mt-1 text-white">
-          Event Timers & Global Regions
+          Event Timeline & Rotation Matrix
         </h1>
         <p class="text-xs md:text-sm text-[var(--muted)] mt-0.5">
-          Track active event frequencies, concurrent sector combinations, and local start times across all global regions.
+          Expand any condition to inspect regional schedules across Europe, North America, South America, Asia, and Oceania.
         </p>
       </div>
 
-      <!-- Controls: Region Selector + History Range + Search + Import -->
+      <!-- Controls: History Filter + Search -->
       <div class="flex flex-wrap items-center gap-3">
-        <!-- History Range Filter -->
         <div class="flex items-center bg-[var(--card)] border border-[var(--border)] rounded-xl p-1 text-xs">
           <span class="text-[11px] text-[var(--muted)] px-2.5 font-semibold">History:</span>
           <select id="selectedTimeframe" onchange="renderAll()" class="bg-slate-900 text-white font-medium rounded-lg px-2.5 py-1.5 focus:outline-none border border-slate-700 cursor-pointer">
@@ -126,109 +134,97 @@
           </select>
         </div>
 
-        <!-- Region Switcher -->
-        <div class="flex items-center bg-[var(--card)] border border-[var(--border)] rounded-xl p-1 text-xs">
-          <span class="text-[11px] text-[var(--muted)] px-2.5 font-semibold">Timezone:</span>
-          <select id="selectedRegion" onchange="renderAll()" class="bg-slate-900 text-white font-medium rounded-lg px-2.5 py-1.5 focus:outline-none border border-slate-700 cursor-pointer">
-            <option value="ALL">🌍 All Regions (Global View)</option>
-            <option value="Europe" selected>🇪🇺 Europe (CET)</option>
-            <option value="NorthAmerica">🇺🇸 North America (ET)</option>
-            <option value="SouthAmerica">🇧🇷 South America (BRT)</option>
-            <option value="Oceania">🇦🇺 Oceania (AEDT)</option>
-            <option value="Asia">🇯🇵 Asia (JST)</option>
-          </select>
-        </div>
-
-        <!-- Search Bar -->
         <input 
           id="searchInput" 
           type="text" 
-          placeholder="Filter by event or map..." 
-          class="bg-[var(--card)] border border-[var(--border)] rounded-xl px-3.5 py-2 text-xs text-white placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400 w-64 transition"
+          placeholder="Filter event or map..." 
+          class="bg-[var(--card)] border border-[var(--border)] rounded-xl px-3.5 py-2 text-xs text-white placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400 w-56 transition"
           oninput="renderAll()"
         />
       </div>
     </header>
 
-    <!-- Metrics Cards -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-      <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4">
-        <p class="text-[11px] uppercase font-bold text-[var(--muted)] tracking-wider">Tracked Events</p>
-        <p id="metricTotalEvents" class="text-2xl font-black mt-1 text-white">0</p>
-        <p class="text-[11px] text-[var(--muted)] mt-1">in current rotation</p>
-      </div>
-      <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4">
-        <p class="text-[11px] uppercase font-bold text-[var(--muted)] tracking-wider">Unique Conditions</p>
-        <p id="metricUniqueConditions" class="text-2xl font-black mt-1 text-amber-400">0</p>
-        <p class="text-[11px] text-[var(--muted)] mt-1">Night Raid, Frigate etc.</p>
-      </div>
-      <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4">
-        <p class="text-[11px] uppercase font-bold text-[var(--muted)] tracking-wider">Active Sectors</p>
-        <p id="metricUniqueMaps" class="text-2xl font-black mt-1 text-sky-400">0</p>
-        <p class="text-[11px] text-[var(--muted)] mt-1">Buried City, Spaceport...</p>
-      </div>
-      <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4">
-        <p class="text-[11px] uppercase font-bold text-[var(--muted)] tracking-wider">Avg Slot Duration</p>
-        <p id="metricAvgDuration" class="text-2xl font-black mt-1 text-emerald-400">60 Min</p>
-        <p class="text-[11px] text-[var(--muted)] mt-1">fixed 1h windows</p>
-      </div>
-    </div>
-
     <!-- Navigation Tabs -->
-    <div class="flex border-b border-[var(--border)] gap-6 text-xs md:text-sm font-semibold">
-      <button onclick="setTab('combinations')" id="tab-combinations" class="pb-3 text-amber-400 border-b-2 border-amber-400 transition flex items-center gap-1.5">
-        👥 Concurrent Combinations (Slots)
+    <div class="flex border-b border-[var(--border)] gap-6 text-xs md:text-sm font-semibold overflow-x-auto">
+      <button onclick="setTab('timeline')" id="tab-timeline" class="pb-3 text-amber-400 border-b-2 border-amber-400 transition flex items-center gap-1.5 whitespace-nowrap">
+        📅 Interactive Timeline Grid
       </button>
-      <button onclick="setTab('frequency')" id="tab-frequency" class="pb-3 text-[var(--muted)] hover:text-white transition flex items-center gap-1.5">
+      <button onclick="setTab('combinations')" id="tab-combinations" class="pb-3 text-[var(--muted)] hover:text-white transition flex items-center gap-1.5 whitespace-nowrap">
+        👥 Concurrent Slots
+      </button>
+      <button onclick="setTab('frequency')" id="tab-frequency" class="pb-3 text-[var(--muted)] hover:text-white transition flex items-center gap-1.5 whitespace-nowrap">
         📊 Frequency & Uptime
       </button>
-      <button onclick="setTab('matrix')" id="tab-matrix" class="pb-3 text-[var(--muted)] hover:text-white transition flex items-center gap-1.5">
-        🗺️ Map & Condition Matrix
+      <button onclick="setTab('matrix')" id="tab-matrix" class="pb-3 text-[var(--muted)] hover:text-white transition flex items-center gap-1.5 whitespace-nowrap">
+        🗺️ Map Matrix
       </button>
-      <button onclick="setTab('schedule')" id="tab-schedule" class="pb-3 text-[var(--muted)] hover:text-white transition flex items-center gap-1.5">
-        ⏰ Global Schedule
+      <button onclick="setTab('schedule')" id="tab-schedule" class="pb-3 text-[var(--muted)] hover:text-white transition flex items-center gap-1.5 whitespace-nowrap">
+        ⏰ World Schedule
       </button>
     </div>
 
-    <!-- Tab 1: Combinations per Slot -->
-    <div id="view-combinations" class="space-y-4">
-      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
-          <div>
-            <h2 class="text-base font-bold text-white">Concurrent Sector Combinations</h2>
-            <p class="text-xs text-[var(--muted)]">Which 5 conditions are active simultaneously during the same 1-hour window across global regions?</p>
+    <!-- TAB 1: INTERACTIVE TIMELINE GRID (SCREENSHOT REPLICA) -->
+    <div id="view-timeline" class="space-y-4">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 md:p-6 shadow-2xl relative overflow-hidden">
+        
+        <!-- Legend & Instructions -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 mb-2 border-b border-[var(--border)] text-xs text-[var(--muted)]">
+          <div class="flex items-center gap-2">
+            <span class="font-semibold text-white">Click any event</span> to expand its 5 regional timezone tracks (EU, NA, SA, ASIA, OCE).
           </div>
-          <span class="text-xs bg-slate-800 text-slate-300 px-3 py-1 rounded-lg border border-slate-700 w-fit">
-            5 Parallel Sectors
-          </span>
+          <div class="flex items-center gap-3">
+            <span class="flex items-center gap-1.5 text-emerald-400 font-medium">
+              <span class="w-2.5 h-2.5 rounded border border-emerald-500 bg-emerald-500/20"></span> Active Now
+            </span>
+            <span class="flex items-center gap-1.5 text-sky-400 font-medium">
+              <span class="w-2.5 h-2.5 rounded border border-sky-500 bg-sky-500/20"></span> Coming Up
+            </span>
+            <span class="flex items-center gap-1.5 text-slate-400 font-medium">
+              <span class="w-2.5 h-2.5 rounded border border-slate-700 bg-slate-800"></span> Finished
+            </span>
+          </div>
         </div>
-        <div id="combinationsContainer" class="space-y-4">
-          <!-- Dynamically populated -->
+
+        <!-- Scrollable Timeline Table -->
+        <div class="overflow-x-auto timeline-scroll relative">
+          <div id="timelineGridContainer" class="min-w-[900px]">
+            <!-- Rendered dynamically -->
+          </div>
         </div>
+
       </div>
     </div>
 
-    <!-- Tab 2: Frequency & Stats -->
+    <!-- TAB 2: COMBINATIONS PER SLOT -->
+    <div id="view-combinations" class="hidden space-y-4">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5">
+        <h2 class="text-base font-bold text-white mb-1">Concurrent Sector Combinations</h2>
+        <p class="text-xs text-[var(--muted)] mb-4">Which 5 conditions run simultaneously across sectors?</p>
+        <div id="combinationsContainer" class="space-y-4"></div>
+      </div>
+    </div>
+
+    <!-- TAB 3: FREQUENCY & UPTIME -->
     <div id="view-frequency" class="hidden space-y-4">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5">
           <h2 class="text-base font-bold text-white mb-1">Top Conditions by Frequency</h2>
-          <p class="text-xs text-[var(--muted)] mb-4">How often and for how many hours has each condition been active?</p>
+          <p class="text-xs text-[var(--muted)] mb-4">Uptime and occurrences across multi-month history</p>
           <div id="frequencyBars" class="space-y-3"></div>
         </div>
         <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5">
           <h2 class="text-base font-bold text-white mb-1">Most Active Sectors (Maps)</h2>
-          <p class="text-xs text-[var(--muted)] mb-4">Which maps receive the most active condition modifiers?</p>
+          <p class="text-xs text-[var(--muted)] mb-4">Total modifiers per map</p>
           <div id="mapBars" class="space-y-3"></div>
         </div>
       </div>
     </div>
 
-    <!-- Tab 3: Matrix Map x Condition -->
+    <!-- TAB 4: CROSS MATRIX -->
     <div id="view-matrix" class="hidden">
       <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 overflow-x-auto">
         <h2 class="text-base font-bold text-white mb-1">Map & Condition Cross-Matrix</h2>
-        <p class="text-xs text-[var(--muted)] mb-4">On which maps have specific modifiers occurred?</p>
+        <p class="text-xs text-[var(--muted)] mb-4">Historical occurrence matrix</p>
         <table class="w-full text-left text-xs border-collapse">
           <thead>
             <tr id="matrixHeader" class="border-b border-[var(--border)] text-[var(--muted)]">
@@ -240,46 +236,53 @@
       </div>
     </div>
 
-    <!-- Tab 4: Global Schedule Table -->
+    <!-- TAB 5: WORLD SCHEDULE TABLE -->
     <div id="view-schedule" class="hidden space-y-4">
-      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5">
-        <div class="flex items-center justify-between mb-4">
-          <div>
-            <h2 class="text-base font-bold text-white">Chronological Global Schedule</h2>
-            <p class="text-xs text-[var(--muted)]">Start and end times across Europe, North America, South America, Oceania, and Asia.</p>
-          </div>
-        </div>
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs">
-            <thead>
-              <tr class="border-b border-[var(--border)] text-[var(--muted)]">
-                <th class="py-2.5 px-3">Status</th>
-                <th class="py-2.5 px-3">Condition</th>
-                <th class="py-2.5 px-3">Sector</th>
-                <th class="py-2.5 px-3">🇪🇺 Europe (CET)</th>
-                <th class="py-2.5 px-3">🇺🇸 NA (ET)</th>
-                <th class="py-2.5 px-3">🇧🇷 SA (BRT)</th>
-                <th class="py-2.5 px-3">🇦🇺 Oceania (AEDT)</th>
-                <th class="py-2.5 px-3">🇯🇵 Asia (JST)</th>
-                <th class="py-2.5 px-3">Live Timer</th>
-              </tr>
-            </thead>
-            <tbody id="scheduleTableBody" class="divide-y divide-[var(--border)]"></tbody>
-          </table>
-        </div>
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 overflow-x-auto">
+        <h2 class="text-base font-bold text-white mb-4">Full Chronological Schedule</h2>
+        <table class="w-full text-left text-xs">
+          <thead>
+            <tr class="border-b border-[var(--border)] text-[var(--muted)]">
+              <th class="py-2.5 px-3">Status</th>
+              <th class="py-2.5 px-3">Condition</th>
+              <th class="py-2.5 px-3">Sector</th>
+              <th class="py-2.5 px-3">🇪🇺 Europe (CET)</th>
+              <th class="py-2.5 px-3">🇺🇸 NA (ET)</th>
+              <th class="py-2.5 px-3">🇧🇷 SA (BRT)</th>
+              <th class="py-2.5 px-3">🇦🇺 Oceania (AEDT)</th>
+              <th class="py-2.5 px-3">🇯🇵 Asia (JST)</th>
+              <th class="py-2.5 px-3">Live Timer</th>
+            </tr>
+          </thead>
+          <tbody id="scheduleTableBody" class="divide-y divide-[var(--border)]"></tbody>
+        </table>
       </div>
     </div>
 
   </div>
 
   <script>
-    // Region Definitions & Timezone Offsets
     const REGIONS = {
-      Europe: { name: "Europe", tag: "CET", timeZone: "Europe/Berlin", flag: "🇪🇺", diffHours: 0 },
-      NorthAmerica: { name: "North America", tag: "ET", timeZone: "America/New_York", flag: "🇺🇸", diffHours: -6 },
-      SouthAmerica: { name: "South America", tag: "BRT", timeZone: "America/Sao_Paulo", flag: "🇧🇷", diffHours: -4 },
-      Oceania: { name: "Oceania", tag: "AEDT", timeZone: "Australia/Sydney", flag: "🇦🇺", diffHours: +10 },
-      Asia: { name: "Asia", tag: "JST", timeZone: "Asia/Tokyo", flag: "🇯🇵", diffHours: +8 }
+      Europe: { code: "EU", name: "Europe", tag: "CET", timeZone: "Europe/Berlin", flag: "🇪🇺", diffHours: 0, color: "text-amber-400 border-amber-500/40 bg-amber-500/10" },
+      NorthAmerica: { code: "NA", name: "North America", tag: "ET", timeZone: "America/New_York", flag: "🇺🇸", diffHours: -6, color: "text-sky-400 border-sky-500/40 bg-sky-500/10" },
+      SouthAmerica: { code: "SA", name: "South America", tag: "BRT", timeZone: "America/Sao_Paulo", flag: "🇧🇷", diffHours: -4, color: "text-emerald-400 border-emerald-500/40 bg-emerald-500/10" },
+      Asia: { code: "ASIA", name: "Asia", tag: "JST", timeZone: "Asia/Tokyo", flag: "🇯🇵", diffHours: +8, color: "text-rose-400 border-rose-500/40 bg-rose-500/10" },
+      Oceania: { code: "OCE", name: "Oceania", tag: "AEDT", timeZone: "Australia/Sydney", flag: "🇦🇺", diffHours: +10, color: "text-purple-400 border-purple-500/40 bg-purple-500/10" }
+    };
+
+    const EVENT_ICONS = {
+      "ARC Frigate": "🛸",
+      "Beachcombing": "🏖️",
+      "Bird City": "🦅",
+      "Close Scrutiny": "👁️",
+      "Harvester": "⚡",
+      "Hidden Bunker": "🚪",
+      "Hurricane": "🌀",
+      "Lush Blooms": "🌿",
+      "Matriarch": "👑",
+      "Night Raid": "🌙",
+      "Prospecting Probes": "📡",
+      "Redirection": "🔀"
     };
 
     function updateWorldClocks() {
@@ -295,19 +298,22 @@
     setInterval(updateWorldClocks, 1000);
     updateWorldClocks();
 
-    const initialRawText = `
-Active now
-[3:07ARC FrigateBuried City11. Nov. · 14:00 - 15:00](https://arcraiders.com/de/map-conditions/arc-frigate)[3:07Lush BloomsDam Battlegrounds11. Nov. · 14:00 - 15:00](https://arcraiders.com/de/map-conditions/lush-blooms)[3:07Night RaidStella Montis11. Nov. · 14:00 - 15:00](https://arcraiders.com/de/map-conditions/night-raid)[3:07Prospecting ProbesSpaceport11. Nov. · 14:00 - 15:00](https://arcraiders.com/de/map-conditions/prospecting-probes)[3:07RedirectionPendola Pass11. Nov. · 14:00 - 15:00](https://arcraiders.com/de/map-conditions/redirection)
-Coming up (next per condition)
-[3:07ARC FrigateThe Blue Gate11. Nov. · 15:00 - 16:00](https://arcraiders.com/de/map-conditions/arc-frigate)[3:07BeachcombingRiven Tides11. Nov. · 15:00 - 16:00](https://arcraiders.com/de/map-conditions/beachcombing)[3:07Bird CityBuried City11. Nov. · 15:00 - 16:00](https://arcraiders.com/de/map-conditions/bird-city)[3:07Hidden BunkerSpaceport11. Nov. · 15:00 - 16:00](https://arcraiders.com/de/map-conditions/hidden-bunker)[3:07Night RaidPendola Pass11. Nov. · 15:00 - 16:00](https://arcraiders.com/de/map-conditions/night-raid)[1:03:07Lush BloomsBuried City11. Nov. · 16:00 - 17:00](https://arcraiders.com/de/map-conditions/lush-blooms)[1:03:07Prospecting ProbesRiven Tides11. Nov. · 16:00 - 17:00](https://arcraiders.com/de/map-conditions/prospecting-probes)[2:03:07Close ScrutinyBuried City11. Nov. · 17:00 - 18:00](https://arcraiders.com/de/map-conditions/close-scrutiny)[2:03:07HarvesterThe Blue Gate11. Nov. · 17:00 - 18:00](https://arcraiders.com/de/map-conditions/harvester)[2:03:07MatriarchSpaceport11. Nov. · 17:00 - 18:00](https://arcraiders.com/de/map-conditions/matriarch)[5:03:07RedirectionPendola Pass11. Nov. · 20:00 - 21:00](https://arcraiders.com/de/map-conditions/redirection)[6:03:07HurricaneDam Battlegrounds11. Nov. · 21:00 - 22:00](https://arcraiders.com/de/map-conditions/hurricane)
-`;
-
     const KNOWN_MAPS = [
       "Buried City", "Dam Battlegrounds", "Stella Montis", 
       "Spaceport", "Pendola Pass", "The Blue Gate", "Riven Tides"
     ];
 
-    let eventStore = JSON.parse(localStorage.getItem("arc_events") || "null") || [];
+    let eventStore = JSON.parse(localStorage.getItem("arc_events") || "[]");
+    let expandedEvents = new Set(["ARC Frigate"]); // default expanded as in screenshot!
+
+    function toggleEventExpansion(conditionName) {
+      if (expandedEvents.has(conditionName)) {
+        expandedEvents.delete(conditionName);
+      } else {
+        expandedEvents.add(conditionName);
+      }
+      renderTimelineGrid();
+    }
 
     function convertTimeSlot(startH, startM, endH, endM, diffHours) {
       function shift(h, m) {
@@ -318,69 +324,8 @@ Coming up (next per condition)
       return `${shift(startH, startM)} - ${shift(endH, endM)}`;
     }
 
-    function parseRawText(text) {
-      const linkRegex = /\[([0-9:]+)(.+?)\]\((https?:\/\/[^\)]+)\)/g;
-      const timeRegex = /(\d{1,2})\.\s*([A-Za-zäöüÄÖÜ]+\.?)\s*[·•-]\s*(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})/;
-      
-      const results = [];
-      let match;
-      while ((match = linkRegex.exec(text)) !== null) {
-        const timer = match[1];
-        const content = match[2];
-        const url = match[3];
-        const slug = url.split('/').filter(Boolean).pop();
-
-        const tm = timeRegex.exec(content);
-        if (!tm) continue;
-
-        const day = tm[1];
-        const month = tm[2];
-        const startH = parseInt(tm[3]);
-        const startM = parseInt(tm[4]);
-        const endH = parseInt(tm[5]);
-        const endM = parseInt(tm[6]);
-
-        const prefix = content.substring(0, tm.index).trim();
-        let matchedMap = "Unknown";
-        let conditionName = prefix;
-
-        for (const m of [...KNOWN_MAPS].sort((a,b) => b.length - a.length)) {
-          if (prefix.endsWith(m)) {
-            matchedMap = m;
-            conditionName = prefix.substring(0, prefix.length - m.length).trim();
-            break;
-          }
-        }
-
-        const regionalSlots = {};
-        Object.keys(REGIONS).forEach(rk => {
-          regionalSlots[rk] = convertTimeSlot(startH, startM, endH, endM, REGIONS[rk].diffHours);
-        });
-
-        results.push({
-          id: `${conditionName}_${matchedMap}_${startH}:${startM}`,
-          condition: conditionName,
-          map: matchedMap,
-          timer,
-          startH, startM, endH, endM,
-          timeSlotCET: `${String(startH).padStart(2,'0')}:${String(startM).padStart(2,'0')} - ${String(endH).padStart(2,'0')}:${String(endM).padStart(2,'0')}`,
-          regionalSlots,
-          date: `${day}. ${month}`,
-          duration: 60,
-          slug,
-          url
-        });
-      }
-      return results;
-    }
-
-    if (eventStore.length === 0) {
-      eventStore = parseRawText(initialRawText);
-      localStorage.setItem("arc_events", JSON.stringify(eventStore));
-    }
-
     function setTab(tabName) {
-      ['combinations', 'frequency', 'matrix', 'schedule'].forEach(t => {
+      ['timeline', 'combinations', 'frequency', 'matrix', 'schedule'].forEach(t => {
         document.getElementById(`view-${t}`).classList.add("hidden");
         const btn = document.getElementById(`tab-${t}`);
         btn.classList.remove("text-amber-400", "border-b-2", "border-amber-400");
@@ -392,9 +337,164 @@ Coming up (next per condition)
       activeBtn.classList.add("text-amber-400", "border-b-2", "border-amber-400");
     }
 
+    // Timeline grid hours slots
+    const TIMELINE_HOURS = [14, 15, 16, 17, 18, 19, 20, 21];
+
+    function renderTimelineGrid() {
+      const container = document.getElementById("timelineGridContainer");
+      if (!container) return;
+
+      const now = new Date();
+      const currentH = now.getHours();
+      const currentM = now.getMinutes();
+      const currentHM = `${String(currentH).padStart(2, '0')}:${String(currentM).padStart(2, '0')}`;
+
+      // Calculate needle position in percentage across the 14:00 - 22:00 range (8 hours total)
+      const startRangeH = 14;
+      const endRangeH = 22;
+      const totalMinutes = (endRangeH - startRangeH) * 60;
+      let needleMinutes = (currentH - startRangeH) * 60 + currentM;
+      if (needleMinutes < 0) needleMinutes = 115; // default around 15:55 if outside range
+      if (needleMinutes > totalMinutes) needleMinutes = totalMinutes - 20;
+      const needlePct = Math.min(Math.max((needleMinutes / totalMinutes) * 100, 2), 98);
+
+      // Collect all unique condition names
+      const allConditions = Array.from(new Set(eventStore.map(e => e.condition))).sort();
+
+      let html = `
+        <div class="relative">
+          
+          <!-- Header Row: Left Event title + Hour Columns -->
+          <div class="flex border-b border-[var(--border)] pb-2 relative">
+            <div class="w-64 flex-shrink-0 text-xs font-bold uppercase tracking-wider text-[var(--muted)] pl-2">
+              Condition & Regions
+            </div>
+            <div class="flex-1 grid grid-cols-8 text-xs font-mono text-[var(--muted)] relative">
+              ${TIMELINE_HOURS.map(h => `
+                <div class="text-left pl-2 font-semibold ${h === currentH ? 'text-white' : ''}">${String(h).padStart(2, '0')}:00</div>
+              `).join('')}
+
+              <!-- Red Current Time Needle Badge -->
+              <div class="absolute top-[-4px] z-30 pointer-events-none -translate-x-1/2" style="left: ${needlePct}%;">
+                <span class="bg-red-600 text-white font-bold text-[11px] px-2 py-0.5 rounded-full shadow-lg font-mono">
+                  ${currentHM}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Red Vertical Needle Line running through all rows -->
+          <div class="absolute top-6 bottom-0 w-[2px] bg-red-600/80 z-20 pointer-events-none -translate-x-1/2 shadow-[0_0_8px_rgba(239,68,68,0.8)]" style="left: calc(16rem + (100% - 16rem) * ${needlePct / 100});"></div>
+
+          <!-- Event Rows -->
+          <div class="divide-y divide-[var(--border)]">
+      `;
+
+      allConditions.forEach(cond => {
+        const isExpanded = expandedEvents.has(cond);
+        const icon = EVENT_ICONS[cond] || "🎯";
+
+        // Main Event Header Row
+        html += `
+          <div class="py-2.5 transition">
+            <div class="flex items-center">
+              
+              <!-- Left Column: Condition Name & Expand Button -->
+              <div class="w-64 flex-shrink-0 flex items-center justify-between pr-4 cursor-pointer select-none group" onclick="toggleEventExpansion('${cond}')">
+                <div class="flex items-center gap-2">
+                  <span class="text-slate-400 group-hover:text-amber-400 transition text-xs font-mono w-3">
+                    ${isExpanded ? '▼' : '▶'}
+                  </span>
+                  <span class="text-base">${icon}</span>
+                  <span class="font-bold text-sm text-white group-hover:text-amber-400 transition truncate max-w-[150px]">${cond}</span>
+                </div>
+                <span class="text-slate-600 group-hover:text-slate-400 text-xs font-mono font-bold tracking-tighter">»</span>
+              </div>
+
+              <!-- Right Grid: Collapsed Summary Row -->
+              <div class="flex-1 grid grid-cols-8 gap-2">
+                ${TIMELINE_HOURS.map(h => {
+                  const ev = eventStore.find(e => e.condition === cond && e.startH === h);
+                  if (!ev) {
+                    return `<div class="h-8"></div>`;
+                  }
+
+                  let statusClasses = "border-slate-800 bg-slate-900/60 text-slate-400"; // past
+                  if (h === currentH) {
+                    statusClasses = "border-emerald-500 bg-emerald-500/15 text-emerald-300 shadow-[0_0_12px_rgba(16,185,129,0.2)]"; // active
+                  } else if (h > currentH) {
+                    statusClasses = "border-sky-500/70 bg-sky-500/10 text-sky-200"; // upcoming
+                  }
+
+                  return `
+                    <div class="h-8 flex items-center justify-between px-2.5 rounded-lg border text-xs font-medium ${statusClasses} truncate transition">
+                      <span class="truncate">${ev.map}</span>
+                      <span class="text-[9px] font-mono opacity-80 ml-1 border border-current px-1 py-0.2 rounded">EU</span>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+
+            </div>
+
+            <!-- Expanded State: 5 Region Sub-Rows (EU, NA, SA, ASIA, OCE) -->
+            ${isExpanded ? `
+              <div class="mt-2 pl-4 space-y-1.5 border-l-2 border-amber-500/30 ml-2">
+                ${Object.keys(REGIONS).map(rk => {
+                  const reg = REGIONS[rk];
+                  return `
+                    <div class="flex items-center">
+                      <!-- Region Title Pill -->
+                      <div class="w-60 flex-shrink-0 flex items-center gap-2">
+                        <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold border ${reg.color}">
+                          ${reg.code}
+                        </span>
+                        <span class="text-xs font-semibold text-slate-300">${reg.name}</span>
+                      </div>
+
+                      <!-- 8 Hours Grid for this Region -->
+                      <div class="flex-1 grid grid-cols-8 gap-2">
+                        ${TIMELINE_HOURS.map(h => {
+                          const ev = eventStore.find(e => e.condition === cond && e.startH === h);
+                          if (!ev) {
+                            return `<div class="h-7"></div>`;
+                          }
+
+                          let pillStyle = "border-slate-800 bg-slate-900 text-slate-400";
+                          if (h === currentH) {
+                            pillStyle = "border-emerald-500 bg-emerald-500/20 text-emerald-300 font-semibold";
+                          } else if (h > currentH) {
+                            pillStyle = "border-sky-500/60 bg-sky-500/10 text-sky-200";
+                          }
+
+                          return `
+                            <div class="h-7 flex items-center justify-between px-2 rounded-lg border text-[11px] ${pillStyle} transition">
+                              <span class="truncate">${ev.map}</span>
+                              <span class="text-[9px] font-mono opacity-70 ml-1 border border-current px-1 rounded">${reg.code}</span>
+                            </div>
+                          `;
+                        }).join('')}
+                      </div>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            ` : ''}
+
+          </div>
+        `;
+      });
+
+      html += `
+          </div>
+        </div>
+      `;
+
+      container.innerHTML = html;
+    }
+
     function renderAll() {
       const query = (document.getElementById("searchInput").value || "").toLowerCase();
-      const currentRegion = document.getElementById("selectedRegion").value;
       const timeframe = document.getElementById("selectedTimeframe").value;
       const now = new Date();
 
@@ -417,63 +517,54 @@ Coming up (next per condition)
         return true;
       });
 
-      document.getElementById("metricTotalEvents").innerText = filtered.length;
-      const uniqueConds = new Set(filtered.map(e => e.condition));
-      const uniqueMaps = new Set(filtered.map(e => e.map));
-      document.getElementById("metricUniqueConditions").innerText = uniqueConds.size;
-      document.getElementById("metricUniqueMaps").innerText = uniqueMaps.size;
+      // Render the Screenshot-Style Timeline
+      renderTimelineGrid();
 
-      // Group Combinations
+      // Render Combinations
       const slotGroups = {};
       filtered.forEach(e => {
-        let displaySlot = e.timeSlotCET;
-        if (currentRegion !== "ALL" && e.regionalSlots[currentRegion]) {
-          displaySlot = `${e.regionalSlots[currentRegion]} (${REGIONS[currentRegion].tag})`;
-        } else if (currentRegion === "ALL") {
-          displaySlot = `${e.timeSlotCET} CET`;
-        }
-        const key = `${e.date} · ${displaySlot}`;
+        const key = `${e.date} · ${e.timeSlotCET} CET`;
         if (!slotGroups[key]) slotGroups[key] = { items: [], origEvent: e };
         slotGroups[key].items.push(e);
       });
 
       const combContainer = document.getElementById("combinationsContainer");
-      combContainer.innerHTML = Object.entries(slotGroups).map(([slotTitle, data]) => {
-        const { items, origEvent } = data;
-        return `
-          <div class="bg-slate-900/60 border border-[var(--border)] rounded-2xl p-4 shadow-sm">
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-[var(--border)] pb-3 mb-3">
-              <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
-                <span class="text-sm font-bold text-white">${slotTitle}</span>
-              </div>
-              
-              <div class="flex flex-wrap items-center gap-1.5 text-[11px] font-mono">
-                <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300">🇪🇺 ${origEvent.regionalSlots.Europe}</span>
-                <span class="px-2 py-0.5 rounded bg-slate-800 text-sky-300">🇺🇸 ${origEvent.regionalSlots.NorthAmerica}</span>
-                <span class="px-2 py-0.5 rounded bg-slate-800 text-emerald-300">🇧🇷 ${origEvent.regionalSlots.SouthAmerica}</span>
-                <span class="px-2 py-0.5 rounded bg-slate-800 text-purple-300">🇦🇺 ${origEvent.regionalSlots.Oceania}</span>
-                <span class="px-2 py-0.5 rounded bg-slate-800 text-rose-300">🇯🇵 ${origEvent.regionalSlots.Asia}</span>
-              </div>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-              ${items.map(it => `
-                <div class="bg-[var(--card)] border border-[var(--border)] hover:border-amber-400/50 rounded-xl p-3 transition shadow-sm">
-                  <div class="text-[10px] font-bold text-amber-400 uppercase tracking-wider">${it.map}</div>
-                  <div class="text-sm font-bold text-white mt-0.5 truncate">${it.condition}</div>
-                  <div class="text-[11px] text-[var(--muted)] mt-2 flex items-center justify-between border-t border-slate-800/80 pt-1.5">
-                    <span class="text-emerald-400 font-semibold">${it.duration} Min</span>
-                    <span class="font-mono text-amber-300 bg-amber-500/10 px-1.5 py-0.5 rounded text-[10px]">${it.timer}</span>
-                  </div>
+      if (combContainer) {
+        combContainer.innerHTML = Object.entries(slotGroups).map(([slotTitle, data]) => {
+          const { items, origEvent } = data;
+          return `
+            <div class="bg-slate-900/60 border border-[var(--border)] rounded-2xl p-4 shadow-sm">
+              <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-[var(--border)] pb-3 mb-3">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                  <span class="text-sm font-bold text-white">${slotTitle}</span>
                 </div>
-              `).join('')}
+                <div class="flex flex-wrap items-center gap-1.5 text-[11px] font-mono">
+                  <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300">🇪🇺 ${origEvent.regionalSlots.Europe}</span>
+                  <span class="px-2 py-0.5 rounded bg-slate-800 text-sky-300">🇺🇸 ${origEvent.regionalSlots.NorthAmerica}</span>
+                  <span class="px-2 py-0.5 rounded bg-slate-800 text-emerald-300">🇧🇷 ${origEvent.regionalSlots.SouthAmerica}</span>
+                  <span class="px-2 py-0.5 rounded bg-slate-800 text-rose-300">🇯🇵 ${origEvent.regionalSlots.Asia}</span>
+                  <span class="px-2 py-0.5 rounded bg-slate-800 text-purple-300">🇦🇺 ${origEvent.regionalSlots.Oceania}</span>
+                </div>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+                ${items.map(it => `
+                  <div class="bg-[var(--card)] border border-[var(--border)] hover:border-amber-400/50 rounded-xl p-3 transition shadow-sm">
+                    <div class="text-[10px] font-bold text-amber-400 uppercase tracking-wider">${it.map}</div>
+                    <div class="text-sm font-bold text-white mt-0.5 truncate">${it.condition}</div>
+                    <div class="text-[11px] text-[var(--muted)] mt-2 flex items-center justify-between border-t border-slate-800/80 pt-1.5">
+                      <span class="text-emerald-400 font-semibold">${it.duration} Min</span>
+                      <span class="font-mono text-amber-300 bg-amber-500/10 px-1.5 py-0.5 rounded text-[10px]">${it.timer}</span>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
             </div>
-          </div>
-        `;
-      }).join('');
+          `;
+        }).join('');
+      }
 
-      // Frequency
+      // Frequency Stats
       const condCounts = {};
       const condHours = {};
       filtered.forEach(e => {
@@ -481,83 +572,100 @@ Coming up (next per condition)
         condHours[e.condition] = (condHours[e.condition] || 0) + (e.duration / 60);
       });
       const maxCount = Math.max(...Object.values(condCounts), 1);
-      document.getElementById("frequencyBars").innerHTML = Object.entries(condCounts)
-        .sort((a,b) => b[1] - a[1])
-        .map(([cond, count]) => {
-          const pct = Math.round((count / maxCount) * 100);
-          return `
-            <div>
-              <div class="flex justify-between text-xs mb-1">
-                <span class="font-semibold text-white">${cond}</span>
-                <span class="text-[var(--muted)]">${count}x (${condHours[cond]}h Uptime)</span>
+      const freqBars = document.getElementById("frequencyBars");
+      if (freqBars) {
+        freqBars.innerHTML = Object.entries(condCounts)
+          .sort((a,b) => b[1] - a[1])
+          .map(([cond, count]) => {
+            const pct = Math.round((count / maxCount) * 100);
+            return `
+              <div>
+                <div class="flex justify-between text-xs mb-1">
+                  <span class="font-semibold text-white">${cond}</span>
+                  <span class="text-[var(--muted)]">${count}x (${condHours[cond]}h Uptime)</span>
+                </div>
+                <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+                  <div class="bg-gradient-to-r from-amber-500 to-amber-300 h-2 rounded-full" style="width: ${pct}%"></div>
+                </div>
               </div>
-              <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
-                <div class="bg-gradient-to-r from-amber-500 to-amber-300 h-2 rounded-full" style="width: ${pct}%"></div>
-              </div>
-            </div>
-          `;
-        }).join('');
+            `;
+          }).join('');
+      }
 
-      // Map
+      // Map Stats
       const mapCounts = {};
       filtered.forEach(e => { mapCounts[e.map] = (mapCounts[e.map] || 0) + 1; });
       const maxMapCount = Math.max(...Object.values(mapCounts), 1);
-      document.getElementById("mapBars").innerHTML = Object.entries(mapCounts)
-        .sort((a,b) => b[1] - a[1])
-        .map(([mp, count]) => {
-          const pct = Math.round((count / maxMapCount) * 100);
+      const mapBars = document.getElementById("mapBars");
+      if (mapBars) {
+        mapBars.innerHTML = Object.entries(mapCounts)
+          .sort((a,b) => b[1] - a[1])
+          .map(([mp, count]) => {
+            const pct = Math.round((count / maxMapCount) * 100);
+            return `
+              <div>
+                <div class="flex justify-between text-xs mb-1">
+                  <span class="font-semibold text-white">${mp}</span>
+                  <span class="text-[var(--muted)]">${count} Events</span>
+                </div>
+                <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+                  <div class="bg-gradient-to-r from-sky-500 to-sky-300 h-2 rounded-full" style="width: ${pct}%"></div>
+                </div>
+              </div>
+            `;
+          }).join('');
+      }
+
+      // Cross Matrix
+      const uniqueMaps = new Set(filtered.map(e => e.map));
+      const uniqueConds = new Set(filtered.map(e => e.condition));
+      const activeMaps = Array.from(uniqueMaps).sort();
+      const mHeader = document.getElementById("matrixHeader");
+      if (mHeader) {
+        mHeader.innerHTML = `<th class="py-2.5 px-3 font-semibold text-white">Condition</th>` + 
+          activeMaps.map(m => `<th class="py-2.5 px-3 font-semibold text-center text-slate-300">${m}</th>`).join('');
+      }
+
+      const mBody = document.getElementById("matrixBody");
+      if (mBody) {
+        mBody.innerHTML = Array.from(uniqueConds).sort().map(cond => {
           return `
-            <div>
-              <div class="flex justify-between text-xs mb-1">
-                <span class="font-semibold text-white">${mp}</span>
-                <span class="text-[var(--muted)]">${count} Events</span>
-              </div>
-              <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
-                <div class="bg-gradient-to-r from-sky-500 to-sky-300 h-2 rounded-full" style="width: ${pct}%"></div>
-              </div>
-            </div>
+            <tr class="hover:bg-slate-800/40 transition">
+              <td class="py-2.5 px-3 font-medium text-white">${cond}</td>
+              ${activeMaps.map(m => {
+                const occurrences = filtered.filter(e => e.condition === cond && e.map === m);
+                if (occurrences.length > 0) {
+                  return `<td class="py-2.5 px-3 text-center"><span class="inline-block bg-emerald-500/10 text-emerald-400 font-bold px-2 py-0.5 rounded border border-emerald-500/20 text-[11px]">${occurrences.length}x</span></td>`;
+                } else {
+                  return `<td class="py-2.5 px-3 text-center text-slate-600">-</td>`;
+                }
+              }).join('')}
+            </tr>
           `;
         }).join('');
-
-      // Matrix
-      const activeMaps = Array.from(uniqueMaps).sort();
-      document.getElementById("matrixHeader").innerHTML = `<th class="py-2.5 px-3 font-semibold text-white">Condition</th>` + 
-        activeMaps.map(m => `<th class="py-2.5 px-3 font-semibold text-center text-slate-300">${m}</th>`).join('');
-
-      document.getElementById("matrixBody").innerHTML = Array.from(uniqueConds).sort().map(cond => {
-        return `
-          <tr class="hover:bg-slate-800/40 transition">
-            <td class="py-2.5 px-3 font-medium text-white">${cond}</td>
-            ${activeMaps.map(m => {
-              const occurrences = filtered.filter(e => e.condition === cond && e.map === m);
-              if (occurrences.length > 0) {
-                return `<td class="py-2.5 px-3 text-center"><span class="inline-block bg-emerald-500/10 text-emerald-400 font-bold px-2 py-0.5 rounded border border-emerald-500/20 text-[11px]">${occurrences.length}x</span></td>`;
-              } else {
-                return `<td class="py-2.5 px-3 text-center text-slate-600">-</td>`;
-              }
-            }).join('')}
-          </tr>
-        `;
-      }).join('');
+      }
 
       // Schedule Table
-      document.getElementById("scheduleTableBody").innerHTML = filtered.map(e => `
-        <tr class="hover:bg-slate-800/40 transition">
-          <td class="py-2.5 px-3">
-            <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${e.timeSlotCET.startsWith('14:00') ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-slate-800 text-slate-300'}">
-              ${e.timeSlotCET.startsWith('14:00') ? 'ACTIVE' : 'UPCOMING'}
-            </span>
-          </td>
-          <td class="py-2.5 px-3 font-bold text-white">${e.condition}</td>
-          <td class="py-2.5 px-3 text-amber-300 font-medium">${e.map}</td>
-          <td class="py-2.5 px-3 font-mono text-slate-300">${e.regionalSlots.Europe}</td>
-          <td class="py-2.5 px-3 font-mono text-sky-300">${e.regionalSlots.NorthAmerica}</td>
-          <td class="py-2.5 px-3 font-mono text-emerald-300">${e.regionalSlots.SouthAmerica}</td>
-          <td class="py-2.5 px-3 font-mono text-purple-300">${e.regionalSlots.Oceania}</td>
-          <td class="py-2.5 px-3 font-mono text-rose-300">${e.regionalSlots.Asia}</td>
-          <td class="py-2.5 px-3 font-mono text-amber-400 font-bold">${e.timer}</td>
-        </tr>
-      `).join('');
+      const schedBody = document.getElementById("scheduleTableBody");
+      if (schedBody) {
+        schedBody.innerHTML = filtered.map(e => `
+          <tr class="hover:bg-slate-800/40 transition">
+            <td class="py-2.5 px-3">
+              <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${e.timeSlotCET.startsWith('15:00') ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-slate-800 text-slate-300'}">
+                ${e.timeSlotCET.startsWith('15:00') ? 'ACTIVE' : 'UPCOMING'}
+              </span>
+            </td>
+            <td class="py-2.5 px-3 font-bold text-white">${e.condition}</td>
+            <td class="py-2.5 px-3 text-amber-300 font-medium">${e.map}</td>
+            <td class="py-2.5 px-3 font-mono text-slate-300">${e.regionalSlots.Europe}</td>
+            <td class="py-2.5 px-3 font-mono text-sky-300">${e.regionalSlots.NorthAmerica}</td>
+            <td class="py-2.5 px-3 font-mono text-emerald-300">${e.regionalSlots.SouthAmerica}</td>
+            <td class="py-2.5 px-3 font-mono text-purple-300">${e.regionalSlots.Oceania}</td>
+            <td class="py-2.5 px-3 font-mono text-rose-300">${e.regionalSlots.Asia}</td>
+            <td class="py-2.5 px-3 font-mono text-amber-400 font-bold">${e.timer}</td>
+          </tr>
+        `).join('');
+      }
     }
 
     async function loadRemoteHistory() {
