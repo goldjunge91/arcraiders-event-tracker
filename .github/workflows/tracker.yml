@@ -23,7 +23,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pymongo dnspython
+          pip install pymongo dnspython certifi
 
       - name: Run Tracker & Sync to MongoDB
         env:

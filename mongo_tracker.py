@@ -14,6 +14,7 @@ import urllib.error
 # Optional pymongo import
 try:
     from pymongo import MongoClient, UpdateOne
+    import certifi
     HAS_PYMONGO = True
 except ImportError:
     HAS_PYMONGO = False
@@ -128,9 +129,16 @@ def parse_events_from_text(text: str, ref_dt: datetime = None):
 
 def sync_to_mongodb(events, mongo_uri: str, db_name: str = "arcraiders"):
     if not HAS_PYMONGO:
-        raise ImportError("pymongo ist nicht installiert. Bitte 'pip install pymongo dnspython' ausführen.")
+        raise ImportError("pymongo ist nicht installiert. Bitte 'pip install pymongo dnspython certifi' ausführen.")
         
-    client = MongoClient(mongo_uri)
+    client_kwargs = {}
+    try:
+        import certifi
+        client_kwargs["tlsCAFile"] = certifi.where()
+    except Exception:
+        pass
+
+    client = MongoClient(mongo_uri, **client_kwargs)
     db = client[db_name]
     collection = db["map_conditions"]
     
@@ -192,15 +200,16 @@ if __name__ == "__main__":
     """
     
     # Entweder von URL laden oder Fallback auf Text
-    raw_text = sample_text
+    events = []
     try:
         live_html = fetch_page_html()
-        if "map-conditions" in live_html:
-            raw_text = live_html
+        events = parse_events_from_text(live_html)
     except Exception as e:
-        print(f"Hinweis: Live-Abruf fehlgeschlagen ({e}), verwende geparste Quelldaten.")
+        print(f"Hinweis: Live-Abruf nicht möglich ({e}).")
 
-    events = parse_events_from_text(raw_text)
+    if not events:
+        print("Verwende Basis-Daten (Fallback)...")
+        events = parse_events_from_text(sample_text)
     print(f"Gefundene Events: {len(events)}")
     for ev in events:
         print(f" - {ev['condition']} ({ev['map']}): {ev['startTime'].strftime('%H:%M')} bis {ev['endTime'].strftime('%H:%M')} ({ev['durationMinutes']} Min)")
