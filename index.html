@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="de" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARC Raiders · Condition & Rotation Tracker</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    :root {
+      --background: #0f1117;
+      --card: #181b24;
+      --border: #282d3c;
+      --foreground: #f1f5f9;
+      --muted: #94a3b8;
+      --accent: #f59e0b;
+      --accent-glow: rgba(245, 158, 11, 0.15);
+      --primary: #38bdf8;
+      --success: #10b981;
+      --danger: #ef4444;
+      --purple: #a855f7;
+    }
+    body {
+      background-color: var(--background);
+      color: var(--foreground);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+  </style>
+</head>
+<body class="p-4 md:p-8 min-h-screen">
+  <div class="max-w-7xl mx-auto space-y-6">
+
+    <!-- Header -->
+    <header class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[var(--border)] pb-6">
+      <div>
+        <div class="flex items-center gap-3">
+          <span class="px-2.5 py-1 text-xs font-bold uppercase tracking-wider rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">
+            ARC RAIDERS
+          </span>
+          <span class="text-xs text-[var(--muted)] flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            Tracker Live
+          </span>
+        </div>
+        <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight mt-2 text-white">
+          Map Conditions & Rotation Analyzer
+        </h1>
+        <p class="text-sm text-[var(--muted)] mt-1">
+          Häufigkeiten, Zeitfenster und gleichzeitige Event-Kombinationen über alle Sektoren.
+        </p>
+      </div>
+
+      <!-- Quick Actions / Search -->
+      <div class="flex items-center gap-3">
+        <input 
+          id="searchInput" 
+          type="text" 
+          placeholder="Filter nach Event oder Map..." 
+          class="bg-[var(--card)] border border-[var(--border)] rounded-lg px-3.5 py-2 text-sm text-[var(--foreground)] placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400 w-64 transition"
+          oninput="renderAll()"
+        />
+        <button 
+          onclick="toggleImportModal()" 
+          class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold px-4 py-2 rounded-lg text-sm flex items-center gap-2 transition shadow-lg shadow-amber-500/10">
+          <span>+</span> Daten importieren
+        </button>
+      </div>
+    </header>
+
+    <!-- Top Key Metrics Cards -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4">
+        <p class="text-xs uppercase font-semibold text-[var(--muted)]">Getrackte Events</p>
+        <p id="metricTotalEvents" class="text-2xl font-black mt-1 text-white">0</p>
+        <p class="text-xs text-[var(--muted)] mt-1">aus allen Rotationsslots</p>
+      </div>
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4">
+        <p class="text-xs uppercase font-semibold text-[var(--muted)]">Einzigartige Conditions</p>
+        <p id="metricUniqueConditions" class="text-2xl font-black mt-1 text-amber-400">0</p>
+        <p class="text-xs text-[var(--muted)] mt-1">z. B. Night Raid, Frigate</p>
+      </div>
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4">
+        <p class="text-xs uppercase font-semibold text-[var(--muted)]">Aktive Sektoren</p>
+        <p id="metricUniqueMaps" class="text-2xl font-black mt-1 text-sky-400">0</p>
+        <p class="text-xs text-[var(--muted)] mt-1">Buried City, Spaceport...</p>
+      </div>
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4">
+        <p class="text-xs uppercase font-semibold text-[var(--muted)]">Ø Event-Dauer</p>
+        <p id="metricAvgDuration" class="text-2xl font-black mt-1 text-emerald-400">60 Min</p>
+        <p class="text-xs text-[var(--muted)] mt-1">feste 1h-Zeitfenster</p>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="flex border-b border-[var(--border)] gap-6 text-sm font-medium">
+      <button onclick="setTab('combinations')" id="tab-combinations" class="pb-3 text-amber-400 border-b-2 border-amber-400 transition">
+        👥 Event-Kombinationen (Slots)
+      </button>
+      <button onclick="setTab('frequency')" id="tab-frequency" class="pb-3 text-[var(--muted)] hover:text-white transition">
+        📊 Häufigkeit & Dauer
+      </button>
+      <button onclick="setTab('matrix')" id="tab-matrix" class="pb-3 text-[var(--muted)] hover:text-white transition">
+        🗺️ Map & Condition Matrix
+      </button>
+      <button onclick="setTab('schedule')" id="tab-schedule" class="pb-3 text-[var(--muted)] hover:text-white transition">
+        ⏰ Live & Zeitplan
+      </button>
+    </div>
+
+    <!-- Tab 1: Kombinationen pro Zeitfenster -->
+    <div id="view-combinations" class="space-y-4">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 class="text-lg font-bold text-white">Gleichzeitige Event-Kombinationen</h2>
+            <p class="text-xs text-[var(--muted)]">Welche Conditions laufen zeitgleich auf welchen Karten zusammen in einem 1-Stunden-Fenster?</p>
+          </div>
+          <span class="text-xs bg-slate-800 text-slate-300 px-2.5 py-1 rounded border border-slate-700">5 Maps parallel</span>
+        </div>
+        <div id="combinationsContainer" class="space-y-4">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 2: Häufigkeiten & Statistiken -->
+    <div id="view-frequency" class="hidden space-y-4">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <!-- Event-Häufigkeit -->
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5">
+          <h2 class="text-lg font-bold text-white mb-1">Top Events nach Häufigkeit</h2>
+          <p class="text-xs text-[var(--muted)] mb-4">Wie oft und wie lange ist jede Condition aktiv?</p>
+          <div id="frequencyBars" class="space-y-3">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Map-Verteilung -->
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5">
+          <h2 class="text-lg font-bold text-white mb-1">Aktivität nach Sektor (Map)</h2>
+          <p class="text-xs text-[var(--muted)] mb-4">Welche Maps erhalten die meisten Modifier?</p>
+          <div id="mapBars" class="space-y-3">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 3: Matrix Map x Condition -->
+    <div id="view-matrix" class="hidden">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5 overflow-x-auto">
+        <h2 class="text-lg font-bold text-white mb-1">Map & Condition Kreuz-Matrix</h2>
+        <p class="text-xs text-[var(--muted)] mb-4">Auf welchen Karten sind welche Modifikatoren schon aufgetreten?</p>
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr id="matrixHeader" class="border-b border-[var(--border)] text-[var(--muted)]">
+              <th class="py-2.5 px-3 font-semibold">Condition</th>
+              <!-- Maps header populated dynamically -->
+            </tr>
+          </thead>
+          <tbody id="matrixBody" class="divide-y divide-[var(--border)]">
+            <!-- Populated dynamically -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab 4: Live & Zeitplan -->
+    <div id="view-schedule" class="hidden space-y-4">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5">
+        <h2 class="text-lg font-bold text-white mb-3">Chronologische Event-Liste</h2>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead>
+              <tr class="border-b border-[var(--border)] text-[var(--muted)]">
+                <th class="py-2 px-3">Status</th>
+                <th class="py-2 px-3">Condition</th>
+                <th class="py-2 px-3">Karte / Sektor</th>
+                <th class="py-2 px-3">Zeitfenster</th>
+                <th class="py-2 px-3">Dauer</th>
+                <th class="py-2 px-3">Timer</th>
+              </tr>
+            </thead>
+            <tbody id="scheduleTableBody" class="divide-y divide-[var(--border)]">
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Import Modal -->
+  <div id="importModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 max-w-lg w-full space-y-4 shadow-2xl">
+      <div class="flex items-center justify-between">
+        <h3 class="text-lg font-bold text-white">Neue Timer-Daten importieren</h3>
+        <button onclick="toggleImportModal()" class="text-[var(--muted)] hover:text-white">&times;</button>
+      </div>
+      <p class="text-xs text-[var(--muted)]">
+        Kopiere den Text von <code class="text-amber-400">arcraiders.com/de/map-conditions</code> und füge ihn hier ein:
+      </p>
+      <textarea 
+        id="rawPasteInput" 
+        rows="8" 
+        class="w-full bg-slate-900 border border-[var(--border)] rounded-xl p-3 text-xs text-[var(--foreground)] font-mono focus:outline-none focus:border-amber-400"
+        placeholder="Active now&#10;[3:07ARC FrigateBuried City11. Nov. · 14:00 - 15:00]..."></textarea>
+      <div class="flex justify-end gap-2">
+        <button onclick="toggleImportModal()" class="px-4 py-2 text-xs font-semibold text-[var(--muted)] hover:text-white">Abbrechen</button>
+        <button onclick="handleManualImport()" class="px-4 py-2 text-xs font-semibold bg-amber-500 text-slate-950 rounded-lg hover:bg-amber-400 transition">Importieren & Speichern</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initiale Seed-Daten aus arcraiders.com
+    const initialRawText = `
+Active now
+[3:07ARC FrigateBuried City11. Nov. · 14:00 - 15:00](https://arcraiders.com/de/map-conditions/arc-frigate)[3:07Lush BloomsDam Battlegrounds11. Nov. · 14:00 - 15:00](https://arcraiders.com/de/map-conditions/lush-blooms)[3:07Night RaidStella Montis11. Nov. · 14:00 - 15:00](https://arcraiders.com/de/map-conditions/night-raid)[3:07Prospecting ProbesSpaceport11. Nov. · 14:00 - 15:00](https://arcraiders.com/de/map-conditions/prospecting-probes)[3:07RedirectionPendola Pass11. Nov. · 14:00 - 15:00](https://arcraiders.com/de/map-conditions/redirection)
+Coming up (next per condition)
+[3:07ARC FrigateThe Blue Gate11. Nov. · 15:00 - 16:00](https://arcraiders.com/de/map-conditions/arc-frigate)[3:07BeachcombingRiven Tides11. Nov. · 15:00 - 16:00](https://arcraiders.com/de/map-conditions/beachcombing)[3:07Bird CityBuried City11. Nov. · 15:00 - 16:00](https://arcraiders.com/de/map-conditions/bird-city)[3:07Hidden BunkerSpaceport11. Nov. · 15:00 - 16:00](https://arcraiders.com/de/map-conditions/hidden-bunker)[3:07Night RaidPendola Pass11. Nov. · 15:00 - 16:00](https://arcraiders.com/de/map-conditions/night-raid)[1:03:07Lush BloomsBuried City11. Nov. · 16:00 - 17:00](https://arcraiders.com/de/map-conditions/lush-blooms)[1:03:07Prospecting ProbesRiven Tides11. Nov. · 16:00 - 17:00](https://arcraiders.com/de/map-conditions/prospecting-probes)[2:03:07Close ScrutinyBuried City11. Nov. · 17:00 - 18:00](https://arcraiders.com/de/map-conditions/close-scrutiny)[2:03:07HarvesterThe Blue Gate11. Nov. · 17:00 - 18:00](https://arcraiders.com/de/map-conditions/harvester)[2:03:07MatriarchSpaceport11. Nov. · 17:00 - 18:00](https://arcraiders.com/de/map-conditions/matriarch)[5:03:07RedirectionPendola Pass11. Nov. · 20:00 - 21:00](https://arcraiders.com/de/map-conditions/redirection)[6:03:07HurricaneDam Battlegrounds11. Nov. · 21:00 - 22:00](https://arcraiders.com/de/map-conditions/hurricane)
+`;
+
+    const KNOWN_MAPS = [
+      "Buried City", "Dam Battlegrounds", "Stella Montis", 
+      "Spaceport", "Pendola Pass", "The Blue Gate", "Riven Tides"
+    ];
+
+    let eventStore = JSON.parse(localStorage.getItem("arc_events") || "null") || [];
+
+    function parseRawText(text) {
+      const linkRegex = /\[([0-9:]+)(.+?)\]\((https?:\/\/[^\)]+)\)/g;
+      const timeRegex = /(\d{1,2})\.\s*([A-Za-zäöüÄÖÜ]+\.?)\s*[·•-]\s*(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})/;
+      
+      const results = [];
+      let match;
+      while ((match = linkRegex.exec(text)) !== null) {
+        const timer = match[1];
+        const content = match[2];
+        const url = match[3];
+        const slug = url.split('/').filter(Boolean).pop();
+
+        const tm = timeRegex.exec(content);
+        if (!tm) continue;
+
+        const day = tm[1];
+        const month = tm[2];
+        const start = tm[3];
+        const end = tm[4];
+
+        const prefix = content.substring(0, tm.index).trim();
+        let matchedMap = "Unknown";
+        let conditionName = prefix;
+
+        for (const m of [...KNOWN_MAPS].sort((a,b) => b.length - a.length)) {
+          if (prefix.endsWith(m)) {
+            matchedMap = m;
+            conditionName = prefix.substring(0, prefix.length - m.length).trim();
+            break;
+          }
+        }
+
+        results.push({
+          id: `${conditionName}_${matchedMap}_${start}`,
+          condition: conditionName,
+          map: matchedMap,
+          timer,
+          timeSlot: `${start} - ${end}`,
+          date: `${day}. ${month}`,
+          duration: 60,
+          slug,
+          url
+        });
+      }
+      return results;
+    }
+
+    if (eventStore.length === 0) {
+      eventStore = parseRawText(initialRawText);
+      localStorage.setItem("arc_events", JSON.stringify(eventStore));
+    }
+
+    function toggleImportModal() {
+      const modal = document.getElementById("importModal");
+      modal.classList.toggle("hidden");
+      modal.classList.toggle("flex");
+    }
+
+    function handleManualImport() {
+      const val = document.getElementById("rawPasteInput").value;
+      if (!val) return;
+      const newItems = parseRawText(val);
+      const mapById = new Map();
+      eventStore.forEach(e => mapById.set(e.id, e));
+      newItems.forEach(e => mapById.set(e.id, e));
+      eventStore = Array.from(mapById.values());
+      localStorage.setItem("arc_events", JSON.stringify(eventStore));
+      toggleImportModal();
+      document.getElementById("rawPasteInput").value = "";
+      renderAll();
+    }
+
+    function setTab(tabName) {
+      ['combinations', 'frequency', 'matrix', 'schedule'].forEach(t => {
+        document.getElementById(`view-${t}`).classList.add("hidden");
+        const btn = document.getElementById(`tab-${t}`);
+        btn.classList.remove("text-amber-400", "border-b-2", "border-amber-400");
+        btn.classList.add("text-[var(--muted)]");
+      });
+      document.getElementById(`view-${tabName}`).classList.remove("hidden");
+      const activeBtn = document.getElementById(`tab-${tabName}`);
+      activeBtn.classList.remove("text-[var(--muted)]");
+      activeBtn.classList.add("text-amber-400", "border-b-2", "border-amber-400");
+    }
+
+    function renderAll() {
+      const query = (document.getElementById("searchInput").value || "").toLowerCase();
+      const filtered = eventStore.filter(e => 
+        e.condition.toLowerCase().includes(query) || 
+        e.map.toLowerCase().includes(query) ||
+        e.timeSlot.includes(query)
+      );
+
+      // Top metrics
+      document.getElementById("metricTotalEvents").innerText = filtered.length;
+      const uniqueConds = new Set(filtered.map(e => e.condition));
+      const uniqueMaps = new Set(filtered.map(e => e.map));
+      document.getElementById("metricUniqueConditions").innerText = uniqueConds.size;
+      document.getElementById("metricUniqueMaps").innerText = uniqueMaps.size;
+
+      // Group by Time Slot (Combinations!)
+      const slotGroups = {};
+      filtered.forEach(e => {
+        const key = `${e.date} · ${e.timeSlot}`;
+        if (!slotGroups[key]) slotGroups[key] = [];
+        slotGroups[key].push(e);
+      });
+
+      const combContainer = document.getElementById("combinationsContainer");
+      combContainer.innerHTML = Object.entries(slotGroups).map(([slot, items]) => {
+        return `
+          <div class="bg-slate-900/60 border border-[var(--border)] rounded-xl p-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[var(--border)] pb-3 mb-3">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                <span class="text-sm font-bold text-white">${slot}</span>
+              </div>
+              <span class="text-xs bg-amber-500/10 text-amber-300 font-medium px-2 py-0.5 rounded border border-amber-500/20">
+                ${items.length} Bedingungen aktiv
+              </span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+              ${items.map(it => `
+                <div class="bg-[var(--card)] border border-[var(--border)] hover:border-amber-400/40 rounded-lg p-3 transition">
+                  <div class="text-[11px] font-semibold text-amber-400 uppercase tracking-wider">${it.map}</div>
+                  <div class="text-sm font-bold text-white mt-1">${it.condition}</div>
+                  <div class="text-[11px] text-[var(--muted)] mt-1 flex items-center justify-between">
+                    <span>${it.duration} Min</span>
+                    <span class="font-mono text-slate-300">${it.timer}</span>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Frequency counts
+      const condCounts = {};
+      const condHours = {};
+      filtered.forEach(e => {
+        condCounts[e.condition] = (condCounts[e.condition] || 0) + 1;
+        condHours[e.condition] = (condHours[e.condition] || 0) + (e.duration / 60);
+      });
+
+      const maxCount = Math.max(...Object.values(condCounts), 1);
+      const freqBars = document.getElementById("frequencyBars");
+      freqBars.innerHTML = Object.entries(condCounts)
+        .sort((a,b) => b[1] - a[1])
+        .map(([cond, count]) => {
+          const pct = Math.round((count / maxCount) * 100);
+          return `
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="font-semibold text-white">${cond}</span>
+                <span class="text-[var(--muted)]">${count}x (${condHours[cond]} Std. Uptime)</span>
+              </div>
+              <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+                <div class="bg-gradient-to-r from-amber-500 to-amber-300 h-2 rounded-full" style="width: ${pct}%"></div>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+      // Map counts
+      const mapCounts = {};
+      filtered.forEach(e => {
+        mapCounts[e.map] = (mapCounts[e.map] || 0) + 1;
+      });
+      const maxMapCount = Math.max(...Object.values(mapCounts), 1);
+      const mapBars = document.getElementById("mapBars");
+      mapBars.innerHTML = Object.entries(mapCounts)
+        .sort((a,b) => b[1] - a[1])
+        .map(([mp, count]) => {
+          const pct = Math.round((count / maxMapCount) * 100);
+          return `
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="font-semibold text-white">${mp}</span>
+                <span class="text-[var(--muted)]">${count} Events</span>
+              </div>
+              <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+                <div class="bg-gradient-to-r from-sky-500 to-sky-300 h-2 rounded-full" style="width: ${pct}%"></div>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+      // Cross Matrix
+      const matrixHeader = document.getElementById("matrixHeader");
+      const activeMaps = Array.from(uniqueMaps).sort();
+      matrixHeader.innerHTML = `<th class="py-2.5 px-3 font-semibold text-white">Condition</th>` + 
+        activeMaps.map(m => `<th class="py-2.5 px-3 font-semibold text-center text-slate-300">${m}</th>`).join('');
+
+      const matrixBody = document.getElementById("matrixBody");
+      matrixBody.innerHTML = Array.from(uniqueConds).sort().map(cond => {
+        return `
+          <tr class="hover:bg-slate-800/40 transition">
+            <td class="py-2.5 px-3 font-medium text-white">${cond}</td>
+            ${activeMaps.map(m => {
+              const occurrences = filtered.filter(e => e.condition === cond && e.map === m);
+              if (occurrences.length > 0) {
+                return `<td class="py-2.5 px-3 text-center"><span class="inline-block bg-emerald-500/10 text-emerald-400 font-bold px-2 py-0.5 rounded border border-emerald-500/20 text-[11px]">${occurrences.length}x</span></td>`;
+              } else {
+                return `<td class="py-2.5 px-3 text-center text-slate-600">-</td>`;
+              }
+            }).join('')}
+          </tr>
+        `;
+      }).join('');
+
+      // Schedule table
+      const schedBody = document.getElementById("scheduleTableBody");
+      schedBody.innerHTML = filtered.map(e => `
+        <tr class="hover:bg-slate-800/40 transition">
+          <td class="py-2 px-3">
+            <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${e.timeSlot.startsWith('14:00') ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-slate-800 text-slate-300'}">
+              ${e.timeSlot.startsWith('14:00') ? 'ACTIVE' : 'UPCOMING'}
+            </span>
+          </td>
+          <td class="py-2 px-3 font-semibold text-white">${e.condition}</td>
+          <td class="py-2 px-3 text-amber-300">${e.map}</td>
+          <td class="py-2 px-3 font-mono text-[var(--muted)]">${e.date} · ${e.timeSlot}</td>
+          <td class="py-2 px-3 text-[var(--muted)]">${e.duration} Min</td>
+          <td class="py-2 px-3 font-mono text-slate-300">${e.timer}</td>
+        </tr>
+      `).join('');
+    }
+
+    renderAll();
+  </script>
+</body>
+</html>
