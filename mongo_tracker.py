@@ -167,7 +167,21 @@ def sync_to_mongodb(events, mongo_uri: str, db_name: str = "arcraiders"):
     else:
         print("Keine Events zum Synchronisieren gefunden.")
 
+def load_env_file():
+    env_path = os.path.join(os.path.dirname(__file__), ".env")
+    if os.path.exists(env_path):
+        with open(env_path, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith("#") and "=" in line:
+                    key, val = line.split("=", 1)
+                    key = key.strip()
+                    val = val.strip().strip('"').strip("'")
+                    if key and key not in os.environ:
+                        os.environ[key] = val
+
 if __name__ == "__main__":
+    load_env_file()
     mongo_uri = os.environ.get("MONGODB_URI")
     # Beispieldaten für Tests oder Direktimport
     sample_text = """
