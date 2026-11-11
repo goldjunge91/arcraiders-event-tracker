@@ -26,89 +26,89 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
     .timeline-scroll::-webkit-scrollbar {
-      height: 8px;
-      width: 8px;
+      height: 9px;
+      width: 9px;
     }
     .timeline-scroll::-webkit-scrollbar-track {
-      background: #0c0e15;
+      background: #0b0d14;
     }
     .timeline-scroll::-webkit-scrollbar-thumb {
-      background: #232838;
+      background: #252b3d;
       border-radius: 4px;
     }
     .timeline-scroll::-webkit-scrollbar-thumb:hover {
-      background: #38425d;
+      background: #3c4664;
     }
     /* Sticky column elevation shadow */
     .sticky-col {
       position: sticky;
       left: 0;
       background-color: #11131c;
-      box-shadow: 4px 0 12px rgba(0, 0, 0, 0.6);
+      box-shadow: 6px 0 16px rgba(0, 0, 0, 0.7);
     }
   </style>
 </head>
 <body class="p-3 md:p-6 min-h-screen">
-  <div class="max-w-[1520px] mx-auto space-y-6">
+  <div class="max-w-[1600px] mx-auto space-y-6">
 
     <!-- Top Regional World Clocks -->
     <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 shadow-xl">
       <div class="flex items-center justify-between mb-3 border-b border-[var(--border)] pb-2.5">
         <div class="flex items-center gap-2">
           <span class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
             Global Server & Rotation Clocks
           </span>
         </div>
         <div class="text-[11px] text-[var(--muted)] flex items-center gap-2">
-          <span class="bg-slate-800 text-slate-300 px-2 py-0.5 rounded font-mono text-[10px]">Auto-Synced every 15m</span>
+          <span class="bg-slate-800 text-slate-300 px-2.5 py-0.5 rounded font-mono text-[10px]">Auto-Synced every 15m</span>
           <span class="text-emerald-400 font-semibold flex items-center gap-1">● Live</span>
         </div>
       </div>
 
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-        <div class="bg-slate-900/80 border border-amber-500/20 rounded-xl p-3 flex flex-col justify-between">
+        <div class="bg-slate-900/80 border border-amber-500/20 rounded-xl p-3.5 flex flex-col justify-between">
           <div class="flex items-center justify-between text-xs">
-            <span class="font-bold text-white flex items-center gap-1.5">🇪🇺 Europe</span>
-            <span class="text-[10px] text-amber-400 font-mono font-bold px-1 rounded bg-amber-500/10 border border-amber-500/30">CET (UTC+1)</span>
+            <span class="font-bold text-white flex items-center gap-1.5 text-sm">🇪🇺 Europe</span>
+            <span class="text-[10px] text-amber-400 font-mono font-bold px-1.5 py-0.5 rounded bg-amber-500/10 border border-amber-500/30">CET (UTC+1)</span>
           </div>
-          <div id="clock-europe" class="text-xl font-black font-mono mt-1 text-white">--:--:--</div>
+          <div id="clock-europe" class="text-2xl font-black font-mono mt-1 text-white">--:--:--</div>
           <div class="text-[10px] text-[var(--muted)]">Primary Reference</div>
         </div>
 
-        <div class="bg-slate-900/80 border border-sky-500/20 rounded-xl p-3 flex flex-col justify-between">
+        <div class="bg-slate-900/80 border border-sky-500/20 rounded-xl p-3.5 flex flex-col justify-between">
           <div class="flex items-center justify-between text-xs">
-            <span class="font-bold text-white flex items-center gap-1.5">🇺🇸 North America</span>
-            <span class="text-[10px] text-sky-400 font-mono font-bold px-1 rounded bg-sky-500/10 border border-sky-500/30">ET (UTC-5)</span>
+            <span class="font-bold text-white flex items-center gap-1.5 text-sm">🇺🇸 North America</span>
+            <span class="text-[10px] text-sky-400 font-mono font-bold px-1.5 py-0.5 rounded bg-sky-500/10 border border-sky-500/30">ET (UTC-5)</span>
           </div>
-          <div id="clock-na" class="text-xl font-black font-mono mt-1 text-white">--:--:--</div>
+          <div id="clock-na" class="text-2xl font-black font-mono mt-1 text-white">--:--:--</div>
           <div class="text-[10px] text-[var(--muted)]">US East & West</div>
         </div>
 
-        <div class="bg-slate-900/80 border border-emerald-500/20 rounded-xl p-3 flex flex-col justify-between">
+        <div class="bg-slate-900/80 border border-emerald-500/20 rounded-xl p-3.5 flex flex-col justify-between">
           <div class="flex items-center justify-between text-xs">
-            <span class="font-bold text-white flex items-center gap-1.5">🇧🇷 South America</span>
-            <span class="text-[10px] text-emerald-400 font-mono font-bold px-1 rounded bg-emerald-500/10 border border-emerald-500/30">BRT (UTC-3)</span>
+            <span class="font-bold text-white flex items-center gap-1.5 text-sm">🇧🇷 South America</span>
+            <span class="text-[10px] text-emerald-400 font-mono font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/30">BRT (UTC-3)</span>
           </div>
-          <div id="clock-sa" class="text-xl font-black font-mono mt-1 text-white">--:--:--</div>
+          <div id="clock-sa" class="text-2xl font-black font-mono mt-1 text-white">--:--:--</div>
           <div class="text-[10px] text-[var(--muted)]">Brazil & LatAm</div>
         </div>
 
-        <div class="bg-slate-900/80 border border-purple-500/20 rounded-xl p-3 flex flex-col justify-between">
+        <div class="bg-slate-900/80 border border-purple-500/20 rounded-xl p-3.5 flex flex-col justify-between">
           <div class="flex items-center justify-between text-xs">
-            <span class="font-bold text-white flex items-center gap-1.5">🇦🇺 Oceania</span>
-            <span class="text-[10px] text-purple-400 font-mono font-bold px-1 rounded bg-purple-500/10 border border-purple-500/30">AEDT (UTC+11)</span>
+            <span class="font-bold text-white flex items-center gap-1.5 text-sm">🇦🇺 Oceania</span>
+            <span class="text-[10px] text-purple-400 font-mono font-bold px-1.5 py-0.5 rounded bg-purple-500/10 border border-purple-500/30">AEDT (UTC+11)</span>
           </div>
-          <div id="clock-oceania" class="text-xl font-black font-mono mt-1 text-white">--:--:--</div>
+          <div id="clock-oceania" class="text-2xl font-black font-mono mt-1 text-white">--:--:--</div>
           <div class="text-[10px] text-[var(--muted)]">Sydney / Melbourne</div>
         </div>
 
-        <div class="bg-slate-900/80 border border-rose-500/20 rounded-xl p-3 flex flex-col justify-between">
+        <div class="bg-slate-900/80 border border-rose-500/20 rounded-xl p-3.5 flex flex-col justify-between">
           <div class="flex items-center justify-between text-xs">
-            <span class="font-bold text-white flex items-center gap-1.5">🇯🇵 Asia</span>
-            <span class="text-[10px] text-rose-400 font-mono font-bold px-1 rounded bg-rose-500/10 border border-rose-500/30">JST (UTC+9)</span>
+            <span class="font-bold text-white flex items-center gap-1.5 text-sm">🇯🇵 Asia</span>
+            <span class="text-[10px] text-rose-400 font-mono font-bold px-1.5 py-0.5 rounded bg-rose-500/10 border border-rose-500/30">JST (UTC+9)</span>
           </div>
-          <div id="clock-asia" class="text-xl font-black font-mono mt-1 text-white">--:--:--</div>
+          <div id="clock-asia" class="text-2xl font-black font-mono mt-1 text-white">--:--:--</div>
           <div class="text-[10px] text-[var(--muted)]">Tokyo & East Asia</div>
         </div>
       </div>
@@ -146,7 +146,7 @@
           id="searchInput" 
           type="text" 
           placeholder="Search condition or map..." 
-          class="bg-[var(--card)] border border-[var(--border)] rounded-xl px-3.5 py-2 text-xs text-white placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400 w-52 transition"
+          class="bg-[var(--card)] border border-[var(--border)] rounded-xl px-3.5 py-2 text-xs text-white placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400 w-56 transition"
           oninput="renderAll()"
         />
       </div>
@@ -176,47 +176,47 @@
       <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 md:p-6 shadow-2xl relative overflow-hidden">
         
         <!-- Timeline Navigation Toolbar -->
-        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pb-3 mb-3 border-b border-[var(--border)] text-xs text-[var(--muted)]">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pb-4 mb-3 border-b border-[var(--border)] text-xs text-[var(--muted)]">
           <div class="flex flex-wrap items-center gap-2">
             <span class="font-bold text-white flex items-center gap-1.5">
               <span>Time Axis Controls:</span>
             </span>
             <div class="flex items-center gap-1 bg-slate-900 border border-slate-700/80 rounded-xl p-1">
-              <button onclick="shiftTimeline(-6)" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold transition" title="Move 6 hours back">◀ -6h</button>
-              <button onclick="shiftTimeline(-1)" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold transition" title="Move 1 hour back">◀ -1h</button>
-              <button onclick="resetTimelineToNow()" id="btn-live-now" class="px-3 py-1 rounded bg-red-600/20 hover:bg-red-600/30 text-red-300 font-bold border border-red-500/40 transition flex items-center gap-1.5 mx-0.5">
+              <button onclick="shiftTimeline(-6)" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold transition" title="Move 6 hours back">◀ -6h</button>
+              <button onclick="shiftTimeline(-1)" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold transition" title="Move 1 hour back">◀ -1h</button>
+              <button onclick="resetTimelineToNow()" id="btn-live-now" class="px-3.5 py-1.5 rounded-lg bg-red-600/20 hover:bg-red-600/30 text-red-300 font-bold border border-red-500/40 transition flex items-center gap-1.5 mx-0.5">
                 <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
                 <span>🔴 Live Now</span>
               </button>
-              <button onclick="shiftTimeline(1)" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold transition" title="Move 1 hour forward">+1h ▶</button>
-              <button onclick="shiftTimeline(6)" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold transition" title="Move 6 hours forward">+6h ▶</button>
-              <button onclick="shiftTimeline(24)" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold transition" title="Move 24 hours forward">+24h ▶</button>
+              <button onclick="shiftTimeline(1)" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold transition" title="Move 1 hour forward">+1h ▶</button>
+              <button onclick="shiftTimeline(6)" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold transition" title="Move 6 hours forward">+6h ▶</button>
+              <button onclick="shiftTimeline(24)" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold transition" title="Move 24 hours forward">+24h ▶</button>
             </div>
 
-            <div id="timelineRangeInfo" class="text-[11px] font-mono text-amber-400 bg-amber-500/10 px-2 py-1 rounded border border-amber-500/20 ml-1">
+            <div id="timelineRangeInfo" class="text-xs font-mono text-amber-400 bg-amber-500/10 px-2.5 py-1.5 rounded-xl border border-amber-500/20 ml-1">
               CET Window
             </div>
           </div>
 
           <!-- Legend -->
           <div class="flex flex-wrap items-center gap-3">
-            <span class="flex items-center gap-1.5 text-emerald-400 font-medium">
-              <span class="w-2.5 h-2.5 rounded border border-emerald-500 bg-emerald-500/20"></span> Active Now
+            <span class="flex items-center gap-1.5 text-emerald-400 font-semibold text-xs">
+              <span class="w-3 h-3 rounded border border-emerald-500 bg-emerald-500/20"></span> Active Now
             </span>
-            <span class="flex items-center gap-1.5 text-sky-400 font-medium">
-              <span class="w-2.5 h-2.5 rounded border border-sky-500 bg-sky-500/20"></span> Upcoming
+            <span class="flex items-center gap-1.5 text-sky-400 font-semibold text-xs">
+              <span class="w-3 h-3 rounded border border-sky-500 bg-sky-500/20"></span> Upcoming
             </span>
-            <span class="flex items-center gap-1.5 text-slate-400 font-medium">
-              <span class="w-2.5 h-2.5 rounded border border-slate-700 bg-slate-800"></span> Finished
+            <span class="flex items-center gap-1.5 text-slate-400 font-semibold text-xs">
+              <span class="w-3 h-3 rounded border border-slate-700 bg-slate-800"></span> Finished
             </span>
-            <span class="flex items-center gap-1.5 text-amber-400 font-medium">
-              <span class="w-2.5 h-2.5 rounded border border-amber-500/40 bg-amber-500/10"></span> Off-Rotation
+            <span class="flex items-center gap-1.5 text-amber-400 font-semibold text-xs">
+              <span class="w-3 h-3 rounded border border-amber-500/40 bg-amber-500/10"></span> Off-Rotation
             </span>
           </div>
         </div>
 
         <!-- Scrollable Timeline Grid Container with Sticky Left Column -->
-        <div class="overflow-x-auto timeline-scroll relative rounded-xl border border-[var(--border)]" id="timelineScrollArea">
+        <div class="overflow-x-auto timeline-scroll relative rounded-2xl border border-[var(--border)]" id="timelineScrollArea">
           <div id="timelineGridContainer" class="w-max min-w-full"></div>
         </div>
 
@@ -236,15 +236,15 @@
         <table class="w-full text-left text-xs">
           <thead>
             <tr class="border-b border-[var(--border)] text-[var(--muted)]">
-              <th class="py-2.5 px-3">Status</th>
-              <th class="py-2.5 px-3">Condition</th>
-              <th class="py-2.5 px-3">Map Sector</th>
-              <th class="py-2.5 px-3">🇪🇺 Europe (CET)</th>
-              <th class="py-2.5 px-3">🇺🇸 NA (ET)</th>
-              <th class="py-2.5 px-3">🇧🇷 SA (BRT)</th>
-              <th class="py-2.5 px-3">🇦🇺 Oceania (AEDT)</th>
-              <th class="py-2.5 px-3">🇯🇵 Asia (JST)</th>
-              <th class="py-2.5 px-3">Live Countdown</th>
+              <th class="py-3 px-3">Status</th>
+              <th class="py-3 px-3">Condition</th>
+              <th class="py-3 px-3">Map Sector</th>
+              <th class="py-3 px-3">🇪🇺 Europe (CET)</th>
+              <th class="py-3 px-3">🇺🇸 NA (ET)</th>
+              <th class="py-3 px-3">🇧🇷 SA (BRT)</th>
+              <th class="py-3 px-3">🇦🇺 Oceania (AEDT)</th>
+              <th class="py-3 px-3">🇯🇵 Asia (JST)</th>
+              <th class="py-3 px-3">Live Countdown</th>
             </tr>
           </thead>
           <tbody id="scheduleTableBody" class="divide-y divide-[var(--border)]"></tbody>
@@ -366,7 +366,7 @@
     let expandedEvents = new Set(["ARC Frigate"]);
     let timelineOffsetHours = 0; // Relative to current hour (negative = past, positive = future)
     const NUM_SLOTS = 14;        // Show 14 hours per window
-    const SLOT_WIDTH_PX = 140;   // 140px per hourly column
+    const SLOT_WIDTH_PX = 185;   // 185px per hourly column for generous spacing!
 
     function toggleEventExpansion(conditionName) {
       if (expandedEvents.has(conditionName)) {
@@ -427,11 +427,9 @@
 
     function getTimelineSlots() {
       const now = new Date();
-      // Current CET timestamp
       const cetDateStr = now.toLocaleString("en-US", { timeZone: "Europe/Berlin" });
       const cetNow = new Date(cetDateStr);
 
-      // Start 2 hours before now + offset
       const startHourOffset = -2 + timelineOffsetHours;
 
       const slots = [];
@@ -440,7 +438,7 @@
         d.setHours(cetNow.getHours() + startHourOffset + i, 0, 0, 0);
 
         const hourLabel = `${String(d.getHours()).padStart(2, '0')}:00`;
-        const dateLabel = d.toLocaleDateString("en-GB", { day: '2-digit', month: 'short' });
+        const dateLabel = d.toLocaleDateString("en-GB", { weekday: 'short', day: '2-digit', month: 'short' });
 
         const slotStartMs = d.getTime();
         const slotEndMs = slotStartMs + 3600 * 1000;
@@ -477,12 +475,10 @@
         rangePill.innerText = `${firstSlot.dateLabel} ${firstSlot.label} ➔ ${lastSlot.dateLabel} ${lastSlot.label} CET (${timelineOffsetHours >= 0 ? '+' : ''}${timelineOffsetHours}h)`;
       }
 
-      // Check if current live time is within visible slots
       const trackStartMs = firstSlot.startMs;
       const trackEndMs = lastSlot.endMs;
       const isLiveInWindow = (nowMs >= trackStartMs && nowMs <= trackEndMs);
 
-      // Calculate needle position in pixels from left of slots track
       let needlePx = -1;
       if (isLiveInWindow) {
         needlePx = ((nowMs - trackStartMs) / (3600 * 1000)) * SLOT_WIDTH_PX;
@@ -502,26 +498,26 @@
           <!-- Column Headers Row -->
           <div class="flex border-b border-[var(--border)] bg-[#11131c] relative z-20">
             
-            <!-- Sticky Frozen Left Header -->
-            <div class="sticky-col z-30 w-64 min-w-[16rem] flex-shrink-0 border-r border-[var(--border)] px-3 py-2.5 flex items-center justify-between">
+            <!-- Sticky Frozen Left Header (w-80 min-w-[20rem]) -->
+            <div class="sticky-col z-30 w-80 min-w-[20rem] flex-shrink-0 border-r border-[var(--border)] px-4 py-3 flex items-center justify-between">
               <span class="text-xs font-bold uppercase tracking-wider text-[var(--muted)]">Condition & Regions</span>
-              <span class="text-[10px] text-amber-400 font-mono font-bold bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20">CET</span>
+              <span class="text-[11px] text-amber-400 font-mono font-bold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">CET Clock</span>
             </div>
 
             <!-- Scrollable Timeline Hour Slots Header -->
             <div class="relative flex-1 flex" style="width: ${trackTotalWidthPx}px;">
               ${slots.map((s, idx) => `
-                <div class="w-[${SLOT_WIDTH_PX}px] min-w-[${SLOT_WIDTH_PX}px] flex-shrink-0 px-2 py-1.5 border-r border-slate-800/40 text-left ${s.isCurrentHour ? 'bg-amber-500/10' : ''}">
-                  <div class="text-[10px] text-[var(--muted)] font-mono">${s.dateLabel}</div>
-                  <div class="text-xs font-mono font-bold ${s.isCurrentHour ? 'text-amber-400' : 'text-slate-200'}">${s.label}</div>
+                <div class="w-[${SLOT_WIDTH_PX}px] min-w-[${SLOT_WIDTH_PX}px] flex-shrink-0 px-3 py-2 border-r border-slate-800/50 text-left ${s.isCurrentHour ? 'bg-amber-500/10' : ''}">
+                  <div class="text-[11px] text-[var(--muted)] font-mono font-medium">${s.dateLabel}</div>
+                  <div class="text-sm font-mono font-black ${s.isCurrentHour ? 'text-amber-400' : 'text-slate-100'}">${s.label}</div>
                 </div>
               `).join('')}
 
               <!-- Red Current Time Needle Badge (inside track) -->
               ${isLiveInWindow ? `
-                <div class="absolute top-1 z-30 pointer-events-none -translate-x-1/2" style="left: ${needlePx}px;">
-                  <span class="bg-red-600 text-white font-bold text-[11px] px-2 py-0.5 rounded-full shadow-[0_0_10px_rgba(239,68,68,0.9)] font-mono flex items-center gap-1">
-                    <span class="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>
+                <div class="absolute top-1.5 z-30 pointer-events-none -translate-x-1/2" style="left: ${needlePx}px;">
+                  <span class="bg-red-600 text-white font-bold text-xs px-2.5 py-1 rounded-full shadow-[0_0_12px_rgba(239,68,68,0.95)] font-mono flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-white animate-ping"></span>
                     ${currentHM}
                   </span>
                 </div>
@@ -532,7 +528,7 @@
 
           <!-- Red Vertical Needle Line Running Down the Entire Track -->
           ${isLiveInWindow ? `
-            <div class="absolute top-10 bottom-0 w-[2px] bg-red-600 z-10 pointer-events-none -translate-x-1/2 shadow-[0_0_10px_rgba(239,68,68,0.9)]" style="left: calc(16rem + ${needlePx}px);"></div>
+            <div class="absolute top-12 bottom-0 w-[2.5px] bg-red-600 z-10 pointer-events-none -translate-x-1/2 shadow-[0_0_12px_rgba(239,68,68,0.9)]" style="left: calc(20rem + ${needlePx}px);"></div>
           ` : ''}
 
           <!-- Grid Body Rows -->
@@ -545,33 +541,33 @@
         const isOffRotation = !activeConditionsInDataset.has(cond);
 
         html += `
-          <div class="py-2.5 transition ${isOffRotation ? 'opacity-65 hover:opacity-90' : ''}">
+          <div class="py-3.5 transition ${isOffRotation ? 'opacity-65 hover:opacity-90' : ''}">
             
             <!-- Summary Row -->
             <div class="flex items-center">
               
-              <!-- Sticky Frozen Left Column: Condition Name & Toggle -->
-              <div class="sticky-col z-20 w-64 min-w-[16rem] flex-shrink-0 border-r border-[var(--border)] px-3 py-1 flex items-center justify-between cursor-pointer select-none group" onclick="toggleEventExpansion('${cond}')">
-                <div class="flex items-center gap-2.5 truncate">
-                  <span class="text-slate-400 group-hover:text-amber-400 transition text-xs font-mono w-3 flex-shrink-0">
+              <!-- Sticky Frozen Left Column: Condition Name & Toggle (w-80 min-w-[20rem]) -->
+              <div class="sticky-col z-20 w-80 min-w-[20rem] flex-shrink-0 border-r border-[var(--border)] px-4 py-1.5 flex items-center justify-between cursor-pointer select-none group" onclick="toggleEventExpansion('${cond}')">
+                <div class="flex items-center gap-3 truncate">
+                  <span class="text-slate-400 group-hover:text-amber-400 transition text-sm font-mono w-4 flex-shrink-0">
                     ${isExpanded ? '▼' : '▶'}
                   </span>
                   ${iconUrl ? `
-                    <img src="${iconUrl}" alt="${cond}" class="w-6 h-6 rounded-md object-contain border border-slate-700/60 bg-slate-900 flex-shrink-0" onerror="this.style.display='none'">
+                    <img src="${iconUrl}" alt="${cond}" class="w-8 h-8 rounded-lg object-contain border border-slate-700/80 bg-slate-900 flex-shrink-0 shadow-sm" onerror="this.style.display='none'">
                   ` : ''}
                   <div class="truncate">
-                    <span class="font-bold text-sm text-white group-hover:text-amber-400 transition truncate block">${cond}</span>
-                    ${isOffRotation ? `<span class="text-[9px] text-amber-400/80 uppercase font-mono font-bold tracking-wider">Off-Rotation</span>` : ''}
+                    <span class="font-extrabold text-sm md:text-base text-white group-hover:text-amber-400 transition truncate block">${cond}</span>
+                    ${isOffRotation ? `<span class="text-[10px] text-amber-400/90 uppercase font-mono font-bold tracking-wider">Off-Rotation</span>` : ''}
                   </div>
                 </div>
-                <span class="text-slate-600 group-hover:text-slate-400 text-xs font-mono font-bold tracking-tighter flex-shrink-0 ml-1">»</span>
+                <span class="text-slate-600 group-hover:text-slate-400 text-sm font-mono font-bold tracking-tighter flex-shrink-0 ml-1">»</span>
               </div>
 
-              <!-- Main Slot Grid (Horizontal scrollable track) -->
+              <!-- Main Slot Grid (Spacious Horizontal track) -->
               <div class="flex items-center" style="width: ${trackTotalWidthPx}px;">
                 ${slots.map(s => {
                   if (isOffRotation) {
-                    return `<div class="w-[${SLOT_WIDTH_PX}px] min-w-[${SLOT_WIDTH_PX}px] flex-shrink-0 px-1.5 h-8"></div>`;
+                    return `<div class="w-[${SLOT_WIDTH_PX}px] min-w-[${SLOT_WIDTH_PX}px] flex-shrink-0 px-2 h-11"></div>`;
                   }
 
                   const midSlotMs = s.startMs + 1800 * 1000;
@@ -593,7 +589,7 @@
 
                   const mapEntries = Object.entries(activeRegionsByMap);
                   if (mapEntries.length === 0) {
-                    return `<div class="w-[${SLOT_WIDTH_PX}px] min-w-[${SLOT_WIDTH_PX}px] flex-shrink-0 px-1.5 h-8"></div>`;
+                    return `<div class="w-[${SLOT_WIDTH_PX}px] min-w-[${SLOT_WIDTH_PX}px] flex-shrink-0 px-2 h-11"></div>`;
                   }
 
                   const [mapName, regionCodesSet] = mapEntries[0];
@@ -601,22 +597,22 @@
                   const isCurrent = s.isCurrentHour;
                   const isUpcoming = midSlotMs > nowMs;
 
-                  let pillStyle = "border-slate-800 bg-slate-900/60 text-slate-400";
+                  let pillStyle = "border-slate-800 bg-slate-900/70 text-slate-300";
                   if (isCurrent) {
-                    pillStyle = "border-emerald-500 bg-emerald-500/15 text-emerald-300 shadow-[0_0_12px_rgba(16,185,129,0.25)] font-semibold";
+                    pillStyle = "border-emerald-500 bg-emerald-500/20 text-emerald-300 shadow-[0_0_14px_rgba(16,185,129,0.3)] font-bold";
                   } else if (isUpcoming) {
-                    pillStyle = "border-sky-500/70 bg-sky-500/10 text-sky-200";
+                    pillStyle = "border-sky-500/70 bg-sky-500/10 text-sky-200 font-medium";
                   }
 
                   return `
-                    <div class="w-[${SLOT_WIDTH_PX}px] min-w-[${SLOT_WIDTH_PX}px] flex-shrink-0 px-1.5">
-                      <div class="h-8 flex items-center justify-between px-2 rounded-lg border text-xs font-medium ${pillStyle} truncate transition">
-                        <span class="truncate">${mapName}</span>
-                        <div class="flex items-center gap-0.5 ml-1 flex-shrink-0">
+                    <div class="w-[${SLOT_WIDTH_PX}px] min-w-[${SLOT_WIDTH_PX}px] flex-shrink-0 px-2">
+                      <div class="h-11 flex items-center justify-between px-3 rounded-xl border text-xs md:text-sm ${pillStyle} truncate transition shadow-sm">
+                        <span class="truncate font-semibold">${mapName}</span>
+                        <div class="flex items-center gap-1 ml-1.5 flex-shrink-0">
                           ${regionCodes.slice(0, 2).map(rc => `
-                            <span class="text-[9px] font-mono border border-current px-1 rounded">${rc}</span>
+                            <span class="text-[10px] font-mono border border-current px-1.5 py-0.5 rounded font-bold">${rc}</span>
                           `).join('')}
-                          ${regionCodes.length > 2 ? `<span class="text-[9px] font-mono border border-current px-0.5 rounded">+${regionCodes.length - 2}</span>` : ''}
+                          ${regionCodes.length > 2 ? `<span class="text-[10px] font-mono border border-current px-1 py-0.5 rounded font-bold">+${regionCodes.length - 2}</span>` : ''}
                         </div>
                       </div>
                     </div>
@@ -628,17 +624,17 @@
 
             <!-- Expanded Regional Rows (EU, NA, SA, ASIA, OCE) -->
             ${isExpanded ? `
-              <div class="mt-2 space-y-1.5 pt-1">
+              <div class="mt-2.5 space-y-2 pt-1">
                 ${Object.keys(REGIONS).map(rk => {
                   const reg = REGIONS[rk];
                   return `
                     <div class="flex items-center">
                       <!-- Sticky Frozen Left Column: Region Badge & Name -->
-                      <div class="sticky-col z-20 w-64 min-w-[16rem] flex-shrink-0 border-r border-[var(--border)] pl-7 pr-3 py-1 flex items-center gap-2">
-                        <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold border ${reg.color}">
+                      <div class="sticky-col z-20 w-80 min-w-[20rem] flex-shrink-0 border-r border-[var(--border)] pl-9 pr-4 py-1.5 flex items-center gap-2.5">
+                        <span class="px-2 py-0.5 rounded text-[11px] font-mono font-bold border ${reg.color}">
                           ${reg.code}
                         </span>
-                        <span class="text-xs font-semibold text-slate-300 truncate">${reg.name}</span>
+                        <span class="text-xs md:text-sm font-semibold text-slate-300 truncate">${reg.name}</span>
                       </div>
 
                       <!-- Regional Hourly Cells in Scrollable Track -->
@@ -658,7 +654,7 @@
                           });
 
                           if (!runningMap) {
-                            return `<div class="w-[${SLOT_WIDTH_PX}px] min-w-[${SLOT_WIDTH_PX}px] flex-shrink-0 px-1.5 h-7"></div>`;
+                            return `<div class="w-[${SLOT_WIDTH_PX}px] min-w-[${SLOT_WIDTH_PX}px] flex-shrink-0 px-2 h-9"></div>`;
                           }
 
                           const isCurrent = s.isCurrentHour;
@@ -666,16 +662,16 @@
 
                           let regionalPill = "border-slate-800 bg-slate-900 text-slate-400";
                           if (isCurrent) {
-                            regionalPill = "border-emerald-500 bg-emerald-500/20 text-emerald-300 font-semibold shadow-[0_0_8px_rgba(16,185,129,0.2)]";
+                            regionalPill = "border-emerald-500 bg-emerald-500/25 text-emerald-300 font-bold shadow-[0_0_10px_rgba(16,185,129,0.25)]";
                           } else if (isUpcoming) {
-                            regionalPill = "border-sky-500/60 bg-sky-500/10 text-sky-200";
+                            regionalPill = "border-sky-500/60 bg-sky-500/10 text-sky-200 font-medium";
                           }
 
                           return `
-                            <div class="w-[${SLOT_WIDTH_PX}px] min-w-[${SLOT_WIDTH_PX}px] flex-shrink-0 px-1.5">
-                              <div class="h-7 flex items-center justify-between px-2 rounded-lg border text-[11px] ${regionalPill} transition">
-                                <span class="truncate">${runningMap}</span>
-                                <span class="text-[9px] font-mono opacity-80 ml-1 border border-current px-1 rounded">${reg.code}</span>
+                            <div class="w-[${SLOT_WIDTH_PX}px] min-w-[${SLOT_WIDTH_PX}px] flex-shrink-0 px-2">
+                              <div class="h-9 flex items-center justify-between px-2.5 rounded-lg border text-xs ${regionalPill} transition shadow-sm">
+                                <span class="truncate font-semibold">${runningMap}</span>
+                                <span class="text-[10px] font-mono opacity-85 ml-1 border border-current px-1 rounded font-bold">${reg.code}</span>
                               </div>
                             </div>
                           `;
@@ -772,18 +768,18 @@
 
           return `
             <tr class="hover:bg-slate-800/40 transition">
-              <td class="py-2.5 px-3 whitespace-nowrap">${statusBadge}</td>
-              <td class="py-2.5 px-3 font-bold text-white whitespace-nowrap flex items-center gap-2">
+              <td class="py-3 px-3 whitespace-nowrap">${statusBadge}</td>
+              <td class="py-3 px-3 font-bold text-white whitespace-nowrap flex items-center gap-2">
                 ${iconUrl ? `<img src="${iconUrl}" alt="${e.condition}" class="w-5 h-5 rounded object-contain bg-slate-900 border border-slate-700/60" onerror="this.style.display='none'">` : ''}
                 <a href="${e.url || '#'}" target="_blank" class="hover:text-amber-400 transition">${e.condition}</a>
               </td>
-              <td class="py-2.5 px-3 text-amber-300 font-semibold whitespace-nowrap">${e.map}</td>
-              <td class="py-2.5 px-3 font-mono text-slate-300 whitespace-nowrap">${euSlot}</td>
-              <td class="py-2.5 px-3 font-mono text-sky-300 whitespace-nowrap">${naSlot}</td>
-              <td class="py-2.5 px-3 font-mono text-emerald-300 whitespace-nowrap">${saSlot}</td>
-              <td class="py-2.5 px-3 font-mono text-purple-300 whitespace-nowrap">${oceSlot}</td>
-              <td class="py-2.5 px-3 font-mono text-rose-300 whitespace-nowrap">${asiaSlot}</td>
-              <td class="py-2.5 px-3 font-mono text-amber-400 font-bold whitespace-nowrap">${countdownText}</td>
+              <td class="py-3 px-3 text-amber-300 font-semibold whitespace-nowrap">${e.map}</td>
+              <td class="py-3 px-3 font-mono text-slate-300 whitespace-nowrap">${euSlot}</td>
+              <td class="py-3 px-3 font-mono text-sky-300 whitespace-nowrap">${naSlot}</td>
+              <td class="py-3 px-3 font-mono text-emerald-300 whitespace-nowrap">${saSlot}</td>
+              <td class="py-3 px-3 font-mono text-purple-300 whitespace-nowrap">${oceSlot}</td>
+              <td class="py-3 px-3 font-mono text-rose-300 whitespace-nowrap">${asiaSlot}</td>
+              <td class="py-3 px-3 font-mono text-amber-400 font-bold whitespace-nowrap">${countdownText}</td>
             </tr>
           `;
         }).join('');
