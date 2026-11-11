@@ -17,14 +17,12 @@
       --accent: #f59e0b;
       --primary: #38bdf8;
       --success: #10b981;
-      --ended: #333a4d;
     }
     body {
       background-color: var(--background);
       color: var(--foreground);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
-    /* Custom scrollbar for timeline */
     .timeline-scroll::-webkit-scrollbar {
       height: 6px;
     }
@@ -34,9 +32,6 @@
     .timeline-scroll::-webkit-scrollbar-thumb {
       background: #252b3d;
       border-radius: 3px;
-    }
-    .timeline-scroll::-webkit-scrollbar-thumb:hover {
-      background: #38425d;
     }
   </style>
 </head>
@@ -163,11 +158,10 @@
       </button>
     </div>
 
-    <!-- TAB 1: INTERACTIVE TIMELINE GRID (SCREENSHOT REPLICA) -->
+    <!-- TAB 1: INTERACTIVE TIMELINE GRID -->
     <div id="view-timeline" class="space-y-4">
       <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 md:p-6 shadow-2xl relative overflow-hidden">
         
-        <!-- Legend & Instructions -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 mb-2 border-b border-[var(--border)] text-xs text-[var(--muted)]">
           <div class="flex items-center gap-2">
             <span class="font-semibold text-white">Click any event</span> to expand its 5 regional timezone tracks (EU, NA, SA, ASIA, OCE).
@@ -185,11 +179,8 @@
           </div>
         </div>
 
-        <!-- Scrollable Timeline Table -->
         <div class="overflow-x-auto timeline-scroll relative">
-          <div id="timelineGridContainer" class="min-w-[900px]">
-            <!-- Rendered dynamically -->
-          </div>
+          <div id="timelineGridContainer" class="min-w-[900px]"></div>
         </div>
 
       </div>
@@ -262,6 +253,27 @@
   </div>
 
   <script>
+    // Embedded initial dataset from MongoDB to guarantee instant display on any load
+    const EMBEDDED_DATASET = [
+      { "condition": "ARC Frigate", "map": "Buried City", "startTime": "2026-11-11T14:00:00", "endTime": "2026-11-11T15:00:00", "durationMinutes": 60, "timer": "3:07" },
+      { "condition": "Lush Blooms", "map": "Dam Battlegrounds", "startTime": "2026-11-11T14:00:00", "endTime": "2026-11-11T15:00:00", "durationMinutes": 60, "timer": "3:07" },
+      { "condition": "Night Raid", "map": "Stella Montis", "startTime": "2026-11-11T14:00:00", "endTime": "2026-11-11T15:00:00", "durationMinutes": 60, "timer": "3:07" },
+      { "condition": "Prospecting Probes", "map": "Spaceport", "startTime": "2026-11-11T14:00:00", "endTime": "2026-11-11T15:00:00", "durationMinutes": 60, "timer": "3:07" },
+      { "condition": "Redirection", "map": "Pendola Pass", "startTime": "2026-11-11T14:00:00", "endTime": "2026-11-11T15:00:00", "durationMinutes": 60, "timer": "3:07" },
+      { "condition": "ARC Frigate", "map": "The Blue Gate", "startTime": "2026-11-11T15:00:00", "endTime": "2026-11-11T16:00:00", "durationMinutes": 60, "timer": "3:07" },
+      { "condition": "Beachcombing", "map": "Riven Tides", "startTime": "2026-11-11T15:00:00", "endTime": "2026-11-11T16:00:00", "durationMinutes": 60, "timer": "3:07" },
+      { "condition": "Bird City", "map": "Buried City", "startTime": "2026-11-11T15:00:00", "endTime": "2026-11-11T16:00:00", "durationMinutes": 60, "timer": "3:07" },
+      { "condition": "Hidden Bunker", "map": "Spaceport", "startTime": "2026-11-11T15:00:00", "endTime": "2026-11-11T16:00:00", "durationMinutes": 60, "timer": "3:07" },
+      { "condition": "Night Raid", "map": "Pendola Pass", "startTime": "2026-11-11T15:00:00", "endTime": "2026-11-11T16:00:00", "durationMinutes": 60, "timer": "3:07" },
+      { "condition": "Lush Blooms", "map": "Buried City", "startTime": "2026-11-11T16:00:00", "endTime": "2026-11-11T17:00:00", "durationMinutes": 60, "timer": "1:03:07" },
+      { "condition": "Prospecting Probes", "map": "Riven Tides", "startTime": "2026-11-11T16:00:00", "endTime": "2026-11-11T17:00:00", "durationMinutes": 60, "timer": "1:03:07" },
+      { "condition": "Close Scrutiny", "map": "Buried City", "startTime": "2026-11-11T17:00:00", "endTime": "2026-11-11T18:00:00", "durationMinutes": 60, "timer": "2:03:07" },
+      { "condition": "Harvester", "map": "The Blue Gate", "startTime": "2026-11-11T17:00:00", "endTime": "2026-11-11T18:00:00", "durationMinutes": 60, "timer": "2:03:07" },
+      { "condition": "Matriarch", "map": "Spaceport", "startTime": "2026-11-11T17:00:00", "endTime": "2026-11-11T18:00:00", "durationMinutes": 60, "timer": "2:03:07" },
+      { "condition": "Redirection", "map": "Pendola Pass", "startTime": "2026-11-11T20:00:00", "endTime": "2026-11-11T21:00:00", "durationMinutes": 60, "timer": "5:03:07" },
+      { "condition": "Hurricane", "map": "Dam Battlegrounds", "startTime": "2026-11-11T21:00:00", "endTime": "2026-11-11T22:00:00", "durationMinutes": 60, "timer": "6:03:07" }
+    ];
+
     const REGIONS = {
       Europe: { code: "EU", name: "Europe", tag: "CET", timeZone: "Europe/Berlin", flag: "🇪🇺", diffHours: 0, color: "text-amber-400 border-amber-500/40 bg-amber-500/10" },
       NorthAmerica: { code: "NA", name: "North America", tag: "ET", timeZone: "America/New_York", flag: "🇺🇸", diffHours: -6, color: "text-sky-400 border-sky-500/40 bg-sky-500/10" },
@@ -285,26 +297,52 @@
       "Redirection": "🔀"
     };
 
-    function updateWorldClocks() {
-      const now = new Date();
-      Object.keys(REGIONS).forEach(key => {
-        const reg = REGIONS[key];
-        const clockEl = document.getElementById(`clock-${key.toLowerCase() === 'northamerica' ? 'na' : key.toLowerCase() === 'southamerica' ? 'sa' : key.toLowerCase()}`);
-        if (clockEl) {
-          clockEl.innerText = now.toLocaleTimeString("en-GB", { timeZone: reg.timeZone, hour: '2-digit', minute: '2-digit', second: '2-digit' });
-        }
-      });
+    function convertTimeSlot(startH, startM, endH, endM, diffHours) {
+      function shift(h, m) {
+        let total = (h + diffHours) % 24;
+        if (total < 0) total += 24;
+        return `${String(total).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+      }
+      return `${shift(startH, startM)} - ${shift(endH, endM)}`;
     }
-    setInterval(updateWorldClocks, 1000);
-    updateWorldClocks();
 
-    const KNOWN_MAPS = [
-      "Buried City", "Dam Battlegrounds", "Stella Montis", 
-      "Spaceport", "Pendola Pass", "The Blue Gate", "Riven Tides"
-    ];
+    function normalizeDoc(d) {
+      let startH = 14, startM = 0, endH = 15, endM = 0;
+      if (d.startTime && d.startTime.includes('T')) {
+        const timePart = d.startTime.split('T')[1];
+        const parts = timePart.split(':');
+        startH = parseInt(parts[0], 10);
+        startM = parseInt(parts[1], 10);
+      }
+      if (d.endTime && d.endTime.includes('T')) {
+        const timePart = d.endTime.split('T')[1];
+        const parts = timePart.split(':');
+        endH = parseInt(parts[0], 10);
+        endM = parseInt(parts[1], 10);
+      }
+      const id = `${d.condition}_${d.map}_${startH}:${startM}`;
+      const regionalSlots = {};
+      Object.keys(REGIONS).forEach(rk => {
+        regionalSlots[rk] = convertTimeSlot(startH, startM, endH, endM, REGIONS[rk].diffHours);
+      });
+      return {
+        id,
+        condition: d.condition,
+        map: d.map,
+        timer: d.timer || "0:00",
+        startH, startM, endH, endM,
+        timeSlotCET: `${String(startH).padStart(2,'0')}:${String(startM).padStart(2,'0')} - ${String(endH).padStart(2,'0')}:${String(endM).padStart(2,'0')}`,
+        regionalSlots,
+        date: "11. Nov",
+        fullDate: d.startTime,
+        duration: d.durationMinutes || 60,
+        slug: d.slug || "",
+        url: d.url || ""
+      };
+    }
 
-    let eventStore = JSON.parse(localStorage.getItem("arc_events") || "[]");
-    let expandedEvents = new Set(["ARC Frigate"]); // default expanded as in screenshot!
+    let eventStore = EMBEDDED_DATASET.map(normalizeDoc);
+    let expandedEvents = new Set(["ARC Frigate"]);
 
     function toggleEventExpansion(conditionName) {
       if (expandedEvents.has(conditionName)) {
@@ -313,15 +351,6 @@
         expandedEvents.add(conditionName);
       }
       renderTimelineGrid();
-    }
-
-    function convertTimeSlot(startH, startM, endH, endM, diffHours) {
-      function shift(h, m) {
-        let total = (h + diffHours) % 24;
-        if (total < 0) total += 24;
-        return `${String(total).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
-      }
-      return `${shift(startH, startM)} - ${shift(endH, endM)}`;
     }
 
     function setTab(tabName) {
@@ -337,8 +366,20 @@
       activeBtn.classList.add("text-amber-400", "border-b-2", "border-amber-400");
     }
 
-    // Timeline grid hours slots
     const TIMELINE_HOURS = [14, 15, 16, 17, 18, 19, 20, 21];
+
+    function updateWorldClocks() {
+      const now = new Date();
+      Object.keys(REGIONS).forEach(key => {
+        const reg = REGIONS[key];
+        const clockEl = document.getElementById(`clock-${key.toLowerCase() === 'northamerica' ? 'na' : key.toLowerCase() === 'southamerica' ? 'sa' : key.toLowerCase()}`);
+        if (clockEl) {
+          clockEl.innerText = now.toLocaleTimeString("en-GB", { timeZone: reg.timeZone, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        }
+      });
+    }
+    setInterval(updateWorldClocks, 1000);
+    updateWorldClocks();
 
     function renderTimelineGrid() {
       const container = document.getElementById("timelineGridContainer");
@@ -349,22 +390,20 @@
       const currentM = now.getMinutes();
       const currentHM = `${String(currentH).padStart(2, '0')}:${String(currentM).padStart(2, '0')}`;
 
-      // Calculate needle position in percentage across the 14:00 - 22:00 range (8 hours total)
+      // Needle position calculation
       const startRangeH = 14;
       const endRangeH = 22;
       const totalMinutes = (endRangeH - startRangeH) * 60;
       let needleMinutes = (currentH - startRangeH) * 60 + currentM;
-      if (needleMinutes < 0) needleMinutes = 115; // default around 15:55 if outside range
+      if (needleMinutes < 0) needleMinutes = 115;
       if (needleMinutes > totalMinutes) needleMinutes = totalMinutes - 20;
       const needlePct = Math.min(Math.max((needleMinutes / totalMinutes) * 100, 2), 98);
 
-      // Collect all unique condition names
       const allConditions = Array.from(new Set(eventStore.map(e => e.condition))).sort();
 
       let html = `
         <div class="relative">
           
-          <!-- Header Row: Left Event title + Hour Columns -->
           <div class="flex border-b border-[var(--border)] pb-2 relative">
             <div class="w-64 flex-shrink-0 text-xs font-bold uppercase tracking-wider text-[var(--muted)] pl-2">
               Condition & Regions
@@ -374,7 +413,6 @@
                 <div class="text-left pl-2 font-semibold ${h === currentH ? 'text-white' : ''}">${String(h).padStart(2, '0')}:00</div>
               `).join('')}
 
-              <!-- Red Current Time Needle Badge -->
               <div class="absolute top-[-4px] z-30 pointer-events-none -translate-x-1/2" style="left: ${needlePct}%;">
                 <span class="bg-red-600 text-white font-bold text-[11px] px-2 py-0.5 rounded-full shadow-lg font-mono">
                   ${currentHM}
@@ -383,10 +421,8 @@
             </div>
           </div>
 
-          <!-- Red Vertical Needle Line running through all rows -->
           <div class="absolute top-6 bottom-0 w-[2px] bg-red-600/80 z-20 pointer-events-none -translate-x-1/2 shadow-[0_0_8px_rgba(239,68,68,0.8)]" style="left: calc(16rem + (100% - 16rem) * ${needlePct / 100});"></div>
 
-          <!-- Event Rows -->
           <div class="divide-y divide-[var(--border)]">
       `;
 
@@ -394,12 +430,10 @@
         const isExpanded = expandedEvents.has(cond);
         const icon = EVENT_ICONS[cond] || "🎯";
 
-        // Main Event Header Row
         html += `
           <div class="py-2.5 transition">
             <div class="flex items-center">
               
-              <!-- Left Column: Condition Name & Expand Button -->
               <div class="w-64 flex-shrink-0 flex items-center justify-between pr-4 cursor-pointer select-none group" onclick="toggleEventExpansion('${cond}')">
                 <div class="flex items-center gap-2">
                   <span class="text-slate-400 group-hover:text-amber-400 transition text-xs font-mono w-3">
@@ -411,7 +445,6 @@
                 <span class="text-slate-600 group-hover:text-slate-400 text-xs font-mono font-bold tracking-tighter">»</span>
               </div>
 
-              <!-- Right Grid: Collapsed Summary Row -->
               <div class="flex-1 grid grid-cols-8 gap-2">
                 ${TIMELINE_HOURS.map(h => {
                   const ev = eventStore.find(e => e.condition === cond && e.startH === h);
@@ -419,17 +452,17 @@
                     return `<div class="h-8"></div>`;
                   }
 
-                  let statusClasses = "border-slate-800 bg-slate-900/60 text-slate-400"; // past
+                  let statusClasses = "border-slate-800 bg-slate-900/60 text-slate-400";
                   if (h === currentH) {
-                    statusClasses = "border-emerald-500 bg-emerald-500/15 text-emerald-300 shadow-[0_0_12px_rgba(16,185,129,0.2)]"; // active
+                    statusClasses = "border-emerald-500 bg-emerald-500/15 text-emerald-300 shadow-[0_0_12px_rgba(16,185,129,0.2)]";
                   } else if (h > currentH) {
-                    statusClasses = "border-sky-500/70 bg-sky-500/10 text-sky-200"; // upcoming
+                    statusClasses = "border-sky-500/70 bg-sky-500/10 text-sky-200";
                   }
 
                   return `
                     <div class="h-8 flex items-center justify-between px-2.5 rounded-lg border text-xs font-medium ${statusClasses} truncate transition">
                       <span class="truncate">${ev.map}</span>
-                      <span class="text-[9px] font-mono opacity-80 ml-1 border border-current px-1 py-0.2 rounded">EU</span>
+                      <span class="text-[9px] font-mono opacity-80 ml-1 border border-current px-1 rounded">EU</span>
                     </div>
                   `;
                 }).join('')}
@@ -437,14 +470,12 @@
 
             </div>
 
-            <!-- Expanded State: 5 Region Sub-Rows (EU, NA, SA, ASIA, OCE) -->
             ${isExpanded ? `
               <div class="mt-2 pl-4 space-y-1.5 border-l-2 border-amber-500/30 ml-2">
                 ${Object.keys(REGIONS).map(rk => {
                   const reg = REGIONS[rk];
                   return `
                     <div class="flex items-center">
-                      <!-- Region Title Pill -->
                       <div class="w-60 flex-shrink-0 flex items-center gap-2">
                         <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold border ${reg.color}">
                           ${reg.code}
@@ -452,7 +483,6 @@
                         <span class="text-xs font-semibold text-slate-300">${reg.name}</span>
                       </div>
 
-                      <!-- 8 Hours Grid for this Region -->
                       <div class="flex-1 grid grid-cols-8 gap-2">
                         ${TIMELINE_HOURS.map(h => {
                           const ev = eventStore.find(e => e.condition === cond && e.startH === h);
@@ -517,10 +547,9 @@
         return true;
       });
 
-      // Render the Screenshot-Style Timeline
       renderTimelineGrid();
 
-      // Render Combinations
+      // Combinations
       const slotGroups = {};
       filtered.forEach(e => {
         const key = `${e.date} · ${e.timeSlotCET} CET`;
@@ -564,7 +593,7 @@
         }).join('');
       }
 
-      // Frequency Stats
+      // Frequency Bars
       const condCounts = {};
       const condHours = {};
       filtered.forEach(e => {
@@ -592,7 +621,7 @@
           }).join('');
       }
 
-      // Map Stats
+      // Map Bars
       const mapCounts = {};
       filtered.forEach(e => { mapCounts[e.map] = (mapCounts[e.map] || 0) + 1; });
       const maxMapCount = Math.max(...Object.values(mapCounts), 1);
@@ -616,7 +645,7 @@
           }).join('');
       }
 
-      // Cross Matrix
+      // Matrix
       const uniqueMaps = new Set(filtered.map(e => e.map));
       const uniqueConds = new Set(filtered.map(e => e.condition));
       const activeMaps = Array.from(uniqueMaps).sort();
@@ -651,8 +680,8 @@
         schedBody.innerHTML = filtered.map(e => `
           <tr class="hover:bg-slate-800/40 transition">
             <td class="py-2.5 px-3">
-              <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${e.timeSlotCET.startsWith('15:00') ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-slate-800 text-slate-300'}">
-                ${e.timeSlotCET.startsWith('15:00') ? 'ACTIVE' : 'UPCOMING'}
+              <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${e.startH === currentH ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-slate-800 text-slate-300'}">
+                ${e.startH === currentH ? 'ACTIVE' : 'UPCOMING'}
               </span>
             </td>
             <td class="py-2.5 px-3 font-bold text-white">${e.condition}</td>
@@ -676,47 +705,20 @@
           if (Array.isArray(remoteData) && remoteData.length > 0) {
             const mapById = new Map();
             eventStore.forEach(e => mapById.set(e.id, e));
-
             remoteData.forEach(d => {
-              const startDt = new Date(d.startTime);
-              const endDt = new Date(d.endTime);
-              const startH = startDt.getHours();
-              const startM = startDt.getMinutes();
-              const endH = endDt.getHours();
-              const endM = endDt.getMinutes();
-              const id = `${d.condition}_${d.map}_${startH}:${startM}`;
-
-              const regionalSlots = {};
-              Object.keys(REGIONS).forEach(rk => {
-                regionalSlots[rk] = convertTimeSlot(startH, startM, endH, endM, REGIONS[rk].diffHours);
-              });
-
-              mapById.set(id, {
-                id,
-                condition: d.condition,
-                map: d.map,
-                timer: d.timer || "0:00",
-                startH, startM, endH, endM,
-                timeSlotCET: `${String(startH).padStart(2,'0')}:${String(startM).padStart(2,'0')} - ${String(endH).padStart(2,'0')}:${String(endM).padStart(2,'0')}`,
-                regionalSlots,
-                date: `${startDt.getDate()}. ${startDt.toLocaleString('en-US', { month: 'short' })}`,
-                fullDate: d.startTime,
-                duration: d.durationMinutes || 60,
-                slug: d.slug,
-                url: d.url
-              });
+              const item = normalizeDoc(d);
+              mapById.set(item.id, item);
             });
-
             eventStore = Array.from(mapById.values());
-            localStorage.setItem("arc_events", JSON.stringify(eventStore));
             renderAll();
           }
         }
-      } catch (err) {
-        console.log("Remote dataset offline or local view:", err);
+      } catch (e) {
+        console.log("Remote dataset offline or local view:", e);
       }
     }
 
+    // Initial render runs immediately with embedded dataset
     renderAll();
     loadRemoteHistory();
   </script>
