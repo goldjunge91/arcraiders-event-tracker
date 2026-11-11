@@ -127,6 +127,38 @@ def parse_events_from_text(text: str, ref_dt: datetime = None):
         })
     return events
 
+import json
+
+def export_full_history_to_json(mongo_uri: str, output_path: str = "data/events.json", db_name: str = "arcraiders"):
+    """Exports all historic events from MongoDB into a JSON file for multi-month tracking and website loading."""
+    if not HAS_PYMONGO:
+        return
+    client_kwargs = {}
+    try:
+        import certifi
+        client_kwargs["tlsCAFile"] = certifi.where()
+    except Exception:
+        pass
+
+    client = MongoClient(mongo_uri, **client_kwargs)
+    db = client[db_name]
+    collection = db["map_conditions"]
+    
+    docs = list(collection.find({}, {"_id": 0}).sort("startTime", -1))
+    for d in docs:
+        for k in ["startTime", "endTime", "createdAt", "lastSeenAt", "updatedAt"]:
+            if isinstance(d.get(k), datetime):
+                d[k] = d[k].isoformat()
+
+    if not os.path.isabs(output_path):
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        output_path = os.path.join(base_dir, output_path)
+
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    with open(output_path, "w", encoding="utf-8") as f:
+        json.dump(docs, f, indent=2, ensure_ascii=False)
+    print(f"Historie dauerhaft exportiert: {len(docs)} Events in {output_path} gesichert.")
+
 def sync_to_mongodb(events, mongo_uri: str, db_name: str = "arcraiders"):
     if not HAS_PYMONGO:
         raise ImportError("pymongo ist nicht installiert. Bitte 'pip install pymongo dnspython certifi' ausführen.")
@@ -216,5 +248,6 @@ if __name__ == "__main__":
 
     if mongo_uri:
         sync_to_mongodb(events, mongo_uri)
+        export_full_history_to_json(mongo_uri, "data/events.json")
     else:
         print("\nKein MONGODB_URI gesetzt. Um in MongoDB zu speichern, setze die Umgebungsvariable MONGODB_URI.")

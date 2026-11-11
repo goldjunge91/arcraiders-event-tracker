@@ -113,8 +113,19 @@
         </p>
       </div>
 
-      <!-- Controls: Region Selector + Search + Import -->
+      <!-- Controls: Region Selector + History Range + Search + Import -->
       <div class="flex flex-wrap items-center gap-3">
+        <!-- History Range Filter -->
+        <div class="flex items-center bg-[var(--card)] border border-[var(--border)] rounded-xl p-1 text-xs">
+          <span class="text-[11px] text-[var(--muted)] px-2.5 font-semibold">History:</span>
+          <select id="selectedTimeframe" onchange="renderAll()" class="bg-slate-900 text-white font-medium rounded-lg px-2.5 py-1.5 focus:outline-none border border-slate-700 cursor-pointer">
+            <option value="ALL" selected>📅 All Time (Multi-Month)</option>
+            <option value="MONTH">📆 Current Month</option>
+            <option value="WEEK">🗓️ Last 7 Days</option>
+            <option value="TODAY">⚡ Today Only</option>
+          </select>
+        </div>
+
         <!-- Region Switcher -->
         <div class="flex items-center bg-[var(--card)] border border-[var(--border)] rounded-xl p-1 text-xs">
           <span class="text-[11px] text-[var(--muted)] px-2.5 font-semibold">Timezone:</span>
@@ -414,7 +425,57 @@ Coming up (next per condition)
       localStorage.setItem("arc_events", JSON.stringify(eventStore));
       toggleImportModal();
       document.getElementById("rawPasteInput").value = "";
-      renderAll();
+      async function loadRemoteHistory() {
+      try {
+        const resp = await fetch('./data/events.json');
+        if (resp.ok) {
+          const remoteData = await resp.json();
+          if (Array.isArray(remoteData) && remoteData.length > 0) {
+            const mapById = new Map();
+            eventStore.forEach(e => mapById.set(e.id, e));
+
+            remoteData.forEach(d => {
+              const startDt = new Date(d.startTime);
+              const endDt = new Date(d.endTime);
+              const startH = startDt.getHours();
+              const startM = startDt.getMinutes();
+              const endH = endDt.getHours();
+              const endM = endDt.getMinutes();
+              const id = `${d.condition}_${d.map}_${startH}:${startM}`;
+
+              const regionalSlots = {};
+              Object.keys(REGIONS).forEach(rk => {
+                regionalSlots[rk] = convertTimeSlot(startH, startM, endH, endM, REGIONS[rk].diffHours);
+              });
+
+              mapById.set(id, {
+                id,
+                condition: d.condition,
+                map: d.map,
+                timer: d.timer || "0:00",
+                startH, startM, endH, endM,
+                timeSlotCET: `${String(startH).padStart(2,'0')}:${String(startM).padStart(2,'0')} - ${String(endH).padStart(2,'0')}:${String(endM).padStart(2,'0')}`,
+                regionalSlots,
+                date: `${startDt.getDate()}. ${startDt.toLocaleString('en-US', { month: 'short' })}`,
+                fullDate: d.startTime,
+                duration: d.durationMinutes || 60,
+                slug: d.slug,
+                url: d.url
+              });
+            });
+
+            eventStore = Array.from(mapById.values());
+            localStorage.setItem("arc_events", JSON.stringify(eventStore));
+            renderAll();
+          }
+        }
+      } catch (err) {
+        console.log("Remote dataset offline or local view:", err);
+      }
+    }
+
+    renderAll();
+    loadRemoteHistory();
     }
 
     function setTab(tabName) {
@@ -433,12 +494,27 @@ Coming up (next per condition)
     function renderAll() {
       const query = (document.getElementById("searchInput").value || "").toLowerCase();
       const currentRegion = document.getElementById("selectedRegion").value;
+      const timeframe = document.getElementById("selectedTimeframe").value;
+      const now = new Date();
 
-      const filtered = eventStore.filter(e => 
-        e.condition.toLowerCase().includes(query) || 
-        e.map.toLowerCase().includes(query) ||
-        e.timeSlotCET.includes(query)
-      );
+      const filtered = eventStore.filter(e => {
+        const matchesQuery = e.condition.toLowerCase().includes(query) || 
+          e.map.toLowerCase().includes(query) ||
+          e.timeSlotCET.includes(query);
+        if (!matchesQuery) return false;
+
+        if (timeframe === "ALL" || !e.fullDate) return true;
+        const evDate = new Date(e.fullDate);
+        if (timeframe === "TODAY") {
+          return evDate.toDateString() === now.toDateString();
+        } else if (timeframe === "WEEK") {
+          const diffDays = (now - evDate) / (1000 * 60 * 60 * 24);
+          return diffDays >= 0 && diffDays <= 7;
+        } else if (timeframe === "MONTH") {
+          return evDate.getMonth() === now.getMonth() && evDate.getFullYear() === now.getFullYear();
+        }
+        return true;
+      });
 
       document.getElementById("metricTotalEvents").innerText = filtered.length;
       const uniqueConds = new Set(filtered.map(e => e.condition));
@@ -583,7 +659,57 @@ Coming up (next per condition)
       `).join('');
     }
 
+    async function loadRemoteHistory() {
+      try {
+        const resp = await fetch('./data/events.json');
+        if (resp.ok) {
+          const remoteData = await resp.json();
+          if (Array.isArray(remoteData) && remoteData.length > 0) {
+            const mapById = new Map();
+            eventStore.forEach(e => mapById.set(e.id, e));
+
+            remoteData.forEach(d => {
+              const startDt = new Date(d.startTime);
+              const endDt = new Date(d.endTime);
+              const startH = startDt.getHours();
+              const startM = startDt.getMinutes();
+              const endH = endDt.getHours();
+              const endM = endDt.getMinutes();
+              const id = `${d.condition}_${d.map}_${startH}:${startM}`;
+
+              const regionalSlots = {};
+              Object.keys(REGIONS).forEach(rk => {
+                regionalSlots[rk] = convertTimeSlot(startH, startM, endH, endM, REGIONS[rk].diffHours);
+              });
+
+              mapById.set(id, {
+                id,
+                condition: d.condition,
+                map: d.map,
+                timer: d.timer || "0:00",
+                startH, startM, endH, endM,
+                timeSlotCET: `${String(startH).padStart(2,'0')}:${String(startM).padStart(2,'0')} - ${String(endH).padStart(2,'0')}:${String(endM).padStart(2,'0')}`,
+                regionalSlots,
+                date: `${startDt.getDate()}. ${startDt.toLocaleString('en-US', { month: 'short' })}`,
+                fullDate: d.startTime,
+                duration: d.durationMinutes || 60,
+                slug: d.slug,
+                url: d.url
+              });
+            });
+
+            eventStore = Array.from(mapById.values());
+            localStorage.setItem("arc_events", JSON.stringify(eventStore));
+            renderAll();
+          }
+        }
+      } catch (err) {
+        console.log("Remote dataset offline or local view:", err);
+      }
+    }
+
     renderAll();
+    loadRemoteHistory();
   </script>
 </body>
 </html>
