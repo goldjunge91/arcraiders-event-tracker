@@ -3,17 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ARC Raiders · Map Conditions & Interactive Timeline</title>
+  <title>ARC Raiders · Map Conditions & Interactive Rotation Timeline</title>
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <!-- MetaForge Interactive Tooltip Script -->
+  <script async src="https://static.metaforge.app/arcraiders-tooltips.min.js"></script>
   <style>
     :root {
-      --background: #0a0c10;
-      --card: #12151e;
-      --card-hover: #181d29;
-      --border: #212638;
-      --border-light: #2d344b;
-      --foreground: #f1f5f9;
-      --muted: #8b9bb4;
+      --background: #090a0f;
+      --card: #11131c;
+      --card-hover: #181c28;
+      --border: #1e2230;
+      --border-light: #282e42;
+      --foreground: #f3f4f6;
+      --muted: #94a3b8;
       --accent: #f59e0b;
       --primary: #38bdf8;
       --success: #10b981;
@@ -21,81 +23,86 @@
     body {
       background-color: var(--background);
       color: var(--foreground);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
     .timeline-scroll::-webkit-scrollbar {
       height: 6px;
+      width: 6px;
     }
     .timeline-scroll::-webkit-scrollbar-track {
-      background: #0f121a;
+      background: #0c0e15;
     }
     .timeline-scroll::-webkit-scrollbar-thumb {
-      background: #252b3d;
+      background: #232838;
       border-radius: 3px;
+    }
+    .timeline-scroll::-webkit-scrollbar-thumb:hover {
+      background: #333a52;
     }
   </style>
 </head>
 <body class="p-3 md:p-6 min-h-screen">
-  <div class="max-w-7xl mx-auto space-y-6">
+  <div class="max-w-[1440px] mx-auto space-y-6">
 
-    <!-- Top World Clocks Bar -->
+    <!-- Top Regional World Clocks -->
     <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 shadow-xl">
       <div class="flex items-center justify-between mb-3 border-b border-[var(--border)] pb-2.5">
         <div class="flex items-center gap-2">
           <span class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            Global Server & Event Clocks
+            Global Server & Rotation Clocks
           </span>
         </div>
-        <div class="text-[11px] text-[var(--muted)] flex items-center gap-1">
-          <span>Live Synchronized</span>
+        <div class="text-[11px] text-[var(--muted)] flex items-center gap-2">
+          <span class="bg-slate-800 text-slate-300 px-2 py-0.5 rounded font-mono text-[10px]">Auto-Synced every 15m</span>
+          <span class="text-emerald-400 font-semibold flex items-center gap-1">● Live</span>
         </div>
       </div>
 
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-        <div class="bg-slate-900/80 border border-[var(--border)] rounded-xl p-3 flex flex-col justify-between">
+        <div class="bg-slate-900/80 border border-amber-500/20 rounded-xl p-3 flex flex-col justify-between">
           <div class="flex items-center justify-between text-xs">
             <span class="font-bold text-white flex items-center gap-1.5">🇪🇺 Europe</span>
-            <span class="text-[10px] text-amber-400 font-mono font-semibold">CET (UTC+1)</span>
+            <span class="text-[10px] text-amber-400 font-mono font-bold px-1 rounded bg-amber-500/10 border border-amber-500/30">CET (UTC+1)</span>
           </div>
           <div id="clock-europe" class="text-xl font-black font-mono mt-1 text-white">--:--:--</div>
-          <div class="text-[10px] text-[var(--muted)]">London / Berlin / Paris</div>
+          <div class="text-[10px] text-[var(--muted)]">Primary Reference</div>
         </div>
 
-        <div class="bg-slate-900/80 border border-[var(--border)] rounded-xl p-3 flex flex-col justify-between">
+        <div class="bg-slate-900/80 border border-sky-500/20 rounded-xl p-3 flex flex-col justify-between">
           <div class="flex items-center justify-between text-xs">
             <span class="font-bold text-white flex items-center gap-1.5">🇺🇸 North America</span>
-            <span class="text-[10px] text-sky-400 font-mono font-semibold">ET (UTC-5)</span>
+            <span class="text-[10px] text-sky-400 font-mono font-bold px-1 rounded bg-sky-500/10 border border-sky-500/30">ET (UTC-5)</span>
           </div>
           <div id="clock-na" class="text-xl font-black font-mono mt-1 text-white">--:--:--</div>
-          <div class="text-[10px] text-[var(--muted)]">New York / Toronto</div>
+          <div class="text-[10px] text-[var(--muted)]">US East & West</div>
         </div>
 
-        <div class="bg-slate-900/80 border border-[var(--border)] rounded-xl p-3 flex flex-col justify-between">
+        <div class="bg-slate-900/80 border border-emerald-500/20 rounded-xl p-3 flex flex-col justify-between">
           <div class="flex items-center justify-between text-xs">
             <span class="font-bold text-white flex items-center gap-1.5">🇧🇷 South America</span>
-            <span class="text-[10px] text-emerald-400 font-mono font-semibold">BRT (UTC-3)</span>
+            <span class="text-[10px] text-emerald-400 font-mono font-bold px-1 rounded bg-emerald-500/10 border border-emerald-500/30">BRT (UTC-3)</span>
           </div>
           <div id="clock-sa" class="text-xl font-black font-mono mt-1 text-white">--:--:--</div>
-          <div class="text-[10px] text-[var(--muted)]">São Paulo / Buenos Aires</div>
+          <div class="text-[10px] text-[var(--muted)]">Brazil & LatAm</div>
         </div>
 
-        <div class="bg-slate-900/80 border border-[var(--border)] rounded-xl p-3 flex flex-col justify-between">
+        <div class="bg-slate-900/80 border border-purple-500/20 rounded-xl p-3 flex flex-col justify-between">
           <div class="flex items-center justify-between text-xs">
             <span class="font-bold text-white flex items-center gap-1.5">🇦🇺 Oceania</span>
-            <span class="text-[10px] text-purple-400 font-mono font-semibold">AEDT (UTC+11)</span>
+            <span class="text-[10px] text-purple-400 font-mono font-bold px-1 rounded bg-purple-500/10 border border-purple-500/30">AEDT (UTC+11)</span>
           </div>
           <div id="clock-oceania" class="text-xl font-black font-mono mt-1 text-white">--:--:--</div>
           <div class="text-[10px] text-[var(--muted)]">Sydney / Melbourne</div>
         </div>
 
-        <div class="bg-slate-900/80 border border-[var(--border)] rounded-xl p-3 flex flex-col justify-between">
+        <div class="bg-slate-900/80 border border-rose-500/20 rounded-xl p-3 flex flex-col justify-between">
           <div class="flex items-center justify-between text-xs">
             <span class="font-bold text-white flex items-center gap-1.5">🇯🇵 Asia</span>
-            <span class="text-[10px] text-rose-400 font-mono font-semibold">JST (UTC+9)</span>
+            <span class="text-[10px] text-rose-400 font-mono font-bold px-1 rounded bg-rose-500/10 border border-rose-500/30">JST (UTC+9)</span>
           </div>
           <div id="clock-asia" class="text-xl font-black font-mono mt-1 text-white">--:--:--</div>
-          <div class="text-[10px] text-[var(--muted)]">Tokyo / Seoul / Singapore</div>
+          <div class="text-[10px] text-[var(--muted)]">Tokyo & East Asia</div>
         </div>
       </div>
     </div>
@@ -107,33 +114,39 @@
           <span class="px-2.5 py-0.5 text-xs font-bold uppercase rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">
             ARC RAIDERS
           </span>
-          <span class="text-xs text-[var(--muted)]">Map Conditions & Rotation Analyzer</span>
+          <span class="text-xs text-[var(--muted)]">Official Rotation Tracker & Timeline Matrix</span>
         </div>
         <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight mt-1 text-white">
-          Event Timeline & Rotation Matrix
+          Event Timeline & Map Rotation Matrix
         </h1>
         <p class="text-xs md:text-sm text-[var(--muted)] mt-0.5">
-          Expand any condition to inspect regional schedules across Europe, North America, South America, Asia, and Oceania.
+          Left column lists all map conditions. Expand any event (<span class="text-slate-300 font-mono">▼</span>) to inspect its 5 regional timezone tracks (EU, NA, SA, ASIA, OCE).
         </p>
       </div>
 
-      <!-- Controls: History Filter + Search -->
+      <!-- Controls: Window shift, History filter & Search -->
       <div class="flex flex-wrap items-center gap-3">
         <div class="flex items-center bg-[var(--card)] border border-[var(--border)] rounded-xl p-1 text-xs">
-          <span class="text-[11px] text-[var(--muted)] px-2.5 font-semibold">History:</span>
+          <span class="text-[11px] text-[var(--muted)] px-2 font-semibold">Timeline:</span>
+          <button onclick="shiftTimeline(-3)" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold transition" title="Shift earlier">◀ -3h</button>
+          <button onclick="resetTimelineToNow()" class="px-2.5 py-1 rounded bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 font-semibold border border-amber-500/30 transition mx-1">Now</button>
+          <button onclick="shiftTimeline(3)" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold transition" title="Shift later">+3h ▶</button>
+        </div>
+
+        <div class="flex items-center bg-[var(--card)] border border-[var(--border)] rounded-xl p-1 text-xs">
+          <span class="text-[11px] text-[var(--muted)] px-2 font-semibold">History:</span>
           <select id="selectedTimeframe" onchange="renderAll()" class="bg-slate-900 text-white font-medium rounded-lg px-2.5 py-1.5 focus:outline-none border border-slate-700 cursor-pointer">
-            <option value="ALL" selected>📅 All Time (Multi-Month)</option>
-            <option value="MONTH">📆 Current Month</option>
-            <option value="WEEK">🗓️ Last 7 Days</option>
-            <option value="TODAY">⚡ Today Only</option>
+            <option value="ALL" selected>📅 All Multi-Month History</option>
+            <option value="TODAY">⚡ Today (Active & Next)</option>
+            <option value="WEEK">🗓️ Past 7 Days</option>
           </select>
         </div>
 
         <input 
           id="searchInput" 
           type="text" 
-          placeholder="Filter event or map..." 
-          class="bg-[var(--card)] border border-[var(--border)] rounded-xl px-3.5 py-2 text-xs text-white placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400 w-56 transition"
+          placeholder="Search condition or map..." 
+          class="bg-[var(--card)] border border-[var(--border)] rounded-xl px-3.5 py-2 text-xs text-white placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400 w-52 transition"
           oninput="renderAll()"
         />
       </div>
@@ -144,6 +157,9 @@
       <button onclick="setTab('timeline')" id="tab-timeline" class="pb-3 text-amber-400 border-b-2 border-amber-400 transition flex items-center gap-1.5 whitespace-nowrap">
         📅 Interactive Timeline Grid
       </button>
+      <button onclick="setTab('schedule')" id="tab-schedule" class="pb-3 text-[var(--muted)] hover:text-white transition flex items-center gap-1.5 whitespace-nowrap">
+        ⏰ World Schedule Table
+      </button>
       <button onclick="setTab('combinations')" id="tab-combinations" class="pb-3 text-[var(--muted)] hover:text-white transition flex items-center gap-1.5 whitespace-nowrap">
         👥 Concurrent Slots
       </button>
@@ -153,69 +169,98 @@
       <button onclick="setTab('matrix')" id="tab-matrix" class="pb-3 text-[var(--muted)] hover:text-white transition flex items-center gap-1.5 whitespace-nowrap">
         🗺️ Map Matrix
       </button>
-      <button onclick="setTab('schedule')" id="tab-schedule" class="pb-3 text-[var(--muted)] hover:text-white transition flex items-center gap-1.5 whitespace-nowrap">
-        ⏰ World Schedule
-      </button>
     </div>
 
     <!-- TAB 1: INTERACTIVE TIMELINE GRID -->
     <div id="view-timeline" class="space-y-4">
       <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 md:p-6 shadow-2xl relative overflow-hidden">
         
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 mb-2 border-b border-[var(--border)] text-xs text-[var(--muted)]">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 mb-2 border-b border-[var(--border)] text-xs text-[var(--muted)]">
           <div class="flex items-center gap-2">
-            <span class="font-semibold text-white">Click any event</span> to expand its 5 regional timezone tracks (EU, NA, SA, ASIA, OCE).
+            <span class="font-semibold text-white">Click any condition</span> to expand its regional breakdown. Off-rotation conditions remain visible at the bottom.
           </div>
           <div class="flex items-center gap-3">
             <span class="flex items-center gap-1.5 text-emerald-400 font-medium">
               <span class="w-2.5 h-2.5 rounded border border-emerald-500 bg-emerald-500/20"></span> Active Now
             </span>
             <span class="flex items-center gap-1.5 text-sky-400 font-medium">
-              <span class="w-2.5 h-2.5 rounded border border-sky-500 bg-sky-500/20"></span> Coming Up
+              <span class="w-2.5 h-2.5 rounded border border-sky-500 bg-sky-500/20"></span> Upcoming
             </span>
             <span class="flex items-center gap-1.5 text-slate-400 font-medium">
               <span class="w-2.5 h-2.5 rounded border border-slate-700 bg-slate-800"></span> Finished
+            </span>
+            <span class="flex items-center gap-1.5 text-amber-400 font-medium">
+              <span class="w-2.5 h-2.5 rounded border border-amber-500/40 bg-amber-500/10"></span> Off-Rotation
             </span>
           </div>
         </div>
 
         <div class="overflow-x-auto timeline-scroll relative">
-          <div id="timelineGridContainer" class="min-w-[900px]"></div>
+          <div id="timelineGridContainer" class="min-w-[1050px]"></div>
         </div>
 
       </div>
     </div>
 
-    <!-- TAB 2: COMBINATIONS PER SLOT -->
+    <!-- TAB 2: WORLD SCHEDULE TABLE -->
+    <div id="view-schedule" class="hidden space-y-4">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 overflow-x-auto">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 class="text-base font-bold text-white">Full Chronological Rotation Schedule</h2>
+            <p class="text-xs text-[var(--muted)]">Real-time status, maps, and local timezone conversions for each region</p>
+          </div>
+          <div id="scheduleCounter" class="text-xs font-mono text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded"></div>
+        </div>
+        <table class="w-full text-left text-xs">
+          <thead>
+            <tr class="border-b border-[var(--border)] text-[var(--muted)]">
+              <th class="py-2.5 px-3">Status</th>
+              <th class="py-2.5 px-3">Condition</th>
+              <th class="py-2.5 px-3">Map Sector</th>
+              <th class="py-2.5 px-3">🇪🇺 Europe (CET)</th>
+              <th class="py-2.5 px-3">🇺🇸 NA (ET)</th>
+              <th class="py-2.5 px-3">🇧🇷 SA (BRT)</th>
+              <th class="py-2.5 px-3">🇦🇺 Oceania (AEDT)</th>
+              <th class="py-2.5 px-3">🇯🇵 Asia (JST)</th>
+              <th class="py-2.5 px-3">Live Countdown</th>
+            </tr>
+          </thead>
+          <tbody id="scheduleTableBody" class="divide-y divide-[var(--border)]"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB 3: CONCURRENT SECTOR COMBINATIONS -->
     <div id="view-combinations" class="hidden space-y-4">
       <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5">
         <h2 class="text-base font-bold text-white mb-1">Concurrent Sector Combinations</h2>
-        <p class="text-xs text-[var(--muted)] mb-4">Which 5 conditions run simultaneously across sectors?</p>
+        <p class="text-xs text-[var(--muted)] mb-4">Modifiers running simultaneously across sectors for each 1-hour window</p>
         <div id="combinationsContainer" class="space-y-4"></div>
       </div>
     </div>
 
-    <!-- TAB 3: FREQUENCY & UPTIME -->
+    <!-- TAB 4: FREQUENCY & UPTIME -->
     <div id="view-frequency" class="hidden space-y-4">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5">
-          <h2 class="text-base font-bold text-white mb-1">Top Conditions by Frequency</h2>
-          <p class="text-xs text-[var(--muted)] mb-4">Uptime and occurrences across multi-month history</p>
+          <h2 class="text-base font-bold text-white mb-1">Condition Occurrence & Uptime</h2>
+          <p class="text-xs text-[var(--muted)] mb-4">Historical occurrences and total active hours across months</p>
           <div id="frequencyBars" class="space-y-3"></div>
         </div>
         <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5">
-          <h2 class="text-base font-bold text-white mb-1">Most Active Sectors (Maps)</h2>
-          <p class="text-xs text-[var(--muted)] mb-4">Total modifiers per map</p>
+          <h2 class="text-base font-bold text-white mb-1">Most Active Maps</h2>
+          <p class="text-xs text-[var(--muted)] mb-4">Total event instances recorded per map sector</p>
           <div id="mapBars" class="space-y-3"></div>
         </div>
       </div>
     </div>
 
-    <!-- TAB 4: CROSS MATRIX -->
+    <!-- TAB 5: CROSS MATRIX -->
     <div id="view-matrix" class="hidden">
       <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 overflow-x-auto">
         <h2 class="text-base font-bold text-white mb-1">Map & Condition Cross-Matrix</h2>
-        <p class="text-xs text-[var(--muted)] mb-4">Historical occurrence matrix</p>
+        <p class="text-xs text-[var(--muted)] mb-4">Frequency of each condition per map in multi-month history</p>
         <table class="w-full text-left text-xs border-collapse">
           <thead>
             <tr id="matrixHeader" class="border-b border-[var(--border)] text-[var(--muted)]">
@@ -227,122 +272,78 @@
       </div>
     </div>
 
-    <!-- TAB 5: WORLD SCHEDULE TABLE -->
-    <div id="view-schedule" class="hidden space-y-4">
-      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 overflow-x-auto">
-        <h2 class="text-base font-bold text-white mb-4">Full Chronological Schedule</h2>
-        <table class="w-full text-left text-xs">
-          <thead>
-            <tr class="border-b border-[var(--border)] text-[var(--muted)]">
-              <th class="py-2.5 px-3">Status</th>
-              <th class="py-2.5 px-3">Condition</th>
-              <th class="py-2.5 px-3">Sector</th>
-              <th class="py-2.5 px-3">🇪🇺 Europe (CET)</th>
-              <th class="py-2.5 px-3">🇺🇸 NA (ET)</th>
-              <th class="py-2.5 px-3">🇧🇷 SA (BRT)</th>
-              <th class="py-2.5 px-3">🇦🇺 Oceania (AEDT)</th>
-              <th class="py-2.5 px-3">🇯🇵 Asia (JST)</th>
-              <th class="py-2.5 px-3">Live Timer</th>
-            </tr>
-          </thead>
-          <tbody id="scheduleTableBody" class="divide-y divide-[var(--border)]"></tbody>
-        </table>
-      </div>
-    </div>
+    <!-- Footer Attribution -->
+    <footer class="pt-6 pb-8 border-t border-[var(--border)] text-center text-xs text-[var(--muted)] space-y-2">
+      <p>
+        ARC Raiders™ is a trademark of Embark Studios AB. Event rotation tracker powered by official game data &amp; 
+        <a href="https://metaforge.app/arc-raiders" target="_blank" rel="noopener" class="text-amber-400 hover:underline">MetaForge.app</a> API and Tooltips.
+      </p>
+      <p class="text-[11px] text-slate-500">
+        Permanent multi-month MongoDB storage retention active. Flat data snapshot saved in repository.
+      </p>
+    </footer>
 
   </div>
 
   <script>
-    // Embedded initial dataset from MongoDB to guarantee instant display on any load
-    const EMBEDDED_DATASET = [
-      { "condition": "ARC Frigate", "map": "Buried City", "startTime": "2026-11-11T14:00:00", "endTime": "2026-11-11T15:00:00", "durationMinutes": 60, "timer": "3:07" },
-      { "condition": "Lush Blooms", "map": "Dam Battlegrounds", "startTime": "2026-11-11T14:00:00", "endTime": "2026-11-11T15:00:00", "durationMinutes": 60, "timer": "3:07" },
-      { "condition": "Night Raid", "map": "Stella Montis", "startTime": "2026-11-11T14:00:00", "endTime": "2026-11-11T15:00:00", "durationMinutes": 60, "timer": "3:07" },
-      { "condition": "Prospecting Probes", "map": "Spaceport", "startTime": "2026-11-11T14:00:00", "endTime": "2026-11-11T15:00:00", "durationMinutes": 60, "timer": "3:07" },
-      { "condition": "Redirection", "map": "Pendola Pass", "startTime": "2026-11-11T14:00:00", "endTime": "2026-11-11T15:00:00", "durationMinutes": 60, "timer": "3:07" },
-      { "condition": "ARC Frigate", "map": "The Blue Gate", "startTime": "2026-11-11T15:00:00", "endTime": "2026-11-11T16:00:00", "durationMinutes": 60, "timer": "3:07" },
-      { "condition": "Beachcombing", "map": "Riven Tides", "startTime": "2026-11-11T15:00:00", "endTime": "2026-11-11T16:00:00", "durationMinutes": 60, "timer": "3:07" },
-      { "condition": "Bird City", "map": "Buried City", "startTime": "2026-11-11T15:00:00", "endTime": "2026-11-11T16:00:00", "durationMinutes": 60, "timer": "3:07" },
-      { "condition": "Hidden Bunker", "map": "Spaceport", "startTime": "2026-11-11T15:00:00", "endTime": "2026-11-11T16:00:00", "durationMinutes": 60, "timer": "3:07" },
-      { "condition": "Night Raid", "map": "Pendola Pass", "startTime": "2026-11-11T15:00:00", "endTime": "2026-11-11T16:00:00", "durationMinutes": 60, "timer": "3:07" },
-      { "condition": "Lush Blooms", "map": "Buried City", "startTime": "2026-11-11T16:00:00", "endTime": "2026-11-11T17:00:00", "durationMinutes": 60, "timer": "1:03:07" },
-      { "condition": "Prospecting Probes", "map": "Riven Tides", "startTime": "2026-11-11T16:00:00", "endTime": "2026-11-11T17:00:00", "durationMinutes": 60, "timer": "1:03:07" },
-      { "condition": "Close Scrutiny", "map": "Buried City", "startTime": "2026-11-11T17:00:00", "endTime": "2026-11-11T18:00:00", "durationMinutes": 60, "timer": "2:03:07" },
-      { "condition": "Harvester", "map": "The Blue Gate", "startTime": "2026-11-11T17:00:00", "endTime": "2026-11-11T18:00:00", "durationMinutes": 60, "timer": "2:03:07" },
-      { "condition": "Matriarch", "map": "Spaceport", "startTime": "2026-11-11T17:00:00", "endTime": "2026-11-11T18:00:00", "durationMinutes": 60, "timer": "2:03:07" },
-      { "condition": "Redirection", "map": "Pendola Pass", "startTime": "2026-11-11T20:00:00", "endTime": "2026-11-11T21:00:00", "durationMinutes": 60, "timer": "5:03:07" },
-      { "condition": "Hurricane", "map": "Dam Battlegrounds", "startTime": "2026-11-11T21:00:00", "endTime": "2026-11-11T22:00:00", "durationMinutes": 60, "timer": "6:03:07" }
+    // Embedded dataset generated from persistent MongoDB history
+    const EMBEDDED_DATASET = [{"condition": "Beachcombing", "map": "Riven Tides", "startTime": "2026-11-13T01:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-13T02:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/beachcombing.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794531600000, 1794535200000], "north-america": [1794556800000, 1794560400000], "south-america": [1794553200000, 1794556800000], "asia": [1794513600000, 1794517200000], "oceania": [1794499200000, 1794502800000]}, "slug": "beachcombing", "url": "https://arcraiders.com/de/map-conditions/beachcombing"}, {"condition": "ARC Frigate", "map": "Pendola Pass", "startTime": "2026-11-13T01:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-13T02:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794531600000, 1794535200000], "north-america": [1794556800000, 1794560400000], "south-america": [1794553200000, 1794556800000], "asia": [1794513600000, 1794517200000], "oceania": [1794499200000, 1794502800000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"condition": "Night Raid", "map": "Pendola Pass", "startTime": "2026-11-13T01:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-13T02:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794531600000, 1794535200000], "north-america": [1794556800000, 1794560400000], "south-america": [1794553200000, 1794556800000], "asia": [1794513600000, 1794517200000], "oceania": [1794499200000, 1794502800000]}, "slug": "night-raid", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"condition": "Bird City", "map": "Buried City", "startTime": "2026-11-13T01:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-13T02:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/birdcity.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794531600000, 1794535200000], "north-america": [1794556800000, 1794560400000], "south-america": [1794553200000, 1794556800000], "asia": [1794513600000, 1794517200000], "oceania": [1794499200000, 1794502800000]}, "slug": "bird-city", "url": "https://arcraiders.com/de/map-conditions/bird-city"}, {"condition": "Prospecting Probes", "map": "Dam Battlegrounds", "startTime": "2026-11-13T00:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-13T01:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/probe.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794528000000, 1794531600000], "north-america": [1794553200000, 1794556800000], "south-america": [1794549600000, 1794553200000], "asia": [1794510000000, 1794513600000], "oceania": [1794495600000, 1794499200000]}, "slug": "prospecting-probes", "url": "https://arcraiders.com/de/map-conditions/prospecting-probes"}, {"condition": "ARC Frigate", "map": "The Blue Gate", "startTime": "2026-11-13T00:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-13T01:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794528000000, 1794531600000], "north-america": [1794553200000, 1794556800000], "south-america": [1794549600000, 1794553200000], "asia": [1794510000000, 1794513600000], "oceania": [1794495600000, 1794499200000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"condition": "Matriarch", "map": "Spaceport", "startTime": "2026-11-13T00:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-13T01:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/matriarch.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794528000000, 1794531600000], "north-america": [1794553200000, 1794556800000], "south-america": [1794549600000, 1794553200000], "asia": [1794510000000, 1794513600000], "oceania": [1794495600000, 1794499200000]}, "slug": "matriarch", "url": "https://arcraiders.com/de/map-conditions/matriarch"}, {"condition": "Night Raid", "map": "Buried City", "startTime": "2026-11-13T00:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-13T01:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794528000000, 1794531600000], "north-america": [1794553200000, 1794556800000], "south-america": [1794549600000, 1794553200000], "asia": [1794510000000, 1794513600000], "oceania": [1794495600000, 1794499200000]}, "slug": "night-raid", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"condition": "Lush Blooms", "map": "Dam Battlegrounds", "startTime": "2026-11-12T23:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-13T00:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/lush.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794524400000, 1794528000000], "north-america": [1794549600000, 1794553200000], "south-america": [1794546000000, 1794549600000], "asia": [1794506400000, 1794510000000], "oceania": [1794492000000, 1794495600000]}, "slug": "lush-blooms", "url": "https://arcraiders.com/de/map-conditions/lush-blooms"}, {"condition": "ARC Frigate", "map": "Spaceport", "startTime": "2026-11-12T23:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-13T00:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794524400000, 1794528000000], "north-america": [1794549600000, 1794553200000], "south-america": [1794546000000, 1794549600000], "asia": [1794506400000, 1794510000000], "oceania": [1794492000000, 1794495600000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"condition": "Night Raid", "map": "Stella Montis", "startTime": "2026-11-12T23:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-13T00:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794524400000, 1794528000000], "north-america": [1794549600000, 1794553200000], "south-america": [1794546000000, 1794549600000], "asia": [1794506400000, 1794510000000], "oceania": [1794492000000, 1794495600000]}, "slug": "night-raid", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"condition": "Electromagnetic Storm", "map": "Dam Battlegrounds", "startTime": "2026-11-12T22:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T23:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/electrical.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794520800000, 1794524400000], "north-america": [1794546000000, 1794549600000], "south-america": [1794542400000, 1794546000000], "asia": [1794502800000, 1794506400000], "oceania": [1794488400000, 1794492000000]}, "slug": "electromagnetic-storm", "url": "https://arcraiders.com/de/map-conditions/electromagnetic-storm"}, {"condition": "Night Raid", "map": "Spaceport", "startTime": "2026-11-12T22:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T23:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794520800000, 1794524400000], "north-america": [1794546000000, 1794549600000], "south-america": [1794542400000, 1794546000000], "asia": [1794502800000, 1794506400000], "oceania": [1794488400000, 1794492000000]}, "slug": "night-raid", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"condition": "Beachcombing", "map": "Riven Tides", "startTime": "2026-11-12T22:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T23:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/beachcombing.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794520800000, 1794524400000], "north-america": [1794546000000, 1794549600000], "south-america": [1794542400000, 1794546000000], "asia": [1794502800000, 1794506400000], "oceania": [1794488400000, 1794492000000]}, "slug": "beachcombing", "url": "https://arcraiders.com/de/map-conditions/beachcombing"}, {"condition": "ARC Frigate", "map": "Pendola Pass", "startTime": "2026-11-12T22:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T23:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794520800000, 1794524400000], "north-america": [1794546000000, 1794549600000], "south-america": [1794542400000, 1794546000000], "asia": [1794502800000, 1794506400000], "oceania": [1794488400000, 1794492000000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"condition": "Bird City", "map": "Buried City", "startTime": "2026-11-12T22:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T23:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/birdcity.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794520800000, 1794524400000], "north-america": [1794546000000, 1794549600000], "south-america": [1794542400000, 1794546000000], "asia": [1794502800000, 1794506400000], "oceania": [1794488400000, 1794492000000]}, "slug": "bird-city", "url": "https://arcraiders.com/de/map-conditions/bird-city"}, {"condition": "Close Scrutiny", "map": "Dam Battlegrounds", "startTime": "2026-11-12T21:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T22:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/closescrutiny.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794517200000, 1794520800000], "north-america": [1794542400000, 1794546000000], "south-america": [1794538800000, 1794542400000], "asia": [1794499200000, 1794502800000], "oceania": [1794484800000, 1794488400000]}, "slug": "close-scrutiny", "url": "https://arcraiders.com/de/map-conditions/close-scrutiny"}, {"condition": "Night Raid", "map": "Spaceport", "startTime": "2026-11-12T21:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T22:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794517200000, 1794520800000], "north-america": [1794542400000, 1794546000000], "south-america": [1794538800000, 1794542400000], "asia": [1794499200000, 1794502800000], "oceania": [1794484800000, 1794488400000]}, "slug": "night-raid", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"condition": "Beachcombing", "map": "Riven Tides", "startTime": "2026-11-12T21:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T22:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/beachcombing.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794517200000, 1794520800000], "north-america": [1794542400000, 1794546000000], "south-america": [1794538800000, 1794542400000], "asia": [1794499200000, 1794502800000], "oceania": [1794484800000, 1794488400000]}, "slug": "beachcombing", "url": "https://arcraiders.com/de/map-conditions/beachcombing"}, {"condition": "ARC Frigate", "map": "Pendola Pass", "startTime": "2026-11-12T21:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T22:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794517200000, 1794520800000], "north-america": [1794542400000, 1794546000000], "south-america": [1794538800000, 1794542400000], "asia": [1794499200000, 1794502800000], "oceania": [1794484800000, 1794488400000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"condition": "Bird City", "map": "Buried City", "startTime": "2026-11-12T21:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T22:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/birdcity.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794517200000, 1794520800000], "north-america": [1794542400000, 1794546000000], "south-america": [1794538800000, 1794542400000], "asia": [1794499200000, 1794502800000], "oceania": [1794484800000, 1794488400000]}, "slug": "bird-city", "url": "https://arcraiders.com/de/map-conditions/bird-city"}, {"condition": "ARC Frigate", "map": "Dam Battlegrounds", "startTime": "2026-11-12T20:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T21:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794513600000, 1794517200000], "north-america": [1794538800000, 1794542400000], "south-america": [1794535200000, 1794538800000], "asia": [1794495600000, 1794499200000], "oceania": [1794481200000, 1794484800000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"condition": "Prospecting Probes", "map": "The Blue Gate", "startTime": "2026-11-12T20:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T21:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/probe.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794513600000, 1794517200000], "north-america": [1794538800000, 1794542400000], "south-america": [1794535200000, 1794538800000], "asia": [1794495600000, 1794499200000], "oceania": [1794481200000, 1794484800000]}, "slug": "prospecting-probes", "url": "https://arcraiders.com/de/map-conditions/prospecting-probes"}, {"condition": "Lush Blooms", "map": "Spaceport", "startTime": "2026-11-12T20:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T21:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/lush.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794513600000, 1794517200000], "north-america": [1794538800000, 1794542400000], "south-america": [1794535200000, 1794538800000], "asia": [1794495600000, 1794499200000], "oceania": [1794481200000, 1794484800000]}, "slug": "lush-blooms", "url": "https://arcraiders.com/de/map-conditions/lush-blooms"}, {"condition": "Night Raid", "map": "Stella Montis", "startTime": "2026-11-12T20:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T21:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794513600000, 1794517200000], "north-america": [1794538800000, 1794542400000], "south-america": [1794535200000, 1794538800000], "asia": [1794495600000, 1794499200000], "oceania": [1794481200000, 1794484800000]}, "slug": "night-raid", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"condition": "Harvester", "map": "Dam Battlegrounds", "startTime": "2026-11-12T19:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T20:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/harvester.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794510000000, 1794513600000], "north-america": [1794535200000, 1794538800000], "south-america": [1794531600000, 1794535200000], "asia": [1794492000000, 1794495600000], "oceania": [1794477600000, 1794481200000]}, "slug": "harvester", "url": "https://arcraiders.com/de/map-conditions/harvester"}, {"condition": "ARC Frigate", "map": "The Blue Gate", "startTime": "2026-11-12T19:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T20:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794510000000, 1794513600000], "north-america": [1794535200000, 1794538800000], "south-america": [1794531600000, 1794535200000], "asia": [1794492000000, 1794495600000], "oceania": [1794477600000, 1794481200000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"condition": "Matriarch", "map": "Spaceport", "startTime": "2026-11-12T19:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T20:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/matriarch.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794510000000, 1794513600000], "north-america": [1794535200000, 1794538800000], "south-america": [1794531600000, 1794535200000], "asia": [1794492000000, 1794495600000], "oceania": [1794477600000, 1794481200000]}, "slug": "matriarch", "url": "https://arcraiders.com/de/map-conditions/matriarch"}, {"condition": "Close Scrutiny", "map": "Buried City", "startTime": "2026-11-12T19:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T20:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/closescrutiny.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794510000000, 1794513600000], "north-america": [1794535200000, 1794538800000], "south-america": [1794531600000, 1794535200000], "asia": [1794492000000, 1794495600000], "oceania": [1794477600000, 1794481200000]}, "slug": "close-scrutiny", "url": "https://arcraiders.com/de/map-conditions/close-scrutiny"}, {"condition": "Night Raid", "map": "Riven Tides", "startTime": "2026-11-12T18:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T19:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794506400000, 1794510000000], "north-america": [1794531600000, 1794535200000], "south-america": [1794528000000, 1794531600000], "asia": [1794488400000, 1794492000000], "oceania": [1794474000000, 1794477600000]}, "slug": "night-raid", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"condition": "Beachcombing", "map": "Riven Tides", "startTime": "2026-11-12T18:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T19:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/beachcombing.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794506400000, 1794510000000], "north-america": [1794531600000, 1794535200000], "south-america": [1794528000000, 1794531600000], "asia": [1794488400000, 1794492000000], "oceania": [1794474000000, 1794477600000]}, "slug": "beachcombing", "url": "https://arcraiders.com/de/map-conditions/beachcombing"}, {"condition": "ARC Frigate", "map": "Buried City", "startTime": "2026-11-12T18:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T19:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794506400000, 1794510000000], "north-america": [1794531600000, 1794535200000], "south-america": [1794528000000, 1794531600000], "asia": [1794488400000, 1794492000000], "oceania": [1794474000000, 1794477600000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"condition": "ARC Frigate", "map": "Dam Battlegrounds", "startTime": "2026-11-12T17:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T18:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794502800000, 1794506400000], "north-america": [1794528000000, 1794531600000], "south-america": [1794524400000, 1794528000000], "asia": [1794484800000, 1794488400000], "oceania": [1794470400000, 1794474000000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"condition": "Harvester", "map": "The Blue Gate", "startTime": "2026-11-12T17:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T18:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/harvester.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794502800000, 1794506400000], "north-america": [1794528000000, 1794531600000], "south-america": [1794524400000, 1794528000000], "asia": [1794484800000, 1794488400000], "oceania": [1794470400000, 1794474000000]}, "slug": "harvester", "url": "https://arcraiders.com/de/map-conditions/harvester"}, {"condition": "Matriarch", "map": "Spaceport", "startTime": "2026-11-12T17:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T18:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/matriarch.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794502800000, 1794506400000], "north-america": [1794528000000, 1794531600000], "south-america": [1794524400000, 1794528000000], "asia": [1794484800000, 1794488400000], "oceania": [1794470400000, 1794474000000]}, "slug": "matriarch", "url": "https://arcraiders.com/de/map-conditions/matriarch"}, {"condition": "Hurricane", "map": "Buried City", "startTime": "2026-11-12T17:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T18:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/hurricane.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794502800000, 1794506400000], "north-america": [1794528000000, 1794531600000], "south-america": [1794524400000, 1794528000000], "asia": [1794484800000, 1794488400000], "oceania": [1794470400000, 1794474000000]}, "slug": "hurricane", "url": "https://arcraiders.com/de/map-conditions/hurricane"}, {"condition": "ARC Frigate", "map": "Spaceport", "startTime": "2026-11-12T16:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T17:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794499200000, 1794502800000], "north-america": [1794524400000, 1794528000000], "south-america": [1794520800000, 1794524400000], "asia": [1794481200000, 1794484800000], "oceania": [1794466800000, 1794470400000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"condition": "Prospecting Probes", "map": "Riven Tides", "startTime": "2026-11-12T16:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T17:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/probe.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794499200000, 1794502800000], "north-america": [1794524400000, 1794528000000], "south-america": [1794520800000, 1794524400000], "asia": [1794481200000, 1794484800000], "oceania": [1794466800000, 1794470400000]}, "slug": "prospecting-probes", "url": "https://arcraiders.com/de/map-conditions/prospecting-probes"}, {"condition": "Night Raid", "map": "Stella Montis", "startTime": "2026-11-12T16:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T17:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794499200000, 1794502800000], "north-america": [1794524400000, 1794528000000], "south-america": [1794520800000, 1794524400000], "asia": [1794481200000, 1794484800000], "oceania": [1794466800000, 1794470400000]}, "slug": "night-raid", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"condition": "Lush Blooms", "map": "Buried City", "startTime": "2026-11-12T16:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T17:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/lush.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794499200000, 1794502800000], "north-america": [1794524400000, 1794528000000], "south-america": [1794520800000, 1794524400000], "asia": [1794481200000, 1794484800000], "oceania": [1794466800000, 1794470400000]}, "slug": "lush-blooms", "url": "https://arcraiders.com/de/map-conditions/lush-blooms"}, {"condition": "Electromagnetic Storm", "map": "Dam Battlegrounds", "startTime": "2026-11-12T15:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T16:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/electrical.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794495600000, 1794499200000], "north-america": [1794520800000, 1794524400000], "south-america": [1794517200000, 1794520800000], "asia": [1794477600000, 1794481200000], "oceania": [1794463200000, 1794466800000]}, "slug": "electromagnetic-storm", "url": "https://arcraiders.com/de/map-conditions/electromagnetic-storm"}, {"condition": "ARC Frigate", "map": "The Blue Gate", "startTime": "2026-11-12T15:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T16:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794495600000, 1794499200000], "north-america": [1794520800000, 1794524400000], "south-america": [1794517200000, 1794520800000], "asia": [1794477600000, 1794481200000], "oceania": [1794463200000, 1794466800000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"condition": "Beachcombing", "map": "Riven Tides", "startTime": "2026-11-12T15:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T16:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/beachcombing.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794495600000, 1794499200000], "north-america": [1794520800000, 1794524400000], "south-america": [1794517200000, 1794520800000], "asia": [1794477600000, 1794481200000], "oceania": [1794463200000, 1794466800000]}, "slug": "beachcombing", "url": "https://arcraiders.com/de/map-conditions/beachcombing"}, {"condition": "Night Raid", "map": "Pendola Pass", "startTime": "2026-11-12T15:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T16:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794495600000, 1794499200000], "north-america": [1794520800000, 1794524400000], "south-america": [1794517200000, 1794520800000], "asia": [1794477600000, 1794481200000], "oceania": [1794463200000, 1794466800000]}, "slug": "night-raid", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"condition": "Bird City", "map": "Buried City", "startTime": "2026-11-12T15:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T16:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/birdcity.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794495600000, 1794499200000], "north-america": [1794520800000, 1794524400000], "south-america": [1794517200000, 1794520800000], "asia": [1794477600000, 1794481200000], "oceania": [1794463200000, 1794466800000]}, "slug": "bird-city", "url": "https://arcraiders.com/de/map-conditions/bird-city"}, {"condition": "Lush Blooms", "map": "Dam Battlegrounds", "startTime": "2026-11-12T14:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T15:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/lush.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794492000000, 1794495600000], "north-america": [1794517200000, 1794520800000], "south-america": [1794513600000, 1794517200000], "asia": [1794474000000, 1794477600000], "oceania": [1794459600000, 1794463200000]}, "slug": "lush-blooms", "url": "https://arcraiders.com/de/map-conditions/lush-blooms"}, {"condition": "Prospecting Probes", "map": "Spaceport", "startTime": "2026-11-12T14:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T15:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/probe.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794492000000, 1794495600000], "north-america": [1794517200000, 1794520800000], "south-america": [1794513600000, 1794517200000], "asia": [1794474000000, 1794477600000], "oceania": [1794459600000, 1794463200000]}, "slug": "prospecting-probes", "url": "https://arcraiders.com/de/map-conditions/prospecting-probes"}, {"condition": "Night Raid", "map": "Stella Montis", "startTime": "2026-11-12T14:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T15:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794492000000, 1794495600000], "north-america": [1794517200000, 1794520800000], "south-america": [1794513600000, 1794517200000], "asia": [1794474000000, 1794477600000], "oceania": [1794459600000, 1794463200000]}, "slug": "night-raid", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"condition": "Redirection", "map": "Pendola Pass", "startTime": "2026-11-12T14:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T15:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/redirection.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794492000000, 1794495600000], "north-america": [1794492000000, 1794495600000], "south-america": [1794492000000, 1794495600000], "asia": [1794492000000, 1794495600000], "oceania": [1794492000000, 1794495600000]}, "slug": "redirection", "url": "https://arcraiders.com/de/map-conditions/redirection"}, {"condition": "ARC Frigate", "map": "Buried City", "startTime": "2026-11-12T14:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T15:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794492000000, 1794495600000], "north-america": [1794517200000, 1794520800000], "south-america": [1794513600000, 1794517200000], "asia": [1794474000000, 1794477600000], "oceania": [1794459600000, 1794463200000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"condition": "Harvester", "map": "Dam Battlegrounds", "startTime": "2026-11-12T13:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T14:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/harvester.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794488400000, 1794492000000], "north-america": [1794513600000, 1794517200000], "south-america": [1794510000000, 1794513600000], "asia": [1794470400000, 1794474000000], "oceania": [1794456000000, 1794459600000]}, "slug": "harvester", "url": "https://arcraiders.com/de/map-conditions/harvester"}, {"condition": "Matriarch", "map": "The Blue Gate", "startTime": "2026-11-12T13:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T14:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/matriarch.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794488400000, 1794492000000], "north-america": [1794513600000, 1794517200000], "south-america": [1794510000000, 1794513600000], "asia": [1794470400000, 1794474000000], "oceania": [1794456000000, 1794459600000]}, "slug": "matriarch", "url": "https://arcraiders.com/de/map-conditions/matriarch"}, {"condition": "ARC Frigate", "map": "Spaceport", "startTime": "2026-11-12T13:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T14:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794488400000, 1794492000000], "north-america": [1794513600000, 1794517200000], "south-america": [1794510000000, 1794513600000], "asia": [1794470400000, 1794474000000], "oceania": [1794456000000, 1794459600000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"condition": "Hurricane", "map": "Buried City", "startTime": "2026-11-12T13:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T14:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/hurricane.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794488400000, 1794492000000], "north-america": [1794513600000, 1794517200000], "south-america": [1794510000000, 1794513600000], "asia": [1794470400000, 1794474000000], "oceania": [1794456000000, 1794459600000]}, "slug": "hurricane", "url": "https://arcraiders.com/de/map-conditions/hurricane"}, {"condition": "ARC Frigate", "map": "Dam Battlegrounds", "startTime": "2026-11-12T12:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T13:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794484800000, 1794488400000], "north-america": [1794510000000, 1794513600000], "south-america": [1794506400000, 1794510000000], "asia": [1794466800000, 1794470400000], "oceania": [1794452400000, 1794456000000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"condition": "Night Raid", "map": "Riven Tides", "startTime": "2026-11-12T12:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T13:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794484800000, 1794488400000], "north-america": [1794510000000, 1794513600000], "south-america": [1794506400000, 1794510000000], "asia": [1794466800000, 1794470400000], "oceania": [1794452400000, 1794456000000]}, "slug": "night-raid", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"condition": "Redirection", "map": "Pendola Pass", "startTime": "2026-11-12T12:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T13:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/redirection.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794484800000, 1794488400000], "north-america": [1794484800000, 1794488400000], "south-america": [1794484800000, 1794488400000], "asia": [1794484800000, 1794488400000], "oceania": [1794484800000, 1794488400000]}, "slug": "redirection", "url": "https://arcraiders.com/de/map-conditions/redirection"}, {"condition": "Bird City", "map": "Buried City", "startTime": "2026-11-12T12:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T13:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/birdcity.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794484800000, 1794488400000], "north-america": [1794510000000, 1794513600000], "south-america": [1794506400000, 1794510000000], "asia": [1794466800000, 1794470400000], "oceania": [1794452400000, 1794456000000]}, "slug": "bird-city", "url": "https://arcraiders.com/de/map-conditions/bird-city"}, {"condition": "Matriarch", "map": "Dam Battlegrounds", "startTime": "2026-11-12T11:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T12:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/matriarch.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794481200000, 1794484800000], "north-america": [1794506400000, 1794510000000], "south-america": [1794502800000, 1794506400000], "asia": [1794463200000, 1794466800000], "oceania": [1794448800000, 1794452400000]}, "slug": "matriarch", "url": "https://arcraiders.com/de/map-conditions/matriarch"}, {"condition": "ARC Frigate", "map": "The Blue Gate", "startTime": "2026-11-12T11:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T12:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794481200000, 1794484800000], "north-america": [1794506400000, 1794510000000], "south-america": [1794502800000, 1794506400000], "asia": [1794463200000, 1794466800000], "oceania": [1794448800000, 1794452400000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"condition": "Harvester", "map": "Spaceport", "startTime": "2026-11-12T11:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T12:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/harvester.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794481200000, 1794484800000], "north-america": [1794506400000, 1794510000000], "south-america": [1794502800000, 1794506400000], "asia": [1794463200000, 1794466800000], "oceania": [1794448800000, 1794452400000]}, "slug": "harvester", "url": "https://arcraiders.com/de/map-conditions/harvester"}, {"condition": "Night Raid", "map": "Buried City", "startTime": "2026-11-12T11:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T12:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794481200000, 1794484800000], "north-america": [1794506400000, 1794510000000], "south-america": [1794502800000, 1794506400000], "asia": [1794463200000, 1794466800000], "oceania": [1794448800000, 1794452400000]}, "slug": "night-raid", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"condition": "Prospecting Probes", "map": "The Blue Gate", "startTime": "2026-11-12T10:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T11:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/probe.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794477600000, 1794481200000], "north-america": [1794502800000, 1794506400000], "south-america": [1794499200000, 1794502800000], "asia": [1794459600000, 1794463200000], "oceania": [1794445200000, 1794448800000]}, "slug": "prospecting-probes", "url": "https://arcraiders.com/de/map-conditions/prospecting-probes"}, {"condition": "ARC Frigate", "map": "Spaceport", "startTime": "2026-11-12T10:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T11:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794477600000, 1794481200000], "north-america": [1794502800000, 1794506400000], "south-america": [1794499200000, 1794502800000], "asia": [1794459600000, 1794463200000], "oceania": [1794445200000, 1794448800000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"condition": "Night Raid", "map": "Stella Montis", "startTime": "2026-11-12T10:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T11:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794477600000, 1794481200000], "north-america": [1794502800000, 1794506400000], "south-america": [1794499200000, 1794502800000], "asia": [1794459600000, 1794463200000], "oceania": [1794445200000, 1794448800000]}, "slug": "night-raid", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"condition": "Night Raid", "map": "Spaceport", "startTime": "2026-11-12T09:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T10:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794474000000, 1794477600000], "north-america": [1794499200000, 1794502800000], "south-america": [1794495600000, 1794499200000], "asia": [1794456000000, 1794459600000], "oceania": [1794441600000, 1794445200000]}, "slug": "night-raid", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"condition": "Beachcombing", "map": "Riven Tides", "startTime": "2026-11-12T09:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T10:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/beachcombing.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794474000000, 1794477600000], "north-america": [1794499200000, 1794502800000], "south-america": [1794495600000, 1794499200000], "asia": [1794456000000, 1794459600000], "oceania": [1794441600000, 1794445200000]}, "slug": "beachcombing", "url": "https://arcraiders.com/de/map-conditions/beachcombing"}, {"condition": "ARC Frigate", "map": "Pendola Pass", "startTime": "2026-11-12T09:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T10:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794474000000, 1794477600000], "north-america": [1794499200000, 1794502800000], "south-america": [1794495600000, 1794499200000], "asia": [1794456000000, 1794459600000], "oceania": [1794441600000, 1794445200000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"condition": "Redirection", "map": "Pendola Pass", "startTime": "2026-11-12T09:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T10:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/redirection.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794474000000, 1794477600000], "north-america": [1794474000000, 1794477600000], "south-america": [1794474000000, 1794477600000], "asia": [1794474000000, 1794477600000], "oceania": [1794474000000, 1794477600000]}, "slug": "redirection", "url": "https://arcraiders.com/de/map-conditions/redirection"}, {"condition": "Bird City", "map": "Buried City", "startTime": "2026-11-12T09:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T10:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/birdcity.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794474000000, 1794477600000], "north-america": [1794499200000, 1794502800000], "south-america": [1794495600000, 1794499200000], "asia": [1794456000000, 1794459600000], "oceania": [1794441600000, 1794445200000]}, "slug": "bird-city", "url": "https://arcraiders.com/de/map-conditions/bird-city"}, {"condition": "Prospecting Probes", "map": "Dam Battlegrounds", "startTime": "2026-11-12T08:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T09:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/probe.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794470400000, 1794474000000], "north-america": [1794495600000, 1794499200000], "south-america": [1794492000000, 1794495600000], "asia": [1794452400000, 1794456000000], "oceania": [1794438000000, 1794441600000]}, "slug": "prospecting-probes", "url": "https://arcraiders.com/de/map-conditions/prospecting-probes"}, {"condition": "ARC Frigate", "map": "The Blue Gate", "startTime": "2026-11-12T08:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T09:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794470400000, 1794474000000], "north-america": [1794495600000, 1794499200000], "south-america": [1794492000000, 1794495600000], "asia": [1794452400000, 1794456000000], "oceania": [1794438000000, 1794441600000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"condition": "Matriarch", "map": "Spaceport", "startTime": "2026-11-12T08:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T09:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/matriarch.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794470400000, 1794474000000], "north-america": [1794495600000, 1794499200000], "south-america": [1794492000000, 1794495600000], "asia": [1794452400000, 1794456000000], "oceania": [1794438000000, 1794441600000]}, "slug": "matriarch", "url": "https://arcraiders.com/de/map-conditions/matriarch"}, {"condition": "Night Raid", "map": "Stella Montis", "startTime": "2026-11-12T08:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T09:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794470400000, 1794474000000], "north-america": [1794495600000, 1794499200000], "south-america": [1794492000000, 1794495600000], "asia": [1794452400000, 1794456000000], "oceania": [1794438000000, 1794441600000]}, "slug": "night-raid", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"condition": "Lush Blooms", "map": "The Blue Gate", "startTime": "2026-11-12T07:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T08:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/lush.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794466800000, 1794470400000], "north-america": [1794492000000, 1794495600000], "south-america": [1794488400000, 1794492000000], "asia": [1794448800000, 1794452400000], "oceania": [1794434400000, 1794438000000]}, "slug": "lush-blooms", "url": "https://arcraiders.com/de/map-conditions/lush-blooms"}, {"condition": "ARC Frigate", "map": "Spaceport", "startTime": "2026-11-12T07:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T08:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794466800000, 1794470400000], "north-america": [1794492000000, 1794495600000], "south-america": [1794488400000, 1794492000000], "asia": [1794448800000, 1794452400000], "oceania": [1794434400000, 1794438000000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"condition": "Night Raid", "map": "Buried City", "startTime": "2026-11-12T07:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T08:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794466800000, 1794470400000], "north-america": [1794492000000, 1794495600000], "south-america": [1794488400000, 1794492000000], "asia": [1794448800000, 1794452400000], "oceania": [1794434400000, 1794438000000]}, "slug": "night-raid", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"condition": "Beachcombing", "map": "Riven Tides", "startTime": "2026-11-12T06:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T07:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/beachcombing.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794463200000, 1794466800000], "north-america": [1794488400000, 1794492000000], "south-america": [1794484800000, 1794488400000], "asia": [1794445200000, 1794448800000], "oceania": [1794430800000, 1794434400000]}, "slug": "beachcombing", "url": "https://arcraiders.com/de/map-conditions/beachcombing"}, {"condition": "ARC Frigate", "map": "Pendola Pass", "startTime": "2026-11-12T06:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T07:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794463200000, 1794466800000], "north-america": [1794488400000, 1794492000000], "south-america": [1794484800000, 1794488400000], "asia": [1794445200000, 1794448800000], "oceania": [1794430800000, 1794434400000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"condition": "Night Raid", "map": "Pendola Pass", "startTime": "2026-11-12T06:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T07:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794463200000, 1794466800000], "north-america": [1794488400000, 1794492000000], "south-america": [1794484800000, 1794488400000], "asia": [1794445200000, 1794448800000], "oceania": [1794430800000, 1794434400000]}, "slug": "night-raid", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"condition": "Bird City", "map": "Buried City", "startTime": "2026-11-12T06:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T07:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/birdcity.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794463200000, 1794466800000], "north-america": [1794488400000, 1794492000000], "south-america": [1794484800000, 1794488400000], "asia": [1794445200000, 1794448800000], "oceania": [1794430800000, 1794434400000]}, "slug": "bird-city", "url": "https://arcraiders.com/de/map-conditions/bird-city"}, {"condition": "Night Raid", "map": "Dam Battlegrounds", "startTime": "2026-11-12T05:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T06:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794459600000, 1794463200000], "north-america": [1794484800000, 1794488400000], "south-america": [1794481200000, 1794484800000], "asia": [1794441600000, 1794445200000], "oceania": [1794427200000, 1794430800000]}, "slug": "night-raid", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"condition": "Prospecting Probes", "map": "The Blue Gate", "startTime": "2026-11-12T05:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T06:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/probe.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794459600000, 1794463200000], "north-america": [1794484800000, 1794488400000], "south-america": [1794481200000, 1794484800000], "asia": [1794441600000, 1794445200000], "oceania": [1794427200000, 1794430800000]}, "slug": "prospecting-probes", "url": "https://arcraiders.com/de/map-conditions/prospecting-probes"}, {"condition": "Matriarch", "map": "Spaceport", "startTime": "2026-11-12T05:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T06:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/matriarch.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794459600000, 1794463200000], "north-america": [1794484800000, 1794488400000], "south-america": [1794481200000, 1794484800000], "asia": [1794441600000, 1794445200000], "oceania": [1794427200000, 1794430800000]}, "slug": "matriarch", "url": "https://arcraiders.com/de/map-conditions/matriarch"}, {"condition": "Lush Blooms", "map": "Buried City", "startTime": "2026-11-12T05:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T06:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/lush.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794459600000, 1794463200000], "north-america": [1794484800000, 1794488400000], "south-america": [1794481200000, 1794484800000], "asia": [1794441600000, 1794445200000], "oceania": [1794427200000, 1794430800000]}, "slug": "lush-blooms", "url": "https://arcraiders.com/de/map-conditions/lush-blooms"}, {"condition": "ARC Frigate", "map": "Dam Battlegrounds", "startTime": "2026-11-12T04:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T05:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794456000000, 1794459600000], "north-america": [1794481200000, 1794484800000], "south-america": [1794477600000, 1794481200000], "asia": [1794438000000, 1794441600000], "oceania": [1794423600000, 1794427200000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"condition": "Harvester", "map": "Spaceport", "startTime": "2026-11-12T04:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T05:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/harvester.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794456000000, 1794459600000], "north-america": [1794481200000, 1794484800000], "south-america": [1794477600000, 1794481200000], "asia": [1794438000000, 1794441600000], "oceania": [1794423600000, 1794427200000]}, "slug": "harvester", "url": "https://arcraiders.com/de/map-conditions/harvester"}, {"map": "Stella Montis", "startTime": "2026-11-12T04:00:00", "condition": "Night Raid", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T05:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794456000000, 1794459600000], "north-america": [1794481200000, 1794484800000], "south-america": [1794477600000, 1794481200000], "asia": [1794438000000, 1794441600000], "oceania": [1794423600000, 1794427200000]}, "slug": "night-raid", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"map": "Buried City", "startTime": "2026-11-12T04:00:00", "condition": "Lush Blooms", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T05:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/lush.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794456000000, 1794459600000], "north-america": [1794481200000, 1794484800000], "south-america": [1794477600000, 1794481200000], "asia": [1794438000000, 1794441600000], "oceania": [1794423600000, 1794427200000]}, "slug": "lush-blooms", "url": "https://arcraiders.com/de/map-conditions/lush-blooms"}, {"map": "The Blue Gate", "startTime": "2026-11-12T03:00:00", "condition": "ARC Frigate", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T04:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794452400000, 1794456000000], "north-america": [1794477600000, 1794481200000], "south-america": [1794474000000, 1794477600000], "asia": [1794434400000, 1794438000000], "oceania": [1794420000000, 1794423600000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"map": "Riven Tides", "startTime": "2026-11-12T03:00:00", "condition": "Beachcombing", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T04:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/beachcombing.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794452400000, 1794456000000], "north-america": [1794477600000, 1794481200000], "south-america": [1794474000000, 1794477600000], "asia": [1794434400000, 1794438000000], "oceania": [1794420000000, 1794423600000]}, "slug": "beachcombing", "url": "https://arcraiders.com/de/map-conditions/beachcombing"}, {"map": "Pendola Pass", "startTime": "2026-11-12T03:00:00", "condition": "Night Raid", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T04:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794452400000, 1794456000000], "north-america": [1794477600000, 1794481200000], "south-america": [1794474000000, 1794477600000], "asia": [1794434400000, 1794438000000], "oceania": [1794420000000, 1794423600000]}, "slug": "night-raid", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"map": "Buried City", "startTime": "2026-11-12T03:00:00", "condition": "Bird City", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T04:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/birdcity.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794452400000, 1794456000000], "north-america": [1794477600000, 1794481200000], "south-america": [1794474000000, 1794477600000], "asia": [1794434400000, 1794438000000], "oceania": [1794420000000, 1794423600000]}, "slug": "bird-city", "url": "https://arcraiders.com/de/map-conditions/bird-city"}, {"map": "Dam Battlegrounds", "startTime": "2026-11-12T02:00:00", "condition": "Matriarch", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T03:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/matriarch.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794448800000, 1794452400000], "north-america": [1794474000000, 1794477600000], "south-america": [1794470400000, 1794474000000], "asia": [1794430800000, 1794434400000], "oceania": [1794416400000, 1794420000000]}, "slug": "matriarch", "url": "https://arcraiders.com/de/map-conditions/matriarch"}, {"map": "Stella Montis", "startTime": "2026-11-12T02:00:00", "condition": "Night Raid", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T03:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794448800000, 1794452400000], "north-america": [1794474000000, 1794477600000], "south-america": [1794470400000, 1794474000000], "asia": [1794430800000, 1794434400000], "oceania": [1794416400000, 1794420000000]}, "slug": "night-raid", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"map": "Pendola Pass", "startTime": "2026-11-12T02:00:00", "condition": "ARC Frigate", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T03:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794448800000, 1794452400000], "north-america": [1794474000000, 1794477600000], "south-america": [1794470400000, 1794474000000], "asia": [1794430800000, 1794434400000], "oceania": [1794416400000, 1794420000000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"map": "Buried City", "startTime": "2026-11-12T02:00:00", "condition": "Prospecting Probes", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T03:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/probe.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794448800000, 1794452400000], "north-america": [1794474000000, 1794477600000], "south-america": [1794470400000, 1794474000000], "asia": [1794430800000, 1794434400000], "oceania": [1794416400000, 1794420000000]}, "slug": "prospecting-probes", "url": "https://arcraiders.com/de/map-conditions/prospecting-probes"}, {"map": "The Blue Gate", "startTime": "2026-11-12T01:00:00", "condition": "Harvester", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T02:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/harvester.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794445200000, 1794448800000], "north-america": [1794470400000, 1794474000000], "south-america": [1794466800000, 1794470400000], "asia": [1794427200000, 1794430800000], "oceania": [1794412800000, 1794416400000]}, "slug": "harvester", "url": "https://arcraiders.com/de/map-conditions/harvester"}, {"map": "Spaceport", "startTime": "2026-11-12T01:00:00", "condition": "ARC Frigate", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T02:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794445200000, 1794448800000], "north-america": [1794470400000, 1794474000000], "south-america": [1794466800000, 1794470400000], "asia": [1794427200000, 1794430800000], "oceania": [1794412800000, 1794416400000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"map": "Riven Tides", "startTime": "2026-11-12T01:00:00", "condition": "Lush Blooms", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T02:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/lush.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794445200000, 1794448800000], "north-america": [1794470400000, 1794474000000], "south-america": [1794466800000, 1794470400000], "asia": [1794427200000, 1794430800000], "oceania": [1794412800000, 1794416400000]}, "slug": "lush-blooms", "url": "https://arcraiders.com/de/map-conditions/lush-blooms"}, {"map": "Riven Tides", "startTime": "2026-11-12T00:00:00", "condition": "Beachcombing", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T01:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/beachcombing.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794441600000, 1794445200000], "north-america": [1794466800000, 1794470400000], "south-america": [1794463200000, 1794466800000], "asia": [1794423600000, 1794427200000], "oceania": [1794409200000, 1794412800000]}, "slug": "beachcombing", "url": "https://arcraiders.com/de/map-conditions/beachcombing"}, {"map": "Pendola Pass", "startTime": "2026-11-12T00:00:00", "condition": "ARC Frigate", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T01:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794441600000, 1794445200000], "north-america": [1794466800000, 1794470400000], "south-america": [1794463200000, 1794466800000], "asia": [1794423600000, 1794427200000], "oceania": [1794409200000, 1794412800000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"map": "Pendola Pass", "startTime": "2026-11-12T00:00:00", "condition": "Night Raid", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T01:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794441600000, 1794445200000], "north-america": [1794466800000, 1794470400000], "south-america": [1794463200000, 1794466800000], "asia": [1794423600000, 1794427200000], "oceania": [1794409200000, 1794412800000]}, "slug": "night-raid", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"map": "Pendola Pass", "startTime": "2026-11-12T00:00:00", "condition": "Redirection", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T01:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/redirection.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794441600000, 1794445200000], "north-america": [1794441600000, 1794445200000], "south-america": [1794441600000, 1794445200000], "asia": [1794441600000, 1794445200000], "oceania": [1794441600000, 1794445200000]}, "slug": "redirection", "url": "https://arcraiders.com/de/map-conditions/redirection"}, {"map": "Buried City", "startTime": "2026-11-12T00:00:00", "condition": "Bird City", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T01:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/birdcity.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794441600000, 1794445200000], "north-america": [1794466800000, 1794470400000], "south-america": [1794463200000, 1794466800000], "asia": [1794423600000, 1794427200000], "oceania": [1794409200000, 1794412800000]}, "slug": "bird-city", "url": "https://arcraiders.com/de/map-conditions/bird-city"}, {"map": "Dam Battlegrounds", "startTime": "2026-11-11T23:00:00", "condition": "Prospecting Probes", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T00:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/probe.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794438000000, 1794441600000], "north-america": [1794463200000, 1794466800000], "south-america": [1794459600000, 1794463200000], "asia": [1794420000000, 1794423600000], "oceania": [1794405600000, 1794409200000]}, "slug": "prospecting-probes", "url": "https://arcraiders.com/de/map-conditions/prospecting-probes"}, {"map": "The Blue Gate", "startTime": "2026-11-11T23:00:00", "condition": "ARC Frigate", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T00:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794438000000, 1794441600000], "north-america": [1794463200000, 1794466800000], "south-america": [1794459600000, 1794463200000], "asia": [1794420000000, 1794423600000], "oceania": [1794405600000, 1794409200000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"map": "Spaceport", "startTime": "2026-11-11T23:00:00", "condition": "Matriarch", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T00:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/matriarch.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794438000000, 1794441600000], "north-america": [1794463200000, 1794466800000], "south-america": [1794459600000, 1794463200000], "asia": [1794420000000, 1794423600000], "oceania": [1794405600000, 1794409200000]}, "slug": "matriarch", "url": "https://arcraiders.com/de/map-conditions/matriarch"}, {"map": "Pendola Pass", "startTime": "2026-11-11T23:00:00", "condition": "Redirection", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T00:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/redirection.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794438000000, 1794441600000], "north-america": [1794438000000, 1794441600000], "south-america": [1794438000000, 1794441600000], "asia": [1794438000000, 1794441600000], "oceania": [1794438000000, 1794441600000]}, "slug": "redirection", "url": "https://arcraiders.com/de/map-conditions/redirection"}, {"map": "Buried City", "startTime": "2026-11-11T23:00:00", "condition": "Night Raid", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-12T00:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794438000000, 1794441600000], "north-america": [1794463200000, 1794466800000], "south-america": [1794459600000, 1794463200000], "asia": [1794420000000, 1794423600000], "oceania": [1794405600000, 1794409200000]}, "slug": "night-raid", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"map": "Dam Battlegrounds", "startTime": "2026-11-11T22:00:00", "condition": "Lush Blooms", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T23:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/lush.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794434400000, 1794438000000], "north-america": [1794459600000, 1794463200000], "south-america": [1794456000000, 1794459600000], "asia": [1794416400000, 1794420000000], "oceania": [1794402000000, 1794405600000]}, "slug": "lush-blooms", "url": "https://arcraiders.com/de/map-conditions/lush-blooms"}, {"map": "Spaceport", "startTime": "2026-11-11T22:00:00", "condition": "ARC Frigate", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T23:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794434400000, 1794438000000], "north-america": [1794459600000, 1794463200000], "south-america": [1794456000000, 1794459600000], "asia": [1794416400000, 1794420000000], "oceania": [1794402000000, 1794405600000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"map": "Stella Montis", "startTime": "2026-11-11T22:00:00", "condition": "Night Raid", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T23:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794434400000, 1794438000000], "north-america": [1794459600000, 1794463200000], "south-america": [1794456000000, 1794459600000], "asia": [1794416400000, 1794420000000], "oceania": [1794402000000, 1794405600000]}, "slug": "night-raid", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"map": "Dam Battlegrounds", "startTime": "2026-11-11T21:00:00", "condition": "Lush Blooms", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T22:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/lush.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794430800000, 1794434400000], "north-america": [1794456000000, 1794459600000], "south-america": [1794452400000, 1794456000000], "asia": [1794412800000, 1794416400000], "oceania": [1794398400000, 1794402000000]}, "slug": "lush-blooms", "url": "https://arcraiders.com/de/map-conditions/lush-blooms"}, {"map": "Spaceport", "startTime": "2026-11-11T21:00:00", "condition": "ARC Frigate", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T22:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794430800000, 1794434400000], "north-america": [1794456000000, 1794459600000], "south-america": [1794452400000, 1794456000000], "asia": [1794412800000, 1794416400000], "oceania": [1794398400000, 1794402000000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"map": "Stella Montis", "startTime": "2026-11-11T21:00:00", "condition": "Night Raid", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T22:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794430800000, 1794434400000], "north-america": [1794456000000, 1794459600000], "south-america": [1794452400000, 1794456000000], "asia": [1794412800000, 1794416400000], "oceania": [1794398400000, 1794402000000]}, "slug": "night-raid", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"condition": "Hurricane", "map": "Dam Battlegrounds", "startTime": "2026-11-11T21:00:00", "createdAt": "2026-11-11T15:33:57.047000", "durationMinutes": 60, "endTime": "2026-11-11T22:00:00", "lastSeenAt": "2026-11-11T15:14:02.510000", "slug": "hurricane", "timer": "6:03:07", "url": "https://arcraiders.com/de/map-conditions/hurricane"}, {"map": "Dam Battlegrounds", "startTime": "2026-11-11T20:00:00", "condition": "Hurricane", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T21:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/hurricane.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794427200000, 1794430800000], "north-america": [1794452400000, 1794456000000], "south-america": [1794448800000, 1794452400000], "asia": [1794409200000, 1794412800000], "oceania": [1794394800000, 1794398400000]}, "slug": "hurricane", "url": "https://arcraiders.com/de/map-conditions/hurricane"}, {"map": "Spaceport", "startTime": "2026-11-11T20:00:00", "condition": "Night Raid", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T21:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794427200000, 1794430800000], "north-america": [1794452400000, 1794456000000], "south-america": [1794448800000, 1794452400000], "asia": [1794409200000, 1794412800000], "oceania": [1794394800000, 1794398400000]}, "slug": "night-raid", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"map": "Riven Tides", "startTime": "2026-11-11T20:00:00", "condition": "Beachcombing", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T21:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/beachcombing.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794427200000, 1794430800000], "north-america": [1794452400000, 1794456000000], "south-america": [1794448800000, 1794452400000], "asia": [1794409200000, 1794412800000], "oceania": [1794394800000, 1794398400000]}, "slug": "beachcombing", "url": "https://arcraiders.com/de/map-conditions/beachcombing"}, {"map": "Pendola Pass", "startTime": "2026-11-11T20:00:00", "condition": "ARC Frigate", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T21:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794427200000, 1794430800000], "north-america": [1794452400000, 1794456000000], "south-america": [1794448800000, 1794452400000], "asia": [1794409200000, 1794412800000], "oceania": [1794394800000, 1794398400000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"map": "Buried City", "startTime": "2026-11-11T20:00:00", "condition": "Bird City", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T21:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/birdcity.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794427200000, 1794430800000], "north-america": [1794452400000, 1794456000000], "south-america": [1794448800000, 1794452400000], "asia": [1794409200000, 1794412800000], "oceania": [1794394800000, 1794398400000]}, "slug": "bird-city", "url": "https://arcraiders.com/de/map-conditions/bird-city"}, {"condition": "Redirection", "map": "Pendola Pass", "startTime": "2026-11-11T20:00:00", "createdAt": "2026-11-11T15:33:57.047000", "durationMinutes": 60, "endTime": "2026-11-11T21:00:00", "lastSeenAt": "2026-11-11T15:14:02.510000", "slug": "redirection", "timer": "5:03:07", "url": "https://arcraiders.com/de/map-conditions/redirection"}, {"map": "Dam Battlegrounds", "startTime": "2026-11-11T19:00:00", "condition": "ARC Frigate", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T20:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794423600000, 1794427200000], "north-america": [1794448800000, 1794452400000], "south-america": [1794445200000, 1794448800000], "asia": [1794405600000, 1794409200000], "oceania": [1794391200000, 1794394800000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"map": "The Blue Gate", "startTime": "2026-11-11T19:00:00", "condition": "Prospecting Probes", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T20:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/probe.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794423600000, 1794427200000], "north-america": [1794448800000, 1794452400000], "south-america": [1794445200000, 1794448800000], "asia": [1794405600000, 1794409200000], "oceania": [1794391200000, 1794394800000]}, "slug": "prospecting-probes", "url": "https://arcraiders.com/de/map-conditions/prospecting-probes"}, {"map": "Spaceport", "startTime": "2026-11-11T19:00:00", "condition": "Lush Blooms", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T20:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/lush.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794423600000, 1794427200000], "north-america": [1794448800000, 1794452400000], "south-america": [1794445200000, 1794448800000], "asia": [1794405600000, 1794409200000], "oceania": [1794391200000, 1794394800000]}, "slug": "lush-blooms", "url": "https://arcraiders.com/de/map-conditions/lush-blooms"}, {"condition": "Night Raid", "map": "Stella Montis", "startTime": "2026-11-11T19:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T20:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794423600000, 1794427200000], "north-america": [1794448800000, 1794452400000], "south-america": [1794445200000, 1794448800000], "asia": [1794405600000, 1794409200000], "oceania": [1794391200000, 1794394800000]}, "slug": "night-raid", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"condition": "Redirection", "map": "Pendola Pass", "startTime": "2026-11-11T19:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T20:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/redirection.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794423600000, 1794427200000], "north-america": [1794423600000, 1794427200000], "south-america": [1794423600000, 1794427200000], "asia": [1794423600000, 1794427200000], "oceania": [1794423600000, 1794427200000]}, "slug": "redirection", "url": "https://arcraiders.com/de/map-conditions/redirection"}, {"condition": "Harvester", "map": "Dam Battlegrounds", "startTime": "2026-11-11T18:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T19:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/harvester.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794420000000, 1794423600000], "north-america": [1794445200000, 1794448800000], "south-america": [1794441600000, 1794445200000], "asia": [1794402000000, 1794405600000], "oceania": [1794387600000, 1794391200000]}, "slug": "harvester", "url": "https://arcraiders.com/de/map-conditions/harvester"}, {"condition": "ARC Frigate", "map": "The Blue Gate", "startTime": "2026-11-11T18:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T19:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794420000000, 1794423600000], "north-america": [1794445200000, 1794448800000], "south-america": [1794441600000, 1794445200000], "asia": [1794402000000, 1794405600000], "oceania": [1794387600000, 1794391200000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"condition": "Hidden Bunker", "map": "Spaceport", "startTime": "2026-11-11T18:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T19:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/hiddenbunker.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794420000000, 1794423600000], "north-america": [1794445200000, 1794448800000], "south-america": [1794441600000, 1794445200000], "asia": [1794402000000, 1794405600000], "oceania": [1794387600000, 1794391200000]}, "slug": "hidden-bunker", "url": "https://arcraiders.com/de/map-conditions/hidden-bunker"}, {"condition": "Matriarch", "map": "Spaceport", "startTime": "2026-11-11T18:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T19:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/matriarch.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794420000000, 1794423600000], "north-america": [1794445200000, 1794448800000], "south-america": [1794441600000, 1794445200000], "asia": [1794402000000, 1794405600000], "oceania": [1794387600000, 1794391200000]}, "slug": "matriarch", "url": "https://arcraiders.com/de/map-conditions/matriarch"}, {"condition": "Night Raid", "map": "Riven Tides", "startTime": "2026-11-11T17:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T18:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794416400000, 1794420000000], "north-america": [1794441600000, 1794445200000], "south-america": [1794438000000, 1794441600000], "asia": [1794398400000, 1794402000000], "oceania": [1794384000000, 1794387600000]}, "slug": "night-raid", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"condition": "Beachcombing", "map": "Riven Tides", "startTime": "2026-11-11T17:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T18:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/beachcombing.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794416400000, 1794420000000], "north-america": [1794441600000, 1794445200000], "south-america": [1794438000000, 1794441600000], "asia": [1794398400000, 1794402000000], "oceania": [1794384000000, 1794387600000]}, "slug": "beachcombing", "url": "https://arcraiders.com/de/map-conditions/beachcombing"}, {"condition": "ARC Frigate", "map": "Buried City", "startTime": "2026-11-11T17:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T18:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794416400000, 1794420000000], "north-america": [1794441600000, 1794445200000], "south-america": [1794438000000, 1794441600000], "asia": [1794398400000, 1794402000000], "oceania": [1794384000000, 1794387600000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"condition": "Matriarch", "map": "Spaceport", "startTime": "2026-11-11T17:00:00", "createdAt": "2026-11-11T15:33:57.047000", "durationMinutes": 60, "endTime": "2026-11-11T18:00:00", "lastSeenAt": "2026-11-11T15:14:02.510000", "slug": "matriarch", "timer": "2:03:07", "url": "https://arcraiders.com/de/map-conditions/matriarch"}, {"condition": "Harvester", "map": "The Blue Gate", "startTime": "2026-11-11T17:00:00", "createdAt": "2026-11-11T15:33:57.047000", "durationMinutes": 60, "endTime": "2026-11-11T18:00:00", "lastSeenAt": "2026-11-11T15:14:02.510000", "slug": "harvester", "timer": "2:03:07", "url": "https://arcraiders.com/de/map-conditions/harvester"}, {"condition": "Close Scrutiny", "map": "Buried City", "startTime": "2026-11-11T17:00:00", "createdAt": "2026-11-11T15:33:57.047000", "durationMinutes": 60, "endTime": "2026-11-11T18:00:00", "lastSeenAt": "2026-11-11T15:14:02.510000", "slug": "close-scrutiny", "timer": "2:03:07", "url": "https://arcraiders.com/de/map-conditions/close-scrutiny"}, {"condition": "ARC Frigate", "map": "Dam Battlegrounds", "startTime": "2026-11-11T16:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T17:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794412800000, 1794416400000], "north-america": [1794438000000, 1794441600000], "south-america": [1794434400000, 1794438000000], "asia": [1794394800000, 1794398400000], "oceania": [1794380400000, 1794384000000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"condition": "Harvester", "map": "The Blue Gate", "startTime": "2026-11-11T16:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T17:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/harvester.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794412800000, 1794416400000], "north-america": [1794438000000, 1794441600000], "south-america": [1794434400000, 1794438000000], "asia": [1794394800000, 1794398400000], "oceania": [1794380400000, 1794384000000]}, "slug": "harvester", "url": "https://arcraiders.com/de/map-conditions/harvester"}, {"condition": "Matriarch", "map": "Spaceport", "startTime": "2026-11-11T16:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T17:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/matriarch.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794412800000, 1794416400000], "north-america": [1794438000000, 1794441600000], "south-america": [1794434400000, 1794438000000], "asia": [1794394800000, 1794398400000], "oceania": [1794380400000, 1794384000000]}, "slug": "matriarch", "url": "https://arcraiders.com/de/map-conditions/matriarch"}, {"condition": "Close Scrutiny", "map": "Buried City", "startTime": "2026-11-11T16:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T17:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/closescrutiny.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794412800000, 1794416400000], "north-america": [1794438000000, 1794441600000], "south-america": [1794434400000, 1794438000000], "asia": [1794394800000, 1794398400000], "oceania": [1794380400000, 1794384000000]}, "slug": "close-scrutiny", "url": "https://arcraiders.com/de/map-conditions/close-scrutiny"}, {"map": "Riven Tides", "startTime": "2026-11-11T16:00:00", "condition": "Prospecting Probes", "createdAt": "2026-11-11T15:33:57.047000", "durationMinutes": 60, "endTime": "2026-11-11T17:00:00", "lastSeenAt": "2026-11-11T15:14:02.510000", "slug": "prospecting-probes", "timer": "1:03:07", "url": "https://arcraiders.com/de/map-conditions/prospecting-probes"}, {"condition": "Lush Blooms", "map": "Buried City", "startTime": "2026-11-11T16:00:00", "createdAt": "2026-11-11T15:33:57.047000", "durationMinutes": 60, "endTime": "2026-11-11T17:00:00", "lastSeenAt": "2026-11-11T15:14:02.510000", "slug": "lush-blooms", "timer": "1:03:07", "url": "https://arcraiders.com/de/map-conditions/lush-blooms"}, {"map": "Spaceport", "startTime": "2026-11-11T15:00:00", "condition": "ARC Frigate", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T16:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794409200000, 1794412800000], "north-america": [1794434400000, 1794438000000], "south-america": [1794430800000, 1794434400000], "asia": [1794391200000, 1794394800000], "oceania": [1794376800000, 1794380400000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"map": "Riven Tides", "startTime": "2026-11-11T15:00:00", "condition": "Prospecting Probes", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T16:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/probe.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794409200000, 1794412800000], "north-america": [1794434400000, 1794438000000], "south-america": [1794430800000, 1794434400000], "asia": [1794391200000, 1794394800000], "oceania": [1794376800000, 1794380400000]}, "slug": "prospecting-probes", "url": "https://arcraiders.com/de/map-conditions/prospecting-probes"}, {"condition": "Night Raid", "map": "Stella Montis", "startTime": "2026-11-11T15:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T16:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794409200000, 1794412800000], "north-america": [1794434400000, 1794438000000], "south-america": [1794430800000, 1794434400000], "asia": [1794391200000, 1794394800000], "oceania": [1794376800000, 1794380400000]}, "slug": "night-raid", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"condition": "Lush Blooms", "map": "Buried City", "startTime": "2026-11-11T15:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T16:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/lush.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794409200000, 1794412800000], "north-america": [1794434400000, 1794438000000], "south-america": [1794430800000, 1794434400000], "asia": [1794391200000, 1794394800000], "oceania": [1794376800000, 1794380400000]}, "slug": "lush-blooms", "url": "https://arcraiders.com/de/map-conditions/lush-blooms"}, {"condition": "Night Raid", "map": "Pendola Pass", "startTime": "2026-11-11T15:00:00", "createdAt": "2026-11-11T15:33:57.047000", "durationMinutes": 60, "endTime": "2026-11-11T16:00:00", "lastSeenAt": "2026-11-11T15:14:02.510000", "slug": "night-raid", "timer": "3:07", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"condition": "Hidden Bunker", "map": "Spaceport", "startTime": "2026-11-11T15:00:00", "createdAt": "2026-11-11T15:33:57.047000", "durationMinutes": 60, "endTime": "2026-11-11T16:00:00", "lastSeenAt": "2026-11-11T15:14:02.510000", "slug": "hidden-bunker", "timer": "3:07", "url": "https://arcraiders.com/de/map-conditions/hidden-bunker"}, {"condition": "Bird City", "map": "Buried City", "startTime": "2026-11-11T15:00:00", "createdAt": "2026-11-11T15:33:57.047000", "durationMinutes": 60, "endTime": "2026-11-11T16:00:00", "lastSeenAt": "2026-11-11T15:14:02.510000", "slug": "bird-city", "timer": "3:07", "url": "https://arcraiders.com/de/map-conditions/bird-city"}, {"condition": "Beachcombing", "map": "Riven Tides", "startTime": "2026-11-11T15:00:00", "createdAt": "2026-11-11T15:33:57.047000", "durationMinutes": 60, "endTime": "2026-11-11T16:00:00", "lastSeenAt": "2026-11-11T15:14:02.510000", "slug": "beachcombing", "timer": "3:07", "url": "https://arcraiders.com/de/map-conditions/beachcombing"}, {"condition": "ARC Frigate", "map": "The Blue Gate", "startTime": "2026-11-11T15:00:00", "createdAt": "2026-11-11T15:33:57.047000", "durationMinutes": 60, "endTime": "2026-11-11T16:00:00", "lastSeenAt": "2026-11-11T15:14:02.510000", "slug": "arc-frigate", "timer": "3:07", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"condition": "ARC Frigate", "map": "The Blue Gate", "startTime": "2026-11-11T14:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T15:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794405600000, 1794409200000], "north-america": [1794430800000, 1794434400000], "south-america": [1794427200000, 1794430800000], "asia": [1794387600000, 1794391200000], "oceania": [1794373200000, 1794376800000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"condition": "Hidden Bunker", "map": "Spaceport", "startTime": "2026-11-11T14:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T15:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/hiddenbunker.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794405600000, 1794409200000], "north-america": [1794430800000, 1794434400000], "south-america": [1794427200000, 1794430800000], "asia": [1794387600000, 1794391200000], "oceania": [1794373200000, 1794376800000]}, "slug": "hidden-bunker", "url": "https://arcraiders.com/de/map-conditions/hidden-bunker"}, {"condition": "Beachcombing", "map": "Riven Tides", "startTime": "2026-11-11T14:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T15:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/beachcombing.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794405600000, 1794409200000], "north-america": [1794430800000, 1794434400000], "south-america": [1794427200000, 1794430800000], "asia": [1794387600000, 1794391200000], "oceania": [1794373200000, 1794376800000]}, "slug": "beachcombing", "url": "https://arcraiders.com/de/map-conditions/beachcombing"}, {"condition": "Night Raid", "map": "Pendola Pass", "startTime": "2026-11-11T14:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T15:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794405600000, 1794409200000], "north-america": [1794430800000, 1794434400000], "south-america": [1794427200000, 1794430800000], "asia": [1794387600000, 1794391200000], "oceania": [1794373200000, 1794376800000]}, "slug": "night-raid", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"condition": "Bird City", "map": "Buried City", "startTime": "2026-11-11T14:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T15:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/birdcity.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794405600000, 1794409200000], "north-america": [1794430800000, 1794434400000], "south-america": [1794427200000, 1794430800000], "asia": [1794387600000, 1794391200000], "oceania": [1794373200000, 1794376800000]}, "slug": "bird-city", "url": "https://arcraiders.com/de/map-conditions/bird-city"}, {"condition": "Redirection", "map": "Pendola Pass", "startTime": "2026-11-11T14:00:00", "createdAt": "2026-11-11T15:33:57.047000", "durationMinutes": 60, "endTime": "2026-11-11T15:00:00", "lastSeenAt": "2026-11-11T15:14:02.510000", "slug": "redirection", "timer": "3:07", "url": "https://arcraiders.com/de/map-conditions/redirection"}, {"condition": "Prospecting Probes", "map": "Spaceport", "startTime": "2026-11-11T14:00:00", "createdAt": "2026-11-11T15:33:57.047000", "durationMinutes": 60, "endTime": "2026-11-11T15:00:00", "lastSeenAt": "2026-11-11T15:14:02.510000", "slug": "prospecting-probes", "timer": "3:07", "url": "https://arcraiders.com/de/map-conditions/prospecting-probes"}, {"condition": "Night Raid", "map": "Stella Montis", "startTime": "2026-11-11T14:00:00", "createdAt": "2026-11-11T15:33:57.047000", "durationMinutes": 60, "endTime": "2026-11-11T15:00:00", "lastSeenAt": "2026-11-11T15:14:02.510000", "slug": "night-raid", "timer": "3:07", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"condition": "Lush Blooms", "map": "Dam Battlegrounds", "startTime": "2026-11-11T14:00:00", "createdAt": "2026-11-11T15:33:57.047000", "durationMinutes": 60, "endTime": "2026-11-11T15:00:00", "lastSeenAt": "2026-11-11T15:14:02.510000", "slug": "lush-blooms", "timer": "3:07", "url": "https://arcraiders.com/de/map-conditions/lush-blooms"}, {"condition": "ARC Frigate", "map": "Buried City", "startTime": "2026-11-11T14:00:00", "createdAt": "2026-11-11T15:33:57.047000", "durationMinutes": 60, "endTime": "2026-11-11T15:00:00", "lastSeenAt": "2026-11-11T15:14:02.510000", "slug": "arc-frigate", "timer": "3:07", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"condition": "Lush Blooms", "map": "Dam Battlegrounds", "startTime": "2026-11-11T13:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T14:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/lush.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794402000000, 1794405600000], "north-america": [1794427200000, 1794430800000], "south-america": [1794423600000, 1794427200000], "asia": [1794384000000, 1794387600000], "oceania": [1794369600000, 1794373200000]}, "slug": "lush-blooms", "url": "https://arcraiders.com/de/map-conditions/lush-blooms"}, {"condition": "Prospecting Probes", "map": "Spaceport", "startTime": "2026-11-11T13:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T14:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/probe.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794402000000, 1794405600000], "north-america": [1794427200000, 1794430800000], "south-america": [1794423600000, 1794427200000], "asia": [1794384000000, 1794387600000], "oceania": [1794369600000, 1794373200000]}, "slug": "prospecting-probes", "url": "https://arcraiders.com/de/map-conditions/prospecting-probes"}, {"condition": "Night Raid", "map": "Stella Montis", "startTime": "2026-11-11T13:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T14:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794402000000, 1794405600000], "north-america": [1794427200000, 1794430800000], "south-america": [1794423600000, 1794427200000], "asia": [1794384000000, 1794387600000], "oceania": [1794369600000, 1794373200000]}, "slug": "night-raid", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"condition": "ARC Frigate", "map": "Buried City", "startTime": "2026-11-11T13:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T14:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794402000000, 1794405600000], "north-america": [1794427200000, 1794430800000], "south-america": [1794423600000, 1794427200000], "asia": [1794384000000, 1794387600000], "oceania": [1794369600000, 1794373200000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"condition": "Harvester", "map": "Dam Battlegrounds", "startTime": "2026-11-11T12:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T13:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/harvester.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794398400000, 1794402000000], "north-america": [1794423600000, 1794427200000], "south-america": [1794420000000, 1794423600000], "asia": [1794380400000, 1794384000000], "oceania": [1794366000000, 1794369600000]}, "slug": "harvester", "url": "https://arcraiders.com/de/map-conditions/harvester"}, {"condition": "Matriarch", "map": "The Blue Gate", "startTime": "2026-11-11T12:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T13:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/matriarch.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794398400000, 1794402000000], "north-america": [1794423600000, 1794427200000], "south-america": [1794420000000, 1794423600000], "asia": [1794380400000, 1794384000000], "oceania": [1794366000000, 1794369600000]}, "slug": "matriarch", "url": "https://arcraiders.com/de/map-conditions/matriarch"}, {"condition": "ARC Frigate", "map": "Spaceport", "startTime": "2026-11-11T12:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T13:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794398400000, 1794402000000], "north-america": [1794423600000, 1794427200000], "south-america": [1794420000000, 1794423600000], "asia": [1794380400000, 1794384000000], "oceania": [1794366000000, 1794369600000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"condition": "Close Scrutiny", "map": "Buried City", "startTime": "2026-11-11T12:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T13:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/closescrutiny.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794398400000, 1794402000000], "north-america": [1794423600000, 1794427200000], "south-america": [1794420000000, 1794423600000], "asia": [1794380400000, 1794384000000], "oceania": [1794366000000, 1794369600000]}, "slug": "close-scrutiny", "url": "https://arcraiders.com/de/map-conditions/close-scrutiny"}, {"condition": "ARC Frigate", "map": "Dam Battlegrounds", "startTime": "2026-11-11T11:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T12:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794394800000, 1794398400000], "north-america": [1794420000000, 1794423600000], "south-america": [1794416400000, 1794420000000], "asia": [1794376800000, 1794380400000], "oceania": [1794362400000, 1794366000000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"condition": "Night Raid", "map": "Riven Tides", "startTime": "2026-11-11T11:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T12:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794394800000, 1794398400000], "north-america": [1794420000000, 1794423600000], "south-america": [1794416400000, 1794420000000], "asia": [1794376800000, 1794380400000], "oceania": [1794362400000, 1794366000000]}, "slug": "night-raid", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"condition": "Bird City", "map": "Buried City", "startTime": "2026-11-11T11:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T12:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/birdcity.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794394800000, 1794398400000], "north-america": [1794420000000, 1794423600000], "south-america": [1794416400000, 1794420000000], "asia": [1794376800000, 1794380400000], "oceania": [1794362400000, 1794366000000]}, "slug": "bird-city", "url": "https://arcraiders.com/de/map-conditions/bird-city"}, {"condition": "Electromagnetic Storm", "map": "Dam Battlegrounds", "startTime": "2026-11-11T10:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T11:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/electrical.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794391200000, 1794394800000], "north-america": [1794416400000, 1794420000000], "south-america": [1794412800000, 1794416400000], "asia": [1794373200000, 1794376800000], "oceania": [1794358800000, 1794362400000]}, "slug": "electromagnetic-storm", "url": "https://arcraiders.com/de/map-conditions/electromagnetic-storm"}, {"condition": "Matriarch", "map": "Dam Battlegrounds", "startTime": "2026-11-11T10:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T11:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/matriarch.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794391200000, 1794394800000], "north-america": [1794416400000, 1794420000000], "south-america": [1794412800000, 1794416400000], "asia": [1794373200000, 1794376800000], "oceania": [1794358800000, 1794362400000]}, "slug": "matriarch", "url": "https://arcraiders.com/de/map-conditions/matriarch"}, {"condition": "ARC Frigate", "map": "The Blue Gate", "startTime": "2026-11-11T10:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T11:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794391200000, 1794394800000], "north-america": [1794416400000, 1794420000000], "south-america": [1794412800000, 1794416400000], "asia": [1794373200000, 1794376800000], "oceania": [1794358800000, 1794362400000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"condition": "Harvester", "map": "Spaceport", "startTime": "2026-11-11T10:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T11:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/harvester.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794391200000, 1794394800000], "north-america": [1794416400000, 1794420000000], "south-america": [1794412800000, 1794416400000], "asia": [1794373200000, 1794376800000], "oceania": [1794358800000, 1794362400000]}, "slug": "harvester", "url": "https://arcraiders.com/de/map-conditions/harvester"}, {"condition": "Night Raid", "map": "Buried City", "startTime": "2026-11-11T10:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T11:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794391200000, 1794394800000], "north-america": [1794416400000, 1794420000000], "south-america": [1794412800000, 1794416400000], "asia": [1794373200000, 1794376800000], "oceania": [1794358800000, 1794362400000]}, "slug": "night-raid", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"condition": "Prospecting Probes", "map": "The Blue Gate", "startTime": "2026-11-11T09:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T10:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/probe.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794387600000, 1794391200000], "north-america": [1794412800000, 1794416400000], "south-america": [1794409200000, 1794412800000], "asia": [1794369600000, 1794373200000], "oceania": [1794355200000, 1794358800000]}, "slug": "prospecting-probes", "url": "https://arcraiders.com/de/map-conditions/prospecting-probes"}, {"condition": "ARC Frigate", "map": "Spaceport", "startTime": "2026-11-11T09:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T10:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794387600000, 1794391200000], "north-america": [1794412800000, 1794416400000], "south-america": [1794409200000, 1794412800000], "asia": [1794369600000, 1794373200000], "oceania": [1794355200000, 1794358800000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"condition": "Night Raid", "map": "Stella Montis", "startTime": "2026-11-11T09:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T10:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794387600000, 1794391200000], "north-america": [1794412800000, 1794416400000], "south-america": [1794409200000, 1794412800000], "asia": [1794369600000, 1794373200000], "oceania": [1794355200000, 1794358800000]}, "slug": "night-raid", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"condition": "Night Raid", "map": "Spaceport", "startTime": "2026-11-11T08:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T09:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794384000000, 1794387600000], "north-america": [1794409200000, 1794412800000], "south-america": [1794405600000, 1794409200000], "asia": [1794366000000, 1794369600000], "oceania": [1794351600000, 1794355200000]}, "slug": "night-raid", "url": "https://arcraiders.com/de/map-conditions/night-raid"}, {"condition": "Beachcombing", "map": "Riven Tides", "startTime": "2026-11-11T08:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T09:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/beachcombing.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794384000000, 1794387600000], "north-america": [1794409200000, 1794412800000], "south-america": [1794405600000, 1794409200000], "asia": [1794366000000, 1794369600000], "oceania": [1794351600000, 1794355200000]}, "slug": "beachcombing", "url": "https://arcraiders.com/de/map-conditions/beachcombing"}, {"condition": "ARC Frigate", "map": "Pendola Pass", "startTime": "2026-11-11T08:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T09:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794384000000, 1794387600000], "north-america": [1794409200000, 1794412800000], "south-america": [1794405600000, 1794409200000], "asia": [1794366000000, 1794369600000], "oceania": [1794351600000, 1794355200000]}, "slug": "arc-frigate", "url": "https://arcraiders.com/de/map-conditions/arc-frigate"}, {"condition": "Bird City", "map": "Buried City", "startTime": "2026-11-11T08:00:00", "createdAt": "2026-11-11T15:34:29.615000", "durationMinutes": 60, "endTime": "2026-11-11T09:00:00", "icon": "https://static.metaforge.app/arc-raiders/custom/birdcity.webp", "lastSeenAt": "2026-11-11T15:34:29.615000", "regionTimestamps": {"europe": [1794384000000, 1794387600000], "north-america": [1794409200000, 1794412800000], "south-america": [1794405600000, 1794409200000], "asia": [1794366000000, 1794369600000], "oceania": [1794351600000, 1794355200000]}, "slug": "bird-city", "url": "https://arcraiders.com/de/map-conditions/bird-city"}];
+
+    // All known conditions including currently off-rotation
+    const ALL_KNOWN_CONDITIONS = [
+      "ARC Frigate",
+      "Beachcombing",
+      "Bird City",
+      "Close Scrutiny",
+      "Electromagnetic Storm",
+      "Harvester",
+      "Hidden Bunker",
+      "Hurricane",
+      "Lush Blooms",
+      "Matriarch",
+      "Night Raid",
+      "Prospecting Probes",
+      "Redirection",
+      // Known off-rotation conditions:
+      "Launch Tower Loot",
+      "Locked Gate",
+      "Uncovered Caches",
+      "Cold Snap",
+      "Husk Graveyard"
     ];
 
+    const CONDITION_ICONS = {
+      "ARC Frigate": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp",
+      "Beachcombing": "https://static.metaforge.app/arc-raiders/custom/beachcombing.webp",
+      "Bird City": "https://static.metaforge.app/arc-raiders/custom/birdcity.webp",
+      "Close Scrutiny": "https://static.metaforge.app/arc-raiders/custom/closescrutiny.webp",
+      "Cold Snap": "https://static.metaforge.app/arc-raiders/custom/coldsnap.webp",
+      "Electromagnetic Storm": "https://static.metaforge.app/arc-raiders/custom/electrical.webp",
+      "Harvester": "https://static.metaforge.app/arc-raiders/custom/harvester.webp",
+      "Hidden Bunker": "https://static.metaforge.app/arc-raiders/custom/hiddenbunker.webp",
+      "Hurricane": "https://static.metaforge.app/arc-raiders/custom/hurricane.webp",
+      "Husk Graveyard": "https://static.metaforge.app/arc-raiders/custom/husk-graveyard.webp",
+      "Launch Tower Loot": "https://static.metaforge.app/arc-raiders/custom/launchtowerloot.webp",
+      "Locked Gate": "https://static.metaforge.app/arc-raiders/custom/lockedgate.webp",
+      "Lush Blooms": "https://static.metaforge.app/arc-raiders/custom/lush.webp",
+      "Matriarch": "https://static.metaforge.app/arc-raiders/custom/matriarch.webp",
+      "Night Raid": "https://static.metaforge.app/arc-raiders/custom/night.webp",
+      "Prospecting Probes": "https://static.metaforge.app/arc-raiders/custom/probe.webp",
+      "Redirection": "https://static.metaforge.app/arc-raiders/custom/redirection.webp",
+      "Uncovered Caches": "https://static.metaforge.app/arc-raiders/custom/cache.webp"
+    };
+
     const REGIONS = {
-      Europe: { code: "EU", name: "Europe", tag: "CET", timeZone: "Europe/Berlin", flag: "🇪🇺", diffHours: 0, color: "text-amber-400 border-amber-500/40 bg-amber-500/10" },
-      NorthAmerica: { code: "NA", name: "North America", tag: "ET", timeZone: "America/New_York", flag: "🇺🇸", diffHours: -6, color: "text-sky-400 border-sky-500/40 bg-sky-500/10" },
-      SouthAmerica: { code: "SA", name: "South America", tag: "BRT", timeZone: "America/Sao_Paulo", flag: "🇧🇷", diffHours: -4, color: "text-emerald-400 border-emerald-500/40 bg-emerald-500/10" },
-      Asia: { code: "ASIA", name: "Asia", tag: "JST", timeZone: "Asia/Tokyo", flag: "🇯🇵", diffHours: +8, color: "text-rose-400 border-rose-500/40 bg-rose-500/10" },
-      Oceania: { code: "OCE", name: "Oceania", tag: "AEDT", timeZone: "Australia/Sydney", flag: "🇦🇺", diffHours: +10, color: "text-purple-400 border-purple-500/40 bg-purple-500/10" }
+      europe: { key: "europe", code: "EU", name: "Europe", tag: "CET", timeZone: "Europe/Berlin", flag: "🇪🇺", color: "text-amber-400 border-amber-500/40 bg-amber-500/10" },
+      "north-america": { key: "north-america", code: "NA", name: "North America", tag: "ET", timeZone: "America/New_York", flag: "🇺🇸", color: "text-sky-400 border-sky-500/40 bg-sky-500/10" },
+      "south-america": { key: "south-america", code: "SA", name: "South America", tag: "BRT", timeZone: "America/Sao_Paulo", flag: "🇧🇷", color: "text-emerald-400 border-emerald-500/40 bg-emerald-500/10" },
+      asia: { key: "asia", code: "ASIA", name: "Asia", tag: "JST", timeZone: "Asia/Tokyo", flag: "🇯🇵", color: "text-rose-400 border-rose-500/40 bg-rose-500/10" },
+      oceania: { key: "oceania", code: "OCE", name: "Oceania", tag: "AEDT", timeZone: "Australia/Sydney", flag: "🇦🇺", color: "text-purple-400 border-purple-500/40 bg-purple-500/10" }
     };
 
-    const EVENT_ICONS = {
-      "ARC Frigate": "🛸",
-      "Beachcombing": "🏖️",
-      "Bird City": "🦅",
-      "Close Scrutiny": "👁️",
-      "Harvester": "⚡",
-      "Hidden Bunker": "🚪",
-      "Hurricane": "🌀",
-      "Lush Blooms": "🌿",
-      "Matriarch": "👑",
-      "Night Raid": "🌙",
-      "Prospecting Probes": "📡",
-      "Redirection": "🔀"
-    };
-
-    function convertTimeSlot(startH, startM, endH, endM, diffHours) {
-      function shift(h, m) {
-        let total = (h + diffHours) % 24;
-        if (total < 0) total += 24;
-        return `${String(total).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
-      }
-      return `${shift(startH, startM)} - ${shift(endH, endM)}`;
-    }
-
-    function normalizeDoc(d) {
-      let startH = 14, startM = 0, endH = 15, endM = 0;
-      if (d.startTime && d.startTime.includes('T')) {
-        const timePart = d.startTime.split('T')[1];
-        const parts = timePart.split(':');
-        startH = parseInt(parts[0], 10);
-        startM = parseInt(parts[1], 10);
-      }
-      if (d.endTime && d.endTime.includes('T')) {
-        const timePart = d.endTime.split('T')[1];
-        const parts = timePart.split(':');
-        endH = parseInt(parts[0], 10);
-        endM = parseInt(parts[1], 10);
-      }
-      const id = `${d.condition}_${d.map}_${startH}:${startM}`;
-      const regionalSlots = {};
-      Object.keys(REGIONS).forEach(rk => {
-        regionalSlots[rk] = convertTimeSlot(startH, startM, endH, endM, REGIONS[rk].diffHours);
-      });
-      return {
-        id,
-        condition: d.condition,
-        map: d.map,
-        timer: d.timer || "0:00",
-        startH, startM, endH, endM,
-        timeSlotCET: `${String(startH).padStart(2,'0')}:${String(startM).padStart(2,'0')} - ${String(endH).padStart(2,'0')}:${String(endM).padStart(2,'0')}`,
-        regionalSlots,
-        date: "11. Nov",
-        fullDate: d.startTime,
-        duration: d.durationMinutes || 60,
-        slug: d.slug || "",
-        url: d.url || ""
-      };
-    }
-
-    let eventStore = EMBEDDED_DATASET.map(normalizeDoc);
+    let rawEvents = Array.isArray(EMBEDDED_DATASET) ? EMBEDDED_DATASET : [];
     let expandedEvents = new Set(["ARC Frigate"]);
+    let timelineOffsetHours = 0; // Relative to current CET hour
 
     function toggleEventExpansion(conditionName) {
       if (expandedEvents.has(conditionName)) {
@@ -353,26 +354,41 @@
       renderTimelineGrid();
     }
 
-    function setTab(tabName) {
-      ['timeline', 'combinations', 'frequency', 'matrix', 'schedule'].forEach(t => {
-        document.getElementById(`view-${t}`).classList.add("hidden");
-        const btn = document.getElementById(`tab-${t}`);
-        btn.classList.remove("text-amber-400", "border-b-2", "border-amber-400");
-        btn.classList.add("text-[var(--muted)]");
-      });
-      document.getElementById(`view-${tabName}`).classList.remove("hidden");
-      const activeBtn = document.getElementById(`tab-${tabName}`);
-      activeBtn.classList.remove("text-[var(--muted)]");
-      activeBtn.classList.add("text-amber-400", "border-b-2", "border-amber-400");
+    function shiftTimeline(deltaHours) {
+      timelineOffsetHours += deltaHours;
+      renderTimelineGrid();
     }
 
-    const TIMELINE_HOURS = [14, 15, 16, 17, 18, 19, 20, 21];
+    function resetTimelineToNow() {
+      timelineOffsetHours = 0;
+      renderTimelineGrid();
+    }
+
+    function setTab(tabName) {
+      ['timeline', 'schedule', 'combinations', 'frequency', 'matrix'].forEach(t => {
+        const el = document.getElementById(`view-${t}`);
+        if (el) el.classList.add("hidden");
+        const btn = document.getElementById(`tab-${t}`);
+        if (btn) {
+          btn.classList.remove("text-amber-400", "border-b-2", "border-amber-400");
+          btn.classList.add("text-[var(--muted)]");
+        }
+      });
+      const targetView = document.getElementById(`view-${tabName}`);
+      if (targetView) targetView.classList.remove("hidden");
+      const activeBtn = document.getElementById(`tab-${tabName}`);
+      if (activeBtn) {
+        activeBtn.classList.remove("text-[var(--muted)]");
+        activeBtn.classList.add("text-amber-400", "border-b-2", "border-amber-400");
+      }
+    }
 
     function updateWorldClocks() {
       const now = new Date();
       Object.keys(REGIONS).forEach(key => {
         const reg = REGIONS[key];
-        const clockEl = document.getElementById(`clock-${key.toLowerCase() === 'northamerica' ? 'na' : key.toLowerCase() === 'southamerica' ? 'sa' : key.toLowerCase()}`);
+        const idKey = key === 'north-america' ? 'na' : key === 'south-america' ? 'sa' : key;
+        const clockEl = document.getElementById(`clock-${idKey}`);
         if (clockEl) {
           clockEl.innerText = now.toLocaleTimeString("en-GB", { timeZone: reg.timeZone, hour: '2-digit', minute: '2-digit', second: '2-digit' });
         }
@@ -381,88 +397,186 @@
     setInterval(updateWorldClocks, 1000);
     updateWorldClocks();
 
+    function formatTimeCET(ms) {
+      const d = new Date(ms);
+      return d.toLocaleTimeString("en-GB", { timeZone: "Europe/Berlin", hour: '2-digit', minute: '2-digit' });
+    }
+
+    function formatRegionalTime(ms, timeZone) {
+      const d = new Date(ms);
+      return d.toLocaleTimeString("en-GB", { timeZone: timeZone, hour: '2-digit', minute: '2-digit' });
+    }
+
+    function getTimelineSlots() {
+      // 8 hourly slots centered on now + offset
+      const now = new Date();
+      // Start 1 hour before current CET hour + offset
+      const cetDateStr = now.toLocaleString("en-US", { timeZone: "Europe/Berlin" });
+      const cetNow = new Date(cetDateStr);
+      const baseHour = cetNow.getHours() - 1 + timelineOffsetHours;
+
+      const slots = [];
+      for (let i = 0; i < 8; i++) {
+        const targetCet = new Date(cetNow);
+        targetCet.setHours(baseHour + i, 0, 0, 0);
+        // Find UTC timestamp for start and end of this hour
+        // We know targetCet has local Berlin time
+        // Calculate the corresponding absolute epoch ms
+        const hourLabel = `${String(targetCet.getHours()).padStart(2, '0')}:00`;
+        
+        // Approximate epoch ms by subtracting Berlin offset (UTC+1 in standard / winter CET)
+        // More precise: construct date string in ISO with Europe/Berlin
+        const slotStartMs = targetCet.getTime();
+        const slotEndMs = slotStartMs + 3600 * 1000;
+        slots.push({
+          label: hourLabel,
+          startMs: slotStartMs,
+          endMs: slotEndMs,
+          isCurrentHour: (i === 1 && timelineOffsetHours === 0)
+        });
+      }
+      return slots;
+    }
+
     function renderTimelineGrid() {
       const container = document.getElementById("timelineGridContainer");
       if (!container) return;
 
       const now = new Date();
-      const currentH = now.getHours();
-      const currentM = now.getMinutes();
-      const currentHM = `${String(currentH).padStart(2, '0')}:${String(currentM).padStart(2, '0')}`;
+      const nowMs = now.getTime();
+      const cetDateStr = now.toLocaleString("en-US", { timeZone: "Europe/Berlin" });
+      const cetNow = new Date(cetDateStr);
+      const currentHM = `${String(cetNow.getHours()).padStart(2, '0')}:${String(cetNow.getMinutes()).padStart(2, '0')}`;
 
-      // Needle position calculation
-      const startRangeH = 14;
-      const endRangeH = 22;
-      const totalMinutes = (endRangeH - startRangeH) * 60;
-      let needleMinutes = (currentH - startRangeH) * 60 + currentM;
-      if (needleMinutes < 0) needleMinutes = 115;
-      if (needleMinutes > totalMinutes) needleMinutes = totalMinutes - 20;
-      const needlePct = Math.min(Math.max((needleMinutes / totalMinutes) * 100, 2), 98);
+      const slots = getTimelineSlots();
+      const firstSlot = slots[0];
+      const lastSlot = slots[slots.length - 1];
+      const totalSpanMs = lastSlot.endMs - firstSlot.startMs;
 
-      const allConditions = Array.from(new Set(eventStore.map(e => e.condition))).sort();
+      // Needle position percentage across timeline
+      let needlePct = ((nowMs - firstSlot.startMs) / totalSpanMs) * 100;
+      const showNeedle = needlePct >= 0 && needlePct <= 100;
+      needlePct = Math.min(Math.max(needlePct, 2), 98);
+
+      const activeConditionsInDataset = new Set(rawEvents.map(e => e.condition));
+      // Display active rotation conditions first, then off-rotation conditions
+      const sortedConditions = [
+        ...ALL_KNOWN_CONDITIONS.filter(c => activeConditionsInDataset.has(c)),
+        ...ALL_KNOWN_CONDITIONS.filter(c => !activeConditionsInDataset.has(c))
+      ];
 
       let html = `
         <div class="relative">
           
+          <!-- Column Headers -->
           <div class="flex border-b border-[var(--border)] pb-2 relative">
-            <div class="w-64 flex-shrink-0 text-xs font-bold uppercase tracking-wider text-[var(--muted)] pl-2">
-              Condition & Regions
+            <div class="w-64 flex-shrink-0 text-xs font-bold uppercase tracking-wider text-[var(--muted)] pl-2 flex items-center justify-between pr-4">
+              <span>Condition & Regions</span>
+              <span class="text-[10px] text-amber-400 font-mono">CET</span>
             </div>
             <div class="flex-1 grid grid-cols-8 text-xs font-mono text-[var(--muted)] relative">
-              ${TIMELINE_HOURS.map(h => `
-                <div class="text-left pl-2 font-semibold ${h === currentH ? 'text-white' : ''}">${String(h).padStart(2, '0')}:00</div>
+              ${slots.map(s => `
+                <div class="text-left pl-2 font-semibold ${s.isCurrentHour ? 'text-amber-400 font-bold' : ''}">
+                  ${s.label}
+                </div>
               `).join('')}
 
-              <div class="absolute top-[-4px] z-30 pointer-events-none -translate-x-1/2" style="left: ${needlePct}%;">
-                <span class="bg-red-600 text-white font-bold text-[11px] px-2 py-0.5 rounded-full shadow-lg font-mono">
-                  ${currentHM}
-                </span>
-              </div>
+              ${showNeedle ? `
+                <div class="absolute top-[-5px] z-30 pointer-events-none -translate-x-1/2" style="left: ${needlePct}%;">
+                  <span class="bg-red-600 text-white font-bold text-[11px] px-2 py-0.5 rounded-full shadow-lg font-mono">
+                    ${currentHM}
+                  </span>
+                </div>
+              ` : ''}
             </div>
           </div>
 
-          <div class="absolute top-6 bottom-0 w-[2px] bg-red-600/80 z-20 pointer-events-none -translate-x-1/2 shadow-[0_0_8px_rgba(239,68,68,0.8)]" style="left: calc(16rem + (100% - 16rem) * ${needlePct / 100});"></div>
+          <!-- Red Current Time Vertical Needle -->
+          ${showNeedle ? `
+            <div class="absolute top-7 bottom-0 w-[2px] bg-red-600/80 z-20 pointer-events-none -translate-x-1/2 shadow-[0_0_8px_rgba(239,68,68,0.8)]" style="left: calc(16rem + (100% - 16rem) * ${needlePct / 100});"></div>
+          ` : ''}
 
+          <!-- Grid Rows -->
           <div class="divide-y divide-[var(--border)]">
       `;
 
-      allConditions.forEach(cond => {
+      sortedConditions.forEach(cond => {
         const isExpanded = expandedEvents.has(cond);
-        const icon = EVENT_ICONS[cond] || "🎯";
+        const iconUrl = CONDITION_ICONS[cond] || "";
+        const isOffRotation = !activeConditionsInDataset.has(cond);
 
         html += `
-          <div class="py-2.5 transition">
+          <div class="py-2.5 transition ${isOffRotation ? 'opacity-65 hover:opacity-90' : ''}">
             <div class="flex items-center">
               
+              <!-- Left Column: Condition Name & Expansion -->
               <div class="w-64 flex-shrink-0 flex items-center justify-between pr-4 cursor-pointer select-none group" onclick="toggleEventExpansion('${cond}')">
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2.5">
                   <span class="text-slate-400 group-hover:text-amber-400 transition text-xs font-mono w-3">
                     ${isExpanded ? '▼' : '▶'}
                   </span>
-                  <span class="text-base">${icon}</span>
-                  <span class="font-bold text-sm text-white group-hover:text-amber-400 transition truncate max-w-[150px]">${cond}</span>
+                  ${iconUrl ? `
+                    <img src="${iconUrl}" alt="${cond}" class="w-6 h-6 rounded-md object-contain border border-slate-700/60 bg-slate-900 flex-shrink-0" onerror="this.style.display='none'">
+                  ` : ''}
+                  <div class="truncate max-w-[140px]">
+                    <span class="font-bold text-sm text-white group-hover:text-amber-400 transition truncate block">${cond}</span>
+                    ${isOffRotation ? `<span class="text-[9px] text-amber-400/80 uppercase font-mono font-bold tracking-wider">Off-Rotation</span>` : ''}
+                  </div>
                 </div>
                 <span class="text-slate-600 group-hover:text-slate-400 text-xs font-mono font-bold tracking-tighter">»</span>
               </div>
 
+              <!-- Main Slot Grid (Collapsed summary row) -->
               <div class="flex-1 grid grid-cols-8 gap-2">
-                ${TIMELINE_HOURS.map(h => {
-                  const ev = eventStore.find(e => e.condition === cond && e.startH === h);
-                  if (!ev) {
+                ${slots.map(s => {
+                  if (isOffRotation) {
                     return `<div class="h-8"></div>`;
                   }
 
-                  let statusClasses = "border-slate-800 bg-slate-900/60 text-slate-400";
-                  if (h === currentH) {
-                    statusClasses = "border-emerald-500 bg-emerald-500/15 text-emerald-300 shadow-[0_0_12px_rgba(16,185,129,0.2)]";
-                  } else if (h > currentH) {
-                    statusClasses = "border-sky-500/70 bg-sky-500/10 text-sky-200";
+                  // Find which map(s) and regions are running for this condition in this slot
+                  const midSlotMs = s.startMs + 1800 * 1000;
+                  const activeRegionsByMap = {};
+
+                  rawEvents.forEach(e => {
+                    if (e.condition !== cond) return;
+                    const rts = e.regionTimestamps || {};
+                    Object.keys(REGIONS).forEach(rk => {
+                      const range = rts[rk];
+                      if (range && range.length === 2) {
+                        if (midSlotMs >= range[0] && midSlotMs < range[1]) {
+                          if (!activeRegionsByMap[e.map]) activeRegionsByMap[e.map] = new Set();
+                          activeRegionsByMap[e.map].add(REGIONS[rk].code);
+                        }
+                      }
+                    });
+                  });
+
+                  const mapEntries = Object.entries(activeRegionsByMap);
+                  if (mapEntries.length === 0) {
+                    return `<div class="h-8"></div>`;
+                  }
+
+                  const [mapName, regionCodesSet] = mapEntries[0];
+                  const regionCodes = Array.from(regionCodesSet);
+                  const isCurrent = s.isCurrentHour;
+                  const isUpcoming = midSlotMs > nowMs;
+
+                  let pillStyle = "border-slate-800 bg-slate-900/60 text-slate-400";
+                  if (isCurrent) {
+                    pillStyle = "border-emerald-500 bg-emerald-500/15 text-emerald-300 shadow-[0_0_12px_rgba(16,185,129,0.2)] font-semibold";
+                  } else if (isUpcoming) {
+                    pillStyle = "border-sky-500/70 bg-sky-500/10 text-sky-200";
                   }
 
                   return `
-                    <div class="h-8 flex items-center justify-between px-2.5 rounded-lg border text-xs font-medium ${statusClasses} truncate transition">
-                      <span class="truncate">${ev.map}</span>
-                      <span class="text-[9px] font-mono opacity-80 ml-1 border border-current px-1 rounded">EU</span>
+                    <div class="h-8 flex items-center justify-between px-2 rounded-lg border text-xs font-medium ${pillStyle} truncate transition">
+                      <span class="truncate">${mapName}</span>
+                      <div class="flex items-center gap-0.5 ml-1 flex-shrink-0">
+                        ${regionCodes.slice(0, 2).map(rc => `
+                          <span class="text-[9px] font-mono border border-current px-1 rounded">${rc}</span>
+                        `).join('')}
+                        ${regionCodes.length > 2 ? `<span class="text-[9px] font-mono border border-current px-0.5 rounded">+${regionCodes.length - 2}</span>` : ''}
+                      </div>
                     </div>
                   `;
                 }).join('')}
@@ -470,12 +584,14 @@
 
             </div>
 
+            <!-- Expanded Regional Rows (EU, NA, SA, ASIA, OCE) -->
             ${isExpanded ? `
-              <div class="mt-2 pl-4 space-y-1.5 border-l-2 border-amber-500/30 ml-2">
+              <div class="mt-2 pl-4 space-y-1.5 border-l-2 border-amber-500/40 ml-2 pt-1">
                 ${Object.keys(REGIONS).map(rk => {
                   const reg = REGIONS[rk];
                   return `
                     <div class="flex items-center">
+                      <!-- Region Label -->
                       <div class="w-60 flex-shrink-0 flex items-center gap-2">
                         <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold border ${reg.color}">
                           ${reg.code}
@@ -483,24 +599,40 @@
                         <span class="text-xs font-semibold text-slate-300">${reg.name}</span>
                       </div>
 
+                      <!-- Regional Hourly Cells -->
                       <div class="flex-1 grid grid-cols-8 gap-2">
-                        ${TIMELINE_HOURS.map(h => {
-                          const ev = eventStore.find(e => e.condition === cond && e.startH === h);
-                          if (!ev) {
+                        ${slots.map(s => {
+                          const midSlotMs = s.startMs + 1800 * 1000;
+                          let runningMap = null;
+
+                          rawEvents.forEach(e => {
+                            if (e.condition !== cond) return;
+                            const range = (e.regionTimestamps || {})[rk];
+                            if (range && range.length === 2) {
+                              if (midSlotMs >= range[0] && midSlotMs < range[1]) {
+                                runningMap = e.map;
+                              }
+                            }
+                          });
+
+                          if (!runningMap) {
                             return `<div class="h-7"></div>`;
                           }
 
-                          let pillStyle = "border-slate-800 bg-slate-900 text-slate-400";
-                          if (h === currentH) {
-                            pillStyle = "border-emerald-500 bg-emerald-500/20 text-emerald-300 font-semibold";
-                          } else if (h > currentH) {
-                            pillStyle = "border-sky-500/60 bg-sky-500/10 text-sky-200";
+                          const isCurrent = s.isCurrentHour;
+                          const isUpcoming = midSlotMs > nowMs;
+
+                          let regionalPill = "border-slate-800 bg-slate-900 text-slate-400";
+                          if (isCurrent) {
+                            regionalPill = "border-emerald-500 bg-emerald-500/20 text-emerald-300 font-semibold";
+                          } else if (isUpcoming) {
+                            regionalPill = "border-sky-500/60 bg-sky-500/10 text-sky-200";
                           }
 
                           return `
-                            <div class="h-7 flex items-center justify-between px-2 rounded-lg border text-[11px] ${pillStyle} transition">
-                              <span class="truncate">${ev.map}</span>
-                              <span class="text-[9px] font-mono opacity-70 ml-1 border border-current px-1 rounded">${reg.code}</span>
+                            <div class="h-7 flex items-center justify-between px-2 rounded-lg border text-[11px] ${regionalPill} transition">
+                              <span class="truncate">${runningMap}</span>
+                              <span class="text-[9px] font-mono opacity-80 ml-1 border border-current px-1 rounded">${reg.code}</span>
                             </div>
                           `;
                         }).join('')}
@@ -527,63 +659,125 @@
       const query = (document.getElementById("searchInput").value || "").toLowerCase();
       const timeframe = document.getElementById("selectedTimeframe").value;
       const now = new Date();
+      const nowMs = now.getTime();
 
-      const filtered = eventStore.filter(e => {
-        const matchesQuery = e.condition.toLowerCase().includes(query) || 
-          e.map.toLowerCase().includes(query) ||
-          e.timeSlotCET.includes(query);
+      const filtered = rawEvents.filter(e => {
+        const matchesQuery = (e.condition || "").toLowerCase().includes(query) || 
+          (e.map || "").toLowerCase().includes(query);
         if (!matchesQuery) return false;
 
-        if (timeframe === "ALL" || !e.fullDate) return true;
-        const evDate = new Date(e.fullDate);
+        if (timeframe === "ALL" || !e.startTime) return true;
+        const evDate = new Date(e.startTime);
         if (timeframe === "TODAY") {
           return evDate.toDateString() === now.toDateString();
         } else if (timeframe === "WEEK") {
           const diffDays = (now - evDate) / (1000 * 60 * 60 * 24);
           return diffDays >= 0 && diffDays <= 7;
-        } else if (timeframe === "MONTH") {
-          return evDate.getMonth() === now.getMonth() && evDate.getFullYear() === now.getFullYear();
         }
         return true;
       });
 
+      // Update schedule counter
+      const counterEl = document.getElementById("scheduleCounter");
+      if (counterEl) {
+        counterEl.innerText = `${filtered.length} Recorded Rotations`;
+      }
+
+      // Render Timeline Grid
       renderTimelineGrid();
 
-      // Combinations
+      // Render World Schedule Table
+      const schedBody = document.getElementById("scheduleTableBody");
+      if (schedBody) {
+        // Sort chronologically (upcoming and active first)
+        const sortedForTable = [...filtered].sort((a, b) => {
+          const stA = new Date(a.startTime).getTime();
+          const stB = new Date(b.startTime).getTime();
+          return stA - stB;
+        });
+
+        schedBody.innerHTML = sortedForTable.map(e => {
+          const stMs = new Date(e.startTime).getTime();
+          const etMs = new Date(e.endTime).getTime();
+          const isActive = nowMs >= stMs && nowMs < etMs;
+          const isUpcoming = stMs > nowMs;
+
+          let statusBadge = `<span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-slate-800 text-slate-400">Ended</span>`;
+          let countdownText = "Finished";
+
+          if (isActive) {
+            statusBadge = `<span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 animate-pulse">Active Now</span>`;
+            const remMin = Math.max(0, Math.round((etMs - nowMs) / 60000));
+            countdownText = `${remMin}m remaining`;
+          } else if (isUpcoming) {
+            statusBadge = `<span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-sky-500/10 text-sky-400 border border-sky-500/30">Upcoming</span>`;
+            const diffMin = Math.round((stMs - nowMs) / 60000);
+            const diffH = Math.floor(diffMin / 60);
+            const m = diffMin % 60;
+            countdownText = diffH > 0 ? `in ${diffH}h ${m}m` : `in ${m}m`;
+          }
+
+          const rts = e.regionTimestamps || {};
+          const euSlot = rts.europe ? `${formatRegionalTime(rts.europe[0], "Europe/Berlin")} - ${formatRegionalTime(rts.europe[1], "Europe/Berlin")}` : `${formatRegionalTime(stMs, "Europe/Berlin")} - ${formatRegionalTime(etMs, "Europe/Berlin")}`;
+          const naSlot = rts["north-america"] ? `${formatRegionalTime(rts["north-america"][0], "America/New_York")} - ${formatRegionalTime(rts["north-america"][1], "America/New_York")}` : "-";
+          const saSlot = rts["south-america"] ? `${formatRegionalTime(rts["south-america"][0], "America/Sao_Paulo")} - ${formatRegionalTime(rts["south-america"][1], "America/Sao_Paulo")}` : "-";
+          const oceSlot = rts.oceania ? `${formatRegionalTime(rts.oceania[0], "Australia/Sydney")} - ${formatRegionalTime(rts.oceania[1], "Australia/Sydney")}` : "-";
+          const asiaSlot = rts.asia ? `${formatRegionalTime(rts.asia[0], "Asia/Tokyo")} - ${formatRegionalTime(rts.asia[1], "Asia/Tokyo")}` : "-";
+
+          const iconUrl = CONDITION_ICONS[e.condition] || "";
+
+          return `
+            <tr class="hover:bg-slate-800/40 transition">
+              <td class="py-2.5 px-3 whitespace-nowrap">${statusBadge}</td>
+              <td class="py-2.5 px-3 font-bold text-white whitespace-nowrap flex items-center gap-2">
+                ${iconUrl ? `<img src="${iconUrl}" alt="${e.condition}" class="w-5 h-5 rounded object-contain bg-slate-900 border border-slate-700/60" onerror="this.style.display='none'">` : ''}
+                <a href="${e.url || '#'}" target="_blank" class="hover:text-amber-400 transition">${e.condition}</a>
+              </td>
+              <td class="py-2.5 px-3 text-amber-300 font-semibold whitespace-nowrap">${e.map}</td>
+              <td class="py-2.5 px-3 font-mono text-slate-300 whitespace-nowrap">${euSlot}</td>
+              <td class="py-2.5 px-3 font-mono text-sky-300 whitespace-nowrap">${naSlot}</td>
+              <td class="py-2.5 px-3 font-mono text-emerald-300 whitespace-nowrap">${saSlot}</td>
+              <td class="py-2.5 px-3 font-mono text-purple-300 whitespace-nowrap">${oceSlot}</td>
+              <td class="py-2.5 px-3 font-mono text-rose-300 whitespace-nowrap">${asiaSlot}</td>
+              <td class="py-2.5 px-3 font-mono text-amber-400 font-bold whitespace-nowrap">${countdownText}</td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      // Render Concurrent Combinations
       const slotGroups = {};
       filtered.forEach(e => {
-        const key = `${e.date} · ${e.timeSlotCET} CET`;
-        if (!slotGroups[key]) slotGroups[key] = { items: [], origEvent: e };
+        const d = new Date(e.startTime);
+        const dateStr = d.toLocaleDateString("en-GB", { day: '2-digit', month: 'short' });
+        const timeStr = `${formatRegionalTime(d.getTime(), "Europe/Berlin")} CET`;
+        const key = `${dateStr} · ${timeStr}`;
+        if (!slotGroups[key]) slotGroups[key] = { items: [], startTime: e.startTime };
         slotGroups[key].items.push(e);
       });
 
       const combContainer = document.getElementById("combinationsContainer");
       if (combContainer) {
-        combContainer.innerHTML = Object.entries(slotGroups).map(([slotTitle, data]) => {
-          const { items, origEvent } = data;
+        combContainer.innerHTML = Object.entries(slotGroups).slice(0, 15).map(([slotTitle, data]) => {
+          const { items } = data;
           return `
             <div class="bg-slate-900/60 border border-[var(--border)] rounded-2xl p-4 shadow-sm">
-              <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-[var(--border)] pb-3 mb-3">
-                <div class="flex items-center gap-2">
-                  <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
-                  <span class="text-sm font-bold text-white">${slotTitle}</span>
-                </div>
-                <div class="flex flex-wrap items-center gap-1.5 text-[11px] font-mono">
-                  <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300">🇪🇺 ${origEvent.regionalSlots.Europe}</span>
-                  <span class="px-2 py-0.5 rounded bg-slate-800 text-sky-300">🇺🇸 ${origEvent.regionalSlots.NorthAmerica}</span>
-                  <span class="px-2 py-0.5 rounded bg-slate-800 text-emerald-300">🇧🇷 ${origEvent.regionalSlots.SouthAmerica}</span>
-                  <span class="px-2 py-0.5 rounded bg-slate-800 text-rose-300">🇯🇵 ${origEvent.regionalSlots.Asia}</span>
-                  <span class="px-2 py-0.5 rounded bg-slate-800 text-purple-300">🇦🇺 ${origEvent.regionalSlots.Oceania}</span>
-                </div>
+              <div class="flex items-center gap-2 border-b border-[var(--border)] pb-2.5 mb-3">
+                <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                <span class="text-sm font-bold text-white">${slotTitle}</span>
+                <span class="text-xs text-[var(--muted)] font-mono">(${items.length} Simultaneous Maps)</span>
               </div>
               <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
                 ${items.map(it => `
                   <div class="bg-[var(--card)] border border-[var(--border)] hover:border-amber-400/50 rounded-xl p-3 transition shadow-sm">
                     <div class="text-[10px] font-bold text-amber-400 uppercase tracking-wider">${it.map}</div>
-                    <div class="text-sm font-bold text-white mt-0.5 truncate">${it.condition}</div>
-                    <div class="text-[11px] text-[var(--muted)] mt-2 flex items-center justify-between border-t border-slate-800/80 pt-1.5">
-                      <span class="text-emerald-400 font-semibold">${it.duration} Min</span>
-                      <span class="font-mono text-amber-300 bg-amber-500/10 px-1.5 py-0.5 rounded text-[10px]">${it.timer}</span>
+                    <div class="text-sm font-bold text-white mt-0.5 truncate flex items-center gap-1.5">
+                      ${CONDITION_ICONS[it.condition] ? `<img src="${CONDITION_ICONS[it.condition]}" class="w-4 h-4 rounded object-contain" onerror="this.style.display='none'">` : ''}
+                      <span class="truncate">${it.condition}</span>
+                    </div>
+                    <div class="text-[11px] text-[var(--muted)] mt-2 flex items-center justify-between border-t border-slate-800/80 pt-1.5 font-mono">
+                      <span class="text-emerald-400 font-semibold">${it.durationMinutes || 60} Min</span>
+                      <span class="text-slate-400 text-[10px]">Active</span>
                     </div>
                   </div>
                 `).join('')}
@@ -593,12 +787,12 @@
         }).join('');
       }
 
-      // Frequency Bars
+      // Render Frequency Bars
       const condCounts = {};
       const condHours = {};
       filtered.forEach(e => {
         condCounts[e.condition] = (condCounts[e.condition] || 0) + 1;
-        condHours[e.condition] = (condHours[e.condition] || 0) + (e.duration / 60);
+        condHours[e.condition] = (condHours[e.condition] || 0) + ((e.durationMinutes || 60) / 60);
       });
       const maxCount = Math.max(...Object.values(condCounts), 1);
       const freqBars = document.getElementById("frequencyBars");
@@ -610,8 +804,11 @@
             return `
               <div>
                 <div class="flex justify-between text-xs mb-1">
-                  <span class="font-semibold text-white">${cond}</span>
-                  <span class="text-[var(--muted)]">${count}x (${condHours[cond]}h Uptime)</span>
+                  <span class="font-semibold text-white flex items-center gap-1.5">
+                    ${CONDITION_ICONS[cond] ? `<img src="${CONDITION_ICONS[cond]}" class="w-4 h-4 rounded" onerror="this.style.display='none'">` : ''}
+                    ${cond}
+                  </span>
+                  <span class="text-[var(--muted)]">${count}x (${condHours[cond].toFixed(0)}h recorded)</span>
                 </div>
                 <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
                   <div class="bg-gradient-to-r from-amber-500 to-amber-300 h-2 rounded-full" style="width: ${pct}%"></div>
@@ -621,7 +818,7 @@
           }).join('');
       }
 
-      // Map Bars
+      // Render Map Bars
       const mapCounts = {};
       filtered.forEach(e => { mapCounts[e.map] = (mapCounts[e.map] || 0) + 1; });
       const maxMapCount = Math.max(...Object.values(mapCounts), 1);
@@ -635,7 +832,7 @@
               <div>
                 <div class="flex justify-between text-xs mb-1">
                   <span class="font-semibold text-white">${mp}</span>
-                  <span class="text-[var(--muted)]">${count} Events</span>
+                  <span class="text-[var(--muted)]">${count} Rotations</span>
                 </div>
                 <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
                   <div class="bg-gradient-to-r from-sky-500 to-sky-300 h-2 rounded-full" style="width: ${pct}%"></div>
@@ -645,7 +842,7 @@
           }).join('');
       }
 
-      // Matrix
+      // Render Matrix
       const uniqueMaps = new Set(filtered.map(e => e.map));
       const uniqueConds = new Set(filtered.map(e => e.condition));
       const activeMaps = Array.from(uniqueMaps).sort();
@@ -660,7 +857,10 @@
         mBody.innerHTML = Array.from(uniqueConds).sort().map(cond => {
           return `
             <tr class="hover:bg-slate-800/40 transition">
-              <td class="py-2.5 px-3 font-medium text-white">${cond}</td>
+              <td class="py-2.5 px-3 font-medium text-white flex items-center gap-1.5">
+                ${CONDITION_ICONS[cond] ? `<img src="${CONDITION_ICONS[cond]}" class="w-4 h-4 rounded" onerror="this.style.display='none'">` : ''}
+                ${cond}
+              </td>
               ${activeMaps.map(m => {
                 const occurrences = filtered.filter(e => e.condition === cond && e.map === m);
                 if (occurrences.length > 0) {
@@ -673,43 +873,24 @@
           `;
         }).join('');
       }
-
-      // Schedule Table
-      const schedBody = document.getElementById("scheduleTableBody");
-      if (schedBody) {
-        schedBody.innerHTML = filtered.map(e => `
-          <tr class="hover:bg-slate-800/40 transition">
-            <td class="py-2.5 px-3">
-              <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${e.startH === currentH ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-slate-800 text-slate-300'}">
-                ${e.startH === currentH ? 'ACTIVE' : 'UPCOMING'}
-              </span>
-            </td>
-            <td class="py-2.5 px-3 font-bold text-white">${e.condition}</td>
-            <td class="py-2.5 px-3 text-amber-300 font-medium">${e.map}</td>
-            <td class="py-2.5 px-3 font-mono text-slate-300">${e.regionalSlots.Europe}</td>
-            <td class="py-2.5 px-3 font-mono text-sky-300">${e.regionalSlots.NorthAmerica}</td>
-            <td class="py-2.5 px-3 font-mono text-emerald-300">${e.regionalSlots.SouthAmerica}</td>
-            <td class="py-2.5 px-3 font-mono text-purple-300">${e.regionalSlots.Oceania}</td>
-            <td class="py-2.5 px-3 font-mono text-rose-300">${e.regionalSlots.Asia}</td>
-            <td class="py-2.5 px-3 font-mono text-amber-400 font-bold">${e.timer}</td>
-          </tr>
-        `).join('');
-      }
     }
 
     async function loadRemoteHistory() {
       try {
-        const resp = await fetch('./data/events.json');
+        const resp = await fetch('./data/events.json?t=' + Date.now());
         if (resp.ok) {
           const remoteData = await resp.json();
           if (Array.isArray(remoteData) && remoteData.length > 0) {
-            const mapById = new Map();
-            eventStore.forEach(e => mapById.set(e.id, e));
-            remoteData.forEach(d => {
-              const item = normalizeDoc(d);
-              mapById.set(item.id, item);
+            const mapByKey = new Map();
+            rawEvents.forEach(e => {
+              const k = `${e.condition}_${e.map}_${e.startTime}`;
+              mapByKey.set(k, e);
             });
-            eventStore = Array.from(mapById.values());
+            remoteData.forEach(d => {
+              const k = `${d.condition}_${d.map}_${d.startTime}`;
+              mapByKey.set(k, d);
+            });
+            rawEvents = Array.from(mapByKey.values());
             renderAll();
           }
         }
@@ -718,9 +899,12 @@
       }
     }
 
-    // Initial render runs immediately with embedded dataset
+    // Initial render
     renderAll();
     loadRemoteHistory();
+
+    // Re-render needle every 30 seconds
+    setInterval(renderTimelineGrid, 30000);
   </script>
 </body>
 </html>
