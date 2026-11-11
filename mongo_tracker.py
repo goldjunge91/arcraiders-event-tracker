@@ -207,6 +207,15 @@ def sync_to_mongodb(events, mongo_uri: str, db_name: str = "arcraiders"):
     else:
         print("Keine Events zum Synchronisieren gefunden.")
 
+# Default sample / seed text exported at module level
+SAMPLE_TEXT = """
+Active now
+[3:07ARC FrigateBuried City11. Nov. · 14:00 - 15:00](https://arcraiders.com/de/map-conditions/arc-frigate)[3:07Lush BloomsDam Battlegrounds11. Nov. · 14:00 - 15:00](https://arcraiders.com/de/map-conditions/lush-blooms)[3:07Night RaidStella Montis11. Nov. · 14:00 - 15:00](https://arcraiders.com/de/map-conditions/night-raid)[3:07Prospecting ProbesSpaceport11. Nov. · 14:00 - 15:00](https://arcraiders.com/de/map-conditions/prospecting-probes)[3:07RedirectionPendola Pass11. Nov. · 14:00 - 15:00](https://arcraiders.com/de/map-conditions/redirection)
+Coming up (next per condition)
+[3:07ARC FrigateThe Blue Gate11. Nov. · 15:00 - 16:00](https://arcraiders.com/de/map-conditions/arc-frigate)[3:07BeachcombingRiven Tides11. Nov. · 15:00 - 16:00](https://arcraiders.com/de/map-conditions/beachcombing)[3:07Bird CityBuried City11. Nov. · 15:00 - 16:00](https://arcraiders.com/de/map-conditions/bird-city)[3:07Hidden BunkerSpaceport11. Nov. · 15:00 - 16:00](https://arcraiders.com/de/map-conditions/hidden-bunker)[3:07Night RaidPendola Pass11. Nov. · 15:00 - 16:00](https://arcraiders.com/de/map-conditions/night-raid)[1:03:07Lush BloomsBuried City11. Nov. · 16:00 - 17:00](https://arcraiders.com/de/map-conditions/lush-blooms)[1:03:07Prospecting ProbesRiven Tides11. Nov. · 16:00 - 17:00](https://arcraiders.com/de/map-conditions/prospecting-probes)[2:03:07Close ScrutinyBuried City11. Nov. · 17:00 - 18:00](https://arcraiders.com/de/map-conditions/close-scrutiny)[2:03:07HarvesterThe Blue Gate11. Nov. · 17:00 - 18:00](https://arcraiders.com/de/map-conditions/harvester)[2:03:07MatriarchSpaceport11. Nov. · 17:00 - 18:00](https://arcraiders.com/de/map-conditions/matriarch)[5:03:07RedirectionPendola Pass11. Nov. · 20:00 - 21:00](https://arcraiders.com/de/map-conditions/redirection)[6:03:07HurricaneDam Battlegrounds11. Nov. · 21:00 - 22:00](https://arcraiders.com/de/map-conditions/hurricane)
+"""
+sample_text = SAMPLE_TEXT
+
 def load_env_file():
     env_path = os.path.join(os.path.dirname(__file__), ".env")
     if os.path.exists(env_path):
@@ -223,13 +232,6 @@ def load_env_file():
 if __name__ == "__main__":
     load_env_file()
     mongo_uri = os.environ.get("MONGODB_URI")
-    # Beispieldaten für Tests oder Direktimport
-    sample_text = """
-    Active now
-    [3:07ARC FrigateBuried City11. Nov. · 14:00 - 15:00](https://arcraiders.com/de/map-conditions/arc-frigate)[3:07Lush BloomsDam Battlegrounds11. Nov. · 14:00 - 15:00](https://arcraiders.com/de/map-conditions/lush-blooms)[3:07Night RaidStella Montis11. Nov. · 14:00 - 15:00](https://arcraiders.com/de/map-conditions/night-raid)[3:07Prospecting ProbesSpaceport11. Nov. · 14:00 - 15:00](https://arcraiders.com/de/map-conditions/prospecting-probes)[3:07RedirectionPendola Pass11. Nov. · 14:00 - 15:00](https://arcraiders.com/de/map-conditions/redirection)
-    Coming up (next per condition)
-    [3:07ARC FrigateThe Blue Gate11. Nov. · 15:00 - 16:00](https://arcraiders.com/de/map-conditions/arc-frigate)[3:07BeachcombingRiven Tides11. Nov. · 15:00 - 16:00](https://arcraiders.com/de/map-conditions/beachcombing)[3:07Bird CityBuried City11. Nov. · 15:00 - 16:00](https://arcraiders.com/de/map-conditions/bird-city)[3:07Hidden BunkerSpaceport11. Nov. · 15:00 - 16:00](https://arcraiders.com/de/map-conditions/hidden-bunker)[3:07Night RaidPendola Pass11. Nov. · 15:00 - 16:00](https://arcraiders.com/de/map-conditions/night-raid)[1:03:07Lush BloomsBuried City11. Nov. · 16:00 - 17:00](https://arcraiders.com/de/map-conditions/lush-blooms)[1:03:07Prospecting ProbesRiven Tides11. Nov. · 16:00 - 17:00](https://arcraiders.com/de/map-conditions/prospecting-probes)[2:03:07Close ScrutinyBuried City11. Nov. · 17:00 - 18:00](https://arcraiders.com/de/map-conditions/close-scrutiny)[2:03:07HarvesterThe Blue Gate11. Nov. · 17:00 - 18:00](https://arcraiders.com/de/map-conditions/harvester)[2:03:07MatriarchSpaceport11. Nov. · 17:00 - 18:00](https://arcraiders.com/de/map-conditions/matriarch)[5:03:07RedirectionPendola Pass11. Nov. · 20:00 - 21:00](https://arcraiders.com/de/map-conditions/redirection)[6:03:07HurricaneDam Battlegrounds11. Nov. · 21:00 - 22:00](https://arcraiders.com/de/map-conditions/hurricane)
-    """
     
     # Entweder von URL laden oder Fallback auf Text
     events = []

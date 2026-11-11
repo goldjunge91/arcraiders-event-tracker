@@ -31,24 +31,9 @@ jobs:
         run: |
           python mongo_tracker.py
 
-      # Optional: Speichert zusätzlich eine JSON-Kopie im Git-Repo für التاريخ / Flat Data
-      - name: Export JSON snapshot (optional)
-        run: |
-          mkdir -p data
-          python -c "
-          import json
-          from mongo_tracker import parse_events_from_text, sample_text
-          events = parse_events_from_text(sample_text)
-          for e in events:
-              e['startTime'] = e['startTime'].isoformat()
-              e['endTime'] = e['endTime'].isoformat()
-              e['updatedAt'] = e['updatedAt'].isoformat()
-          with open('data/latest_events.json', 'w') as f:
-              json.dump(events, f, indent=2)
-          "
-      - name: Commit snapshot if changed
+      - name: Commit updated event history snapshot
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action Tracker"
-          git add data/latest_events.json || true
-          git diff --staged --quiet || (git commit -m "chore: update event snapshot [skip ci]" && git push)
+          git add data/events.json || true
+          git diff --staged --quiet || (git commit -m "chore: auto-update event history snapshot [skip ci]" && git push)
