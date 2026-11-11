@@ -6,7 +6,7 @@
     "createdAt": "2026-11-11T15:33:57.047000",
     "durationMinutes": 60,
     "endTime": "2026-11-11T22:00:00",
-    "lastSeenAt": "2026-11-11T15:45:27.128000",
+    "lastSeenAt": "2026-11-11T15:14:02.510000",
     "slug": "hurricane",
     "timer": "6:03:07",
     "url": "https://arcraiders.com/de/map-conditions/hurricane"
@@ -18,7 +18,7 @@
     "createdAt": "2026-11-11T15:33:57.047000",
     "durationMinutes": 60,
     "endTime": "2026-11-11T21:00:00",
-    "lastSeenAt": "2026-11-11T15:45:27.128000",
+    "lastSeenAt": "2026-11-11T15:14:02.510000",
     "slug": "redirection",
     "timer": "5:03:07",
     "url": "https://arcraiders.com/de/map-conditions/redirection"
@@ -30,7 +30,7 @@
     "createdAt": "2026-11-11T15:33:57.047000",
     "durationMinutes": 60,
     "endTime": "2026-11-11T18:00:00",
-    "lastSeenAt": "2026-11-11T15:45:27.128000",
+    "lastSeenAt": "2026-11-11T15:14:02.510000",
     "slug": "matriarch",
     "timer": "2:03:07",
     "url": "https://arcraiders.com/de/map-conditions/matriarch"
@@ -42,7 +42,7 @@
     "createdAt": "2026-11-11T15:33:57.047000",
     "durationMinutes": 60,
     "endTime": "2026-11-11T18:00:00",
-    "lastSeenAt": "2026-11-11T15:45:27.128000",
+    "lastSeenAt": "2026-11-11T15:14:02.510000",
     "slug": "harvester",
     "timer": "2:03:07",
     "url": "https://arcraiders.com/de/map-conditions/harvester"
@@ -54,7 +54,7 @@
     "createdAt": "2026-11-11T15:33:57.047000",
     "durationMinutes": 60,
     "endTime": "2026-11-11T18:00:00",
-    "lastSeenAt": "2026-11-11T15:45:27.128000",
+    "lastSeenAt": "2026-11-11T15:14:02.510000",
     "slug": "close-scrutiny",
     "timer": "2:03:07",
     "url": "https://arcraiders.com/de/map-conditions/close-scrutiny"
@@ -66,7 +66,7 @@
     "createdAt": "2026-11-11T15:33:57.047000",
     "durationMinutes": 60,
     "endTime": "2026-11-11T17:00:00",
-    "lastSeenAt": "2026-11-11T15:45:27.128000",
+    "lastSeenAt": "2026-11-11T15:14:02.510000",
     "slug": "prospecting-probes",
     "timer": "1:03:07",
     "url": "https://arcraiders.com/de/map-conditions/prospecting-probes"
@@ -78,7 +78,7 @@
     "createdAt": "2026-11-11T15:33:57.047000",
     "durationMinutes": 60,
     "endTime": "2026-11-11T17:00:00",
-    "lastSeenAt": "2026-11-11T15:45:27.128000",
+    "lastSeenAt": "2026-11-11T15:14:02.510000",
     "slug": "lush-blooms",
     "timer": "1:03:07",
     "url": "https://arcraiders.com/de/map-conditions/lush-blooms"
@@ -90,7 +90,7 @@
     "createdAt": "2026-11-11T15:33:57.047000",
     "durationMinutes": 60,
     "endTime": "2026-11-11T16:00:00",
-    "lastSeenAt": "2026-11-11T15:45:27.128000",
+    "lastSeenAt": "2026-11-11T15:14:02.510000",
     "slug": "night-raid",
     "timer": "3:07",
     "url": "https://arcraiders.com/de/map-conditions/night-raid"
@@ -102,7 +102,7 @@
     "createdAt": "2026-11-11T15:33:57.047000",
     "durationMinutes": 60,
     "endTime": "2026-11-11T16:00:00",
-    "lastSeenAt": "2026-11-11T15:45:27.128000",
+    "lastSeenAt": "2026-11-11T15:14:02.510000",
     "slug": "hidden-bunker",
     "timer": "3:07",
     "url": "https://arcraiders.com/de/map-conditions/hidden-bunker"
@@ -114,7 +114,7 @@
     "createdAt": "2026-11-11T15:33:57.047000",
     "durationMinutes": 60,
     "endTime": "2026-11-11T16:00:00",
-    "lastSeenAt": "2026-11-11T15:45:27.128000",
+    "lastSeenAt": "2026-11-11T15:14:02.510000",
     "slug": "bird-city",
     "timer": "3:07",
     "url": "https://arcraiders.com/de/map-conditions/bird-city"
@@ -126,7 +126,7 @@
     "createdAt": "2026-11-11T15:33:57.047000",
     "durationMinutes": 60,
     "endTime": "2026-11-11T16:00:00",
-    "lastSeenAt": "2026-11-11T15:45:27.128000",
+    "lastSeenAt": "2026-11-11T15:14:02.510000",
     "slug": "beachcombing",
     "timer": "3:07",
     "url": "https://arcraiders.com/de/map-conditions/beachcombing"
@@ -138,7 +138,7 @@
     "createdAt": "2026-11-11T15:33:57.047000",
     "durationMinutes": 60,
     "endTime": "2026-11-11T16:00:00",
-    "lastSeenAt": "2026-11-11T15:45:27.128000",
+    "lastSeenAt": "2026-11-11T15:14:02.510000",
     "slug": "arc-frigate",
     "timer": "3:07",
     "url": "https://arcraiders.com/de/map-conditions/arc-frigate"
@@ -150,7 +150,7 @@
     "createdAt": "2026-11-11T15:33:57.047000",
     "durationMinutes": 60,
     "endTime": "2026-11-11T15:00:00",
-    "lastSeenAt": "2026-11-11T15:45:27.128000",
+    "lastSeenAt": "2026-11-11T15:14:02.510000",
     "slug": "redirection",
     "timer": "3:07",
     "url": "https://arcraiders.com/de/map-conditions/redirection"
@@ -162,7 +162,7 @@
     "createdAt": "2026-11-11T15:33:57.047000",
     "durationMinutes": 60,
     "endTime": "2026-11-11T15:00:00",
-    "lastSeenAt": "2026-11-11T15:45:27.128000",
+    "lastSeenAt": "2026-11-11T15:14:02.510000",
     "slug": "prospecting-probes",
     "timer": "3:07",
     "url": "https://arcraiders.com/de/map-conditions/prospecting-probes"
@@ -174,7 +174,7 @@
     "createdAt": "2026-11-11T15:33:57.047000",
     "durationMinutes": 60,
     "endTime": "2026-11-11T15:00:00",
-    "lastSeenAt": "2026-11-11T15:45:27.128000",
+    "lastSeenAt": "2026-11-11T15:14:02.510000",
     "slug": "night-raid",
     "timer": "3:07",
     "url": "https://arcraiders.com/de/map-conditions/night-raid"
@@ -186,7 +186,7 @@
     "createdAt": "2026-11-11T15:33:57.047000",
     "durationMinutes": 60,
     "endTime": "2026-11-11T15:00:00",
-    "lastSeenAt": "2026-11-11T15:45:27.128000",
+    "lastSeenAt": "2026-11-11T15:14:02.510000",
     "slug": "lush-blooms",
     "timer": "3:07",
     "url": "https://arcraiders.com/de/map-conditions/lush-blooms"
@@ -198,7 +198,7 @@
     "createdAt": "2026-11-11T15:33:57.047000",
     "durationMinutes": 60,
     "endTime": "2026-11-11T15:00:00",
-    "lastSeenAt": "2026-11-11T15:45:27.128000",
+    "lastSeenAt": "2026-11-11T15:14:02.510000",
     "slug": "arc-frigate",
     "timer": "3:07",
     "url": "https://arcraiders.com/de/map-conditions/arc-frigate"
