@@ -1,0 +1,18 @@
+{
+  "verdict": "APPROVED",
+  "reviewedAt": "2026-11-14T04:58:31+01:00",
+  "scope": "Frequency & Server-Hours frontend, local date filtering, regional scope calculations, timeline and matrix presentation",
+  "findings": [],
+  "checks": {
+    "frequencyTests": "8 passed",
+    "frequencySyntax": "passed",
+    "trackerSyntax": "passed",
+    "diffCheck": "passed",
+    "inlineHtmlScriptSyntax": "passed"
+  },
+  "notes": [
+    "Future slots and future local days are excluded from the selectable and rendered history.",
+    "Unscoped regional timestamps are shown as a data-quality case and are not converted into assumed regional instances.",
+    "No availability or Off-Rotation status is inferred from missing observations."
+  ]
+}
