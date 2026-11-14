@@ -161,7 +161,7 @@
         ⏰ World Schedule Table
       </button>
       <button onclick="setTab('frequency')" id="tab-frequency" class="pb-3 text-[var(--muted)] hover:text-white transition flex items-center gap-1.5 whitespace-nowrap">
-        📊 Frequency & Server-Hours
+        ⚔️ Custom Comparisons
       </button>
       <button onclick="setTab('matrix')" id="tab-matrix" class="pb-3 text-[var(--muted)] hover:text-white transition flex items-center gap-1.5 whitespace-nowrap">
         🔄 Rotation & Concurrency
@@ -243,85 +243,403 @@
       </div>
     </div>
 
-    <!-- TAB 4: FREQUENCY & SERVER-HOURS -->
+    <!-- TAB 3: CUSTOM COMPARISON STUDIO (EVENT DUEL & MAP SECTOR COMPARISON) -->
     <div id="view-frequency" class="hidden space-y-5">
+
+      <!-- Header & Mode Switcher Toolbar -->
       <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-xl">
-        <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-3">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h2 class="text-base font-bold text-white">Recorded Frequency & Server-Hours</h2>
-            <p class="text-xs text-[var(--muted)] mt-1">Recorded rotation slots and regional server-hours; no availability measurement</p>
+            <div class="flex items-center gap-2">
+              <span class="text-xl">⚔️</span>
+              <h2 class="text-lg font-bold text-white">Custom Comparison Studio</h2>
+            </div>
+            <p class="text-xs text-[var(--muted)] mt-0.5">
+              Direct head-to-head analysis by occurrences (Anzahl), presence rates, downtime & sector distributions.
+            </p>
           </div>
-          <div id="frequencyStatus" class="text-[11px] text-slate-300 bg-slate-900/80 border border-slate-700/80 rounded-lg px-2.5 py-1.5"></div>
+
+          <!-- Mode Switcher Segmented Controls -->
+          <div class="flex items-center bg-slate-900 p-1 rounded-xl border border-slate-700/80 gap-1 self-start md:self-auto">
+            <button id="btn-comp-events" onclick="setCompareMode('events')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-amber-500/20 text-amber-400 border border-amber-500/40 shadow-sm">
+              <span>⚔️</span> Event vs. Event
+            </button>
+            <button id="btn-comp-maps" onclick="setCompareMode('maps')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-[var(--muted)] hover:text-white transition flex items-center gap-1.5 border border-transparent">
+              <span>🗺️</span> Map vs. Map
+            </button>
+          </div>
         </div>
-        <div class="flex flex-wrap items-center gap-3 mt-4 pt-3 border-t border-[var(--border)] text-xs">
-          <label class="flex items-center gap-2 text-[var(--muted)] font-semibold">
-            <span>Scope</span>
-            <select id="frequencyScope" onchange="renderAll()" class="bg-slate-900 text-white font-medium rounded-lg px-2.5 py-1.5 focus:outline-none border border-slate-700 cursor-pointer">
-              <option value="ALL" selected>All five regions</option>
-              <option value="europe">Europe</option>
-              <option value="north-america">North America</option>
-              <option value="south-america">South America</option>
-              <option value="oceania">Oceania</option>
-              <option value="asia">Asia</option>
-            </select>
-          </label>
-          <span id="frequencyFilterSummary" class="text-[var(--muted)] font-mono"></span>
-        </div>
-        <div class="flex flex-wrap gap-x-4 gap-y-1 mt-3 text-[11px] text-[var(--muted)]">
-          <span><strong class="text-slate-200">Slot</strong> = condition + map + time window</span>
-          <span><strong class="text-slate-200">Regional instance</strong> = one valid stored regional time pair</span>
-          <span><strong class="text-slate-200">Server-hour</strong> = the recorded duration of one regional instance</span>
+
+        <div class="flex flex-wrap items-center gap-3 mt-4 pt-3 border-t border-[var(--border)] text-xs text-[var(--muted)]">
+          <span class="flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            <span>Real Rotation Counts & Percentages</span>
+          </span>
+          <span>·</span>
+          <span>Scope: All 5 Regions</span>
+          <span>·</span>
+          <span id="compFilterSummary" class="font-mono text-slate-300"></span>
         </div>
       </div>
 
-      <div id="frequencyQualityNotice" class="hidden text-xs rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-200 px-4 py-3"></div>
+      <!-- ============================================================ -->
+      <!-- SECTION 1: EVENT VS. EVENT DUEL                              -->
+      <!-- ============================================================ -->
+      <div id="compare-section-events" class="space-y-5">
+        <!-- Matchup Picker Bar -->
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 shadow-xl">
+          <div class="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-center gap-3 md:gap-4">
+            <!-- Event A Select -->
+            <div class="bg-slate-900/90 border border-amber-500/30 rounded-xl p-3">
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-amber-400">Event A (Challenger)</span>
+                <span id="duelBadgeA" class="text-[11px] font-mono font-bold text-amber-300 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20"></span>
+              </div>
+              <select id="duelSelectA" onchange="onDuelChange()" class="w-full bg-slate-950 text-white font-bold text-sm rounded-lg px-3 py-2 border border-slate-700 focus:outline-none focus:border-amber-400 cursor-pointer">
+              </select>
+            </div>
 
-      <!-- Top Overview KPI Metric Cards -->
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <div class="bg-slate-900/90 border border-amber-500/25 rounded-2xl p-4 shadow-lg flex flex-col justify-between">
-          <div class="text-[11px] uppercase tracking-wider font-bold text-amber-400">Recorded rotation slots</div>
-          <div id="kpiTotalSlots" class="text-3xl font-black font-mono text-white mt-1">0</div>
-          <div class="text-[10px] text-[var(--muted)] mt-1">Unique condition + map + time-window records</div>
+            <!-- VS Badge & Swap -->
+            <div class="flex md:flex-col items-center justify-center gap-2 py-1">
+              <div class="w-10 h-10 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-black font-mono text-xs text-slate-300 shadow-md">
+                VS
+              </div>
+              <button onclick="swapDuelConditions()" title="Swap Matchup" class="text-xs text-slate-400 hover:text-amber-400 bg-slate-800/80 hover:bg-slate-800 border border-slate-700 rounded-lg px-2 py-1 transition flex items-center gap-1">
+                <span>⇄</span>
+                <span class="text-[10px] uppercase font-bold hidden md:inline">Swap</span>
+              </button>
+            </div>
+
+            <!-- Event B Select -->
+            <div class="bg-slate-900/90 border border-sky-500/30 rounded-xl p-3">
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-sky-400">Event B (Opponent)</span>
+                <span id="duelBadgeB" class="text-[11px] font-mono font-bold text-sky-300 bg-sky-500/10 px-2 py-0.5 rounded border border-sky-500/20"></span>
+              </div>
+              <select id="duelSelectB" onchange="onDuelChange()" class="w-full bg-slate-950 text-white font-bold text-sm rounded-lg px-3 py-2 border border-slate-700 focus:outline-none focus:border-sky-400 cursor-pointer">
+              </select>
+            </div>
+          </div>
         </div>
 
-        <div class="bg-slate-900/90 border border-emerald-500/25 rounded-2xl p-4 shadow-lg flex flex-col justify-between">
-          <div class="text-[11px] uppercase tracking-wider font-bold text-emerald-400">Regional instances</div>
-          <div id="kpiTotalRegionalInstances" class="text-3xl font-black font-mono text-white mt-1">0</div>
-          <div class="text-[10px] text-[var(--muted)] mt-1">Valid stored regional time pairs in the selected scope</div>
+        <!-- Head-to-Head Winner / Difference Banner -->
+        <div id="duelWinnerBanner" class="rounded-2xl p-4 border transition flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-lg"></div>
+
+        <!-- 4 Head-to-Head KPI Cards -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          <!-- Card 1: Total Slots -->
+          <div class="bg-slate-900/90 border border-[var(--border)] rounded-2xl p-4 shadow-lg flex flex-col justify-between">
+            <div class="text-[11px] uppercase tracking-wider font-bold text-[var(--muted)]">Recorded Slots (Anzahl)</div>
+            <div class="flex items-baseline justify-between mt-2">
+              <div>
+                <span class="text-[10px] text-amber-400 font-bold block" id="kpiLabelSlotA">A</span>
+                <span id="kpiDuelSlotsA" class="text-2xl font-black font-mono text-white">0</span>
+              </div>
+              <div class="text-xs font-mono font-bold text-slate-500">vs</div>
+              <div class="text-right">
+                <span class="text-[10px] text-sky-400 font-bold block" id="kpiLabelSlotB">B</span>
+                <span id="kpiDuelSlotsB" class="text-2xl font-black font-mono text-white">0</span>
+              </div>
+            </div>
+            <div id="kpiDuelSlotsDiff" class="text-[11px] font-mono mt-2 pt-2 border-t border-slate-800 flex items-center justify-between"></div>
+          </div>
+
+          <!-- Card 2: Presence Rate & Active Hours -->
+          <div class="bg-slate-900/90 border border-[var(--border)] rounded-2xl p-4 shadow-lg flex flex-col justify-between">
+            <div class="text-[11px] uppercase tracking-wider font-bold text-[var(--muted)]">Presence Rate</div>
+            <div class="flex items-baseline justify-between mt-2">
+              <div>
+                <span class="text-[10px] text-amber-400 font-bold block">A Presence</span>
+                <span id="kpiDuelRateA" class="text-2xl font-black font-mono text-amber-400">0%</span>
+              </div>
+              <div class="text-xs font-mono font-bold text-slate-500">vs</div>
+              <div class="text-right">
+                <span class="text-[10px] text-sky-400 font-bold block">B Presence</span>
+                <span id="kpiDuelRateB" class="text-2xl font-black font-mono text-sky-400">0%</span>
+              </div>
+            </div>
+            <div id="kpiDuelRateSubtitle" class="text-[10px] font-mono text-[var(--muted)] mt-2 pt-2 border-t border-slate-800"></div>
+          </div>
+
+          <!-- Card 3: Rotation Interval Rhythm -->
+          <div class="bg-slate-900/90 border border-[var(--border)] rounded-2xl p-4 shadow-lg flex flex-col justify-between">
+            <div class="text-[11px] uppercase tracking-wider font-bold text-[var(--muted)]">Avg Rotation Rhythm</div>
+            <div class="flex items-baseline justify-between mt-2">
+              <div>
+                <span class="text-[10px] text-amber-400 font-bold block">A Interval</span>
+                <span id="kpiDuelIntervalA" class="text-2xl font-black font-mono text-white">—</span>
+              </div>
+              <div class="text-xs font-mono font-bold text-slate-500">vs</div>
+              <div class="text-right">
+                <span class="text-[10px] text-sky-400 font-bold block">B Interval</span>
+                <span id="kpiDuelIntervalB" class="text-2xl font-black font-mono text-white">—</span>
+              </div>
+            </div>
+            <div class="text-[10px] font-mono text-[var(--muted)] mt-2 pt-2 border-t border-slate-800">Average gap between rotations</div>
+          </div>
+
+          <!-- Card 4: Current Status / Downtime -->
+          <div class="bg-slate-900/90 border border-[var(--border)] rounded-2xl p-4 shadow-lg flex flex-col justify-between">
+            <div class="text-[11px] uppercase tracking-wider font-bold text-[var(--muted)]">Live Status & Downtime</div>
+            <div class="space-y-1.5 mt-2">
+              <div id="kpiDuelStatusA" class="text-xs font-semibold flex items-center justify-between"></div>
+              <div id="kpiDuelStatusB" class="text-xs font-semibold flex items-center justify-between"></div>
+            </div>
+            <div class="text-[10px] font-mono text-[var(--muted)] mt-2 pt-2 border-t border-slate-800">Time since last rotation ended</div>
+          </div>
         </div>
 
-        <div class="bg-slate-900/90 border border-sky-500/25 rounded-2xl p-4 shadow-lg flex flex-col justify-between">
-          <div class="text-[11px] uppercase tracking-wider font-bold text-sky-400">Recorded server-hours</div>
-          <div id="kpiTotalServerHours" class="text-3xl font-black font-mono text-white mt-1">0h</div>
-          <div class="text-[10px] text-[var(--muted)] mt-1">Recorded duration of those regional instances</div>
+        <!-- Overlap & Concurrency Analysis Card -->
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-xl">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+            <div>
+              <h3 class="text-base font-bold text-white flex items-center gap-2">
+                <span>🔄</span> Concurrency & Overlap Track
+              </h3>
+              <p class="text-xs text-[var(--muted)]">How often do these two events collide in the same rotation hour?</p>
+            </div>
+            <span id="duelOverlapSummaryBadge" class="text-xs font-mono font-bold px-2.5 py-1 rounded-lg self-start sm:self-auto"></span>
+          </div>
+
+          <!-- Multi-Segment Visual Bar -->
+          <div class="w-full bg-slate-950 rounded-xl p-1.5 border border-slate-800 mt-2">
+            <div id="duelOverlapBar" class="h-6 w-full flex rounded-lg overflow-hidden bg-slate-900">
+            </div>
+          </div>
+
+          <!-- 3 Breakdown Metric Boxes -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-4">
+            <div class="bg-slate-900/80 border border-amber-500/20 rounded-xl p-3">
+              <div class="flex items-center justify-between text-xs font-bold text-amber-400">
+                <span class="flex items-center gap-1.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                  <span id="duelLegendA">Only Event A</span>
+                </span>
+                <span id="duelOnlyAPct" class="font-mono">0%</span>
+              </div>
+              <div class="text-xl font-black font-mono text-white mt-1" id="duelOnlyAHours">0h</div>
+              <div class="text-[10px] text-[var(--muted)]">Hours where only A was in rotation</div>
+            </div>
+
+            <div class="bg-slate-900/80 border border-emerald-500/30 rounded-xl p-3">
+              <div class="flex items-center justify-between text-xs font-bold text-emerald-400">
+                <span class="flex items-center gap-1.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span>Parallel / Overlap (Both)</span>
+                </span>
+                <span id="duelBothPct" class="font-mono">0%</span>
+              </div>
+              <div class="text-xl font-black font-mono text-emerald-400 mt-1" id="duelBothHours">0h</div>
+              <div class="text-[10px] text-[var(--muted)]">Hours where BOTH events ran simultaneously</div>
+            </div>
+
+            <div class="bg-slate-900/80 border border-sky-500/20 rounded-xl p-3">
+              <div class="flex items-center justify-between text-xs font-bold text-sky-400">
+                <span class="flex items-center gap-1.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-sky-400"></span>
+                  <span id="duelLegendB">Only Event B</span>
+                </span>
+                <span id="duelOnlyBPct" class="font-mono">0%</span>
+              </div>
+              <div class="text-xl font-black font-mono text-white mt-1" id="duelOnlyBHours">0h</div>
+              <div class="text-[10px] text-[var(--muted)]">Hours where only B was in rotation</div>
+            </div>
+          </div>
         </div>
 
-        <div class="bg-slate-900/90 border border-purple-500/25 rounded-2xl p-4 shadow-lg flex flex-col justify-between">
-          <div class="text-[11px] uppercase tracking-wider font-bold text-purple-400">Maps represented</div>
-          <div id="kpiTotalMaps" class="text-3xl font-black font-mono text-white mt-1">0</div>
-          <div class="text-[10px] text-[var(--muted)] mt-1">Maps in the selected recorded slots</div>
+        <!-- Map-by-Map Distribution Duel Table -->
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-xl">
+          <div class="flex items-center justify-between mb-2">
+            <div>
+              <h3 class="text-base font-bold text-white flex items-center gap-2">
+                <span>🗺️</span> Sector-by-Sector Distribution
+              </h3>
+              <p class="text-xs text-[var(--muted)]">Where does each event spawn most often? Compare slot counts per map.</p>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto mt-3">
+            <table class="w-full text-left text-xs">
+              <thead class="text-[10px] uppercase tracking-wider text-[var(--muted)] border-b border-[var(--border)] bg-slate-900/50">
+                <tr>
+                  <th class="py-2.5 px-3">Map Sector</th>
+                  <th class="py-2.5 px-3 text-amber-400" id="thMapDuelA">Event A Slots</th>
+                  <th class="py-2.5 px-3 text-sky-400" id="thMapDuelB">Event B Slots</th>
+                  <th class="py-2.5 px-3">Visual Distribution</th>
+                  <th class="py-2.5 px-3 text-right">Sector Leader</th>
+                </tr>
+              </thead>
+              <tbody id="duelMapTableBody" class="divide-y divide-[var(--border)]">
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <!-- Condition Frequency Card -->
-        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-xl">
-          <div class="flex items-center justify-between mb-1">
-            <h2 class="text-base font-bold text-white">Recorded slots by condition</h2>
-            <span id="conditionTotalBadge" class="text-xs font-mono font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-lg"></span>
+      <!-- ============================================================ -->
+      <!-- SECTION 2: MAP VS. MAP SECTOR COMPARISON                     -->
+      <!-- ============================================================ -->
+      <div id="compare-section-maps" class="hidden space-y-5">
+        <!-- Sector Matchup Picker Bar -->
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 shadow-xl">
+          <div class="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-center gap-3 md:gap-4">
+            <!-- Map A Select -->
+            <div class="bg-slate-900/90 border border-amber-500/30 rounded-xl p-3">
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-amber-400">Map Sector A</span>
+                <span id="sectorBadgeA" class="text-[11px] font-mono font-bold text-amber-300 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20"></span>
+              </div>
+              <select id="sectorSelectA" onchange="onSectorChange()" class="w-full bg-slate-950 text-white font-bold text-sm rounded-lg px-3 py-2 border border-slate-700 focus:outline-none focus:border-amber-400 cursor-pointer">
+              </select>
+            </div>
+
+            <!-- VS Badge & Swap -->
+            <div class="flex md:flex-col items-center justify-center gap-2 py-1">
+              <div class="w-10 h-10 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-black font-mono text-xs text-slate-300 shadow-md">
+                VS
+              </div>
+              <button onclick="swapSectorMaps()" title="Swap Maps" class="text-xs text-slate-400 hover:text-amber-400 bg-slate-800/80 hover:bg-slate-800 border border-slate-700 rounded-lg px-2 py-1 transition flex items-center gap-1">
+                <span>⇄</span>
+                <span class="text-[10px] uppercase font-bold hidden md:inline">Swap</span>
+              </button>
+            </div>
+
+            <!-- Map B Select -->
+            <div class="bg-slate-900/90 border border-sky-500/30 rounded-xl p-3">
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-sky-400">Map Sector B</span>
+                <span id="sectorBadgeB" class="text-[11px] font-mono font-bold text-sky-300 bg-sky-500/10 px-2 py-0.5 rounded border border-sky-500/20"></span>
+              </div>
+              <select id="sectorSelectB" onchange="onSectorChange()" class="w-full bg-slate-950 text-white font-bold text-sm rounded-lg px-3 py-2 border border-slate-700 focus:outline-none focus:border-sky-400 cursor-pointer">
+              </select>
+            </div>
           </div>
-          <p class="text-xs text-[var(--muted)] mb-4">Bars and percentages use the recorded rotation-slot total as their common denominator.</p>
-          <div id="frequencyBars" class="space-y-3.5"></div>
         </div>
 
-        <!-- Map Frequency Card -->
-        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-xl">
-          <div class="flex items-center justify-between mb-1">
-            <h2 class="text-base font-bold text-white">Recorded slots by map</h2>
-            <span id="mapTotalBadge" class="text-xs font-mono font-bold text-sky-400 bg-sky-500/10 border border-sky-500/20 px-2.5 py-1 rounded-lg"></span>
+        <!-- Sector Winner / Activity Banner -->
+        <div id="sectorWinnerBanner" class="rounded-2xl p-4 border transition flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-lg"></div>
+
+        <!-- 3 Head-to-Head Sector KPI Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <!-- Card 1: Total Modifier Slots -->
+          <div class="bg-slate-900/90 border border-[var(--border)] rounded-2xl p-4 shadow-lg flex flex-col justify-between">
+            <div class="text-[11px] uppercase tracking-wider font-bold text-[var(--muted)]">Total Modifier Slots</div>
+            <div class="flex items-baseline justify-between mt-2">
+              <div>
+                <span class="text-[10px] text-amber-400 font-bold block" id="kpiLabelSectorSlotA">Sector A</span>
+                <span id="kpiSectorSlotsA" class="text-2xl font-black font-mono text-white">0</span>
+              </div>
+              <div class="text-xs font-mono font-bold text-slate-500">vs</div>
+              <div class="text-right">
+                <span class="text-[10px] text-sky-400 font-bold block" id="kpiLabelSectorSlotB">Sector B</span>
+                <span id="kpiSectorSlotsB" class="text-2xl font-black font-mono text-white">0</span>
+              </div>
+            </div>
+            <div id="kpiSectorSlotsDiff" class="text-[11px] font-mono mt-2 pt-2 border-t border-slate-800 flex items-center justify-between"></div>
           </div>
-          <p class="text-xs text-[var(--muted)] mb-4">Each map count is a share of the same recorded rotation-slot total.</p>
-          <div id="mapBars" class="space-y-3.5"></div>
+
+          <!-- Card 2: Distinct Conditions (Variety) -->
+          <div class="bg-slate-900/90 border border-[var(--border)] rounded-2xl p-4 shadow-lg flex flex-col justify-between">
+            <div class="text-[11px] uppercase tracking-wider font-bold text-[var(--muted)]">Event Variety (Distinct Conditions)</div>
+            <div class="flex items-baseline justify-between mt-2">
+              <div>
+                <span class="text-[10px] text-amber-400 font-bold block">A Conditions</span>
+                <span id="kpiSectorVarietyA" class="text-2xl font-black font-mono text-amber-400">0</span>
+              </div>
+              <div class="text-xs font-mono font-bold text-slate-500">vs</div>
+              <div class="text-right">
+                <span class="text-[10px] text-sky-400 font-bold block">B Conditions</span>
+                <span id="kpiSectorVarietyB" class="text-2xl font-black font-mono text-sky-400">0</span>
+              </div>
+            </div>
+            <div class="text-[10px] font-mono text-[var(--muted)] mt-2 pt-2 border-t border-slate-800">Different modifiers ever hosted on this map</div>
+          </div>
+
+          <!-- Card 3: Current Sector Status -->
+          <div class="bg-slate-900/90 border border-[var(--border)] rounded-2xl p-4 shadow-lg flex flex-col justify-between">
+            <div class="text-[11px] uppercase tracking-wider font-bold text-[var(--muted)]">Live Active Modifiers</div>
+            <div class="space-y-1.5 mt-2">
+              <div id="kpiSectorLiveA" class="text-xs font-semibold flex items-center justify-between"></div>
+              <div id="kpiSectorLiveB" class="text-xs font-semibold flex items-center justify-between"></div>
+            </div>
+            <div class="text-[10px] font-mono text-[var(--muted)] mt-2 pt-2 border-t border-slate-800">Modifiers running right now</div>
+          </div>
+        </div>
+
+        <!-- 3-Column Exclusivity & Overlap Breakdown Card -->
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-xl">
+          <div class="mb-3">
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <span>🎯</span> Exclusivity & Overlap Breakdown
+            </h3>
+            <p class="text-xs text-[var(--muted)]">Which events are unique to one sector, and which are shared across both?</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+            <!-- Exclusive to Map A -->
+            <div class="bg-slate-900/80 border border-amber-500/20 rounded-xl p-4">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-amber-400 flex items-center gap-1.5">
+                  <span>🔒</span> <span id="colTitleExclA">Exclusive to Map A</span>
+                </span>
+                <span id="colBadgeExclA" class="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-300 border border-amber-500/30">0</span>
+              </div>
+              <p class="text-[11px] text-[var(--muted)] mb-3">Events that ran on this map but NEVER on Map B in this timeframe.</p>
+              <div id="listExclA" class="flex flex-wrap gap-1.5"></div>
+            </div>
+
+            <!-- Shared on Both -->
+            <div class="bg-slate-900/80 border border-emerald-500/30 rounded-xl p-4">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-emerald-400 flex items-center gap-1.5">
+                  <span>🤝</span> <span>Shared on Both Maps</span>
+                </span>
+                <span id="colBadgeShared" class="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/30">0</span>
+              </div>
+              <p class="text-[11px] text-[var(--muted)] mb-3">Events hosted by BOTH sectors during this timeframe.</p>
+              <div id="listShared" class="flex flex-wrap gap-1.5"></div>
+            </div>
+
+            <!-- Exclusive to Map B -->
+            <div class="bg-slate-900/80 border border-sky-500/20 rounded-xl p-4">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-sky-400 flex items-center gap-1.5">
+                  <span>🔒</span> <span id="colTitleExclB">Exclusive to Map B</span>
+                </span>
+                <span id="colBadgeExclB" class="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-sky-500/10 text-sky-300 border border-sky-500/30">0</span>
+              </div>
+              <p class="text-[11px] text-[var(--muted)] mb-3">Events that ran on this map but NEVER on Map A in this timeframe.</p>
+              <div id="listExclB" class="flex flex-wrap gap-1.5"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Condition-by-Condition Occurrence Breakdown Table -->
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-xl">
+          <div class="flex items-center justify-between mb-2">
+            <div>
+              <h3 class="text-base font-bold text-white flex items-center gap-2">
+                <span>📊</span> Modifier-by-Modifier Frequency Duel
+              </h3>
+              <p class="text-xs text-[var(--muted)]">Side-by-side slot count and share for every event between the two sectors.</p>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto mt-3">
+            <table class="w-full text-left text-xs">
+              <thead class="text-[10px] uppercase tracking-wider text-[var(--muted)] border-b border-[var(--border)] bg-slate-900/50">
+                <tr>
+                  <th class="py-2.5 px-3">Condition / Event</th>
+                  <th class="py-2.5 px-3 text-amber-400" id="thSectorDuelA">Map A Slots</th>
+                  <th class="py-2.5 px-3 text-sky-400" id="thSectorDuelB">Map B Slots</th>
+                  <th class="py-2.5 px-3">Comparative Volume</th>
+                  <th class="py-2.5 px-3 text-right">Dominant Sector</th>
+                </tr>
+              </thead>
+              <tbody id="sectorTableBody" class="divide-y divide-[var(--border)]">
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -1029,132 +1347,625 @@
         }).join('');
       }
 
-      // Render Frequency Bars & KPI Overview from the scope-aware recorded-history view
-      const frequencyScopeEl = document.getElementById("frequencyScope");
-      const frequencyScope = frequencyScopeEl ? frequencyScopeEl.value : "ALL";
-      const frequencyView = FrequencyUptime.buildFrequencyView(rawEvents, {
-        scope: frequencyScope,
-        timeframe,
-        query,
-        nowMs
+      // Render Custom Comparison Studio (Head-to-Head Duels & Sector Comparisons)
+      renderCustomComparisons();
+
+      // Render Rotation & Concurrency Intelligence
+      renderIntelligence();
+    }
+
+    let currentCompareMode = 'events';
+    let currentDuelA = 'Night Raid';
+    let currentDuelB = 'ARC Frigate';
+    let currentSectorA = 'Spaceport';
+    let currentSectorB = 'Buried City';
+
+    function setCompareMode(mode) {
+      currentCompareMode = mode;
+      const btnEvents = document.getElementById("btn-comp-events");
+      const btnMaps = document.getElementById("btn-comp-maps");
+      const secEvents = document.getElementById("compare-section-events");
+      const secMaps = document.getElementById("compare-section-maps");
+
+      if (mode === "events") {
+        if (btnEvents) {
+          btnEvents.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-amber-500/20 text-amber-400 border border-amber-500/40 shadow-sm";
+        }
+        if (btnMaps) {
+          btnMaps.className = "px-3.5 py-1.5 rounded-lg text-xs font-semibold text-[var(--muted)] hover:text-white transition flex items-center gap-1.5 border border-transparent";
+        }
+        if (secEvents) secEvents.classList.remove("hidden");
+        if (secMaps) secMaps.classList.add("hidden");
+      } else {
+        if (btnEvents) {
+          btnEvents.className = "px-3.5 py-1.5 rounded-lg text-xs font-semibold text-[var(--muted)] hover:text-white transition flex items-center gap-1.5 border border-transparent";
+        }
+        if (btnMaps) {
+          btnMaps.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-sky-500/20 text-sky-400 border border-sky-500/40 shadow-sm";
+        }
+        if (secEvents) secEvents.classList.add("hidden");
+        if (secMaps) secMaps.classList.remove("hidden");
+      }
+      renderCustomComparisons();
+    }
+
+    function onDuelChange() {
+      const selA = document.getElementById("duelSelectA");
+      const selB = document.getElementById("duelSelectB");
+      if (selA) currentDuelA = selA.value;
+      if (selB) currentDuelB = selB.value;
+      renderEventDuel();
+    }
+
+    function swapDuelConditions() {
+      const temp = currentDuelA;
+      currentDuelA = currentDuelB;
+      currentDuelB = temp;
+      const selA = document.getElementById("duelSelectA");
+      const selB = document.getElementById("duelSelectB");
+      if (selA) selA.value = currentDuelA;
+      if (selB) selB.value = currentDuelB;
+      renderEventDuel();
+    }
+
+    function onSectorChange() {
+      const selA = document.getElementById("sectorSelectA");
+      const selB = document.getElementById("sectorSelectB");
+      if (selA) currentSectorA = selA.value;
+      if (selB) currentSectorB = selB.value;
+      renderMapComparison();
+    }
+
+    function swapSectorMaps() {
+      const temp = currentSectorA;
+      currentSectorA = currentSectorB;
+      currentSectorB = temp;
+      const selA = document.getElementById("sectorSelectA");
+      const selB = document.getElementById("sectorSelectB");
+      if (selA) selA.value = currentSectorA;
+      if (selB) selB.value = currentSectorB;
+      renderMapComparison();
+    }
+
+    function renderCustomComparisons() {
+      const condSet = new Set();
+      const mapSet = new Set();
+      rawEvents.forEach(e => {
+        if (e.condition) condSet.add(e.condition);
+        if (e.map) mapSet.add(e.map);
       });
-      const formatHours = hours => {
-        const rounded = Math.round(hours * 10) / 10;
-        return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(1);
-      };
-      const formatWindow = view => {
-        if (view.timeWindow.startMs === null) return "No recorded time range";
-        return `${FrequencyUptime.formatLocalDateTime(view.timeWindow.startMs)} – ${FrequencyUptime.formatLocalDateTime(view.timeWindow.endMs)}`;
-      };
+      const condList = Array.from(condSet).sort();
+      const mapList = Array.from(mapSet).sort();
+
+      if (condList.length > 0) {
+        if (!condList.includes(currentDuelA)) currentDuelA = condList[0];
+        if (!condList.includes(currentDuelB)) currentDuelB = condList[1] || condList[0];
+      }
+      if (mapList.length > 0) {
+        if (!mapList.includes(currentSectorA)) currentSectorA = mapList[0];
+        if (!mapList.includes(currentSectorB)) currentSectorB = mapList[1] || mapList[0];
+      }
+
+      const selA = document.getElementById("duelSelectA");
+      const selB = document.getElementById("duelSelectB");
+      if (selA && selA.options.length !== condList.length) {
+        selA.innerHTML = condList.map(c => `<option value="${c}">${c}</option>`).join('');
+        selA.value = currentDuelA;
+      }
+      if (selB && selB.options.length !== condList.length) {
+        selB.innerHTML = condList.map(c => `<option value="${c}">${c}</option>`).join('');
+        selB.value = currentDuelB;
+      }
+
+      const secA = document.getElementById("sectorSelectA");
+      const secB = document.getElementById("sectorSelectB");
+      if (secA && secA.options.length !== mapList.length) {
+        secA.innerHTML = mapList.map(m => `<option value="${m}">${m}</option>`).join('');
+        secA.value = currentSectorA;
+      }
+      if (secB && secB.options.length !== mapList.length) {
+        secB.innerHTML = mapList.map(m => `<option value="${m}">${m}</option>`).join('');
+        secB.value = currentSectorB;
+      }
+
+      const summaryEl = document.getElementById("compFilterSummary");
+      const timeframe = (document.getElementById("selectedTimeframe") && document.getElementById("selectedTimeframe").value) || "ALL";
+      const query = (document.getElementById("searchInput") && document.getElementById("searchInput").value || "").toLowerCase();
       const timeframeLabels = {
         ALL: "All recorded history up to now",
         TODAY: "Today up to now",
         WEEK: "Rolling last 7 days up to now"
       };
-      const frequencyStatus = document.getElementById("frequencyStatus");
-      if (frequencyStatus) {
-        frequencyStatus.innerText = `${frequencyView.scopeLabel} · ${frequencyView.timezone} · ${formatWindow(frequencyView)}`;
-      }
-      const frequencySummary = document.getElementById("frequencyFilterSummary");
-      const timeframeLabel = timeframeLabels[frequencyView.timeframe] ||
-        (frequencyView.timeframe.startsWith("DATE:") ? `Recorded day ${FrequencyUptime.formatDateKey(frequencyView.timeframe.slice(5))}` : frequencyView.timeframe);
-      if (frequencySummary) {
-        frequencySummary.innerText = `${timeframeLabel} · ${query ? `Search: ${query}` : "Search: all conditions/maps"}`;
+      const timeframeLabel = timeframeLabels[timeframe] ||
+        (timeframe.startsWith("DATE:") ? `Recorded day ${FrequencyUptime.formatDateKey(timeframe.slice(5))}` : timeframe);
+      if (summaryEl) {
+        summaryEl.innerText = `${timeframeLabel} · ${query ? `Filter: "${query}"` : "All conditions/maps"}`;
       }
 
-      const kpiSlotsEl = document.getElementById("kpiTotalSlots");
-      if (kpiSlotsEl) kpiSlotsEl.innerText = frequencyView.rotationSlots;
-      const kpiRegionalInstancesEl = document.getElementById("kpiTotalRegionalInstances");
-      if (kpiRegionalInstancesEl) kpiRegionalInstancesEl.innerText = frequencyView.regionalInstances;
-      const kpiServerHoursEl = document.getElementById("kpiTotalServerHours");
-      if (kpiServerHoursEl) kpiServerHoursEl.innerText = frequencyView.empty ? "—" : `${formatHours(frequencyView.serverHours)}h`;
-      const kpiMapsEl = document.getElementById("kpiTotalMaps");
-      if (kpiMapsEl) kpiMapsEl.innerText = frequencyView.maps.length;
+      renderEventDuel();
+      renderMapComparison();
+    }
 
-      const qualityNotice = document.getElementById("frequencyQualityNotice");
-      if (qualityNotice) {
-        const qualityMessages = [];
-        if (frequencyView.unscopedSlots > 0) {
-          qualityMessages.push(`${frequencyView.unscopedSlots} slot(s) without regional time data; ${frequencyView.scope === "ALL" ? "counted as slots only in the all-regions scope and excluded from regional instances/server-hours" : "excluded from this regional scope"}.`);
-        }
-        if (frequencyView.incompleteRegionalData > 0) {
-          qualityMessages.push(`${frequencyView.incompleteRegionalData} slot(s) with partial regional data; only stored, already-started regional ranges are counted.`);
-        }
-        qualityNotice.innerText = qualityMessages.join(" ");
-        qualityNotice.classList.toggle("hidden", qualityMessages.length === 0);
-      }
+    function renderEventDuel() {
+      const now = new Date();
+      const nowMs = now.getTime();
+      const timeframe = (document.getElementById("selectedTimeframe") && document.getElementById("selectedTimeframe").value) || "ALL";
+      const query = (document.getElementById("searchInput") && document.getElementById("searchInput").value || "").toLowerCase();
 
-      const condBadge = document.getElementById("conditionTotalBadge");
-      if (condBadge) {
-        condBadge.innerText = `${frequencyView.rotationSlots} slots · ${frequencyView.regionalInstances} regional instances · ${formatHours(frequencyView.serverHours)} server-hours`;
-      }
-      const mapBadge = document.getElementById("mapTotalBadge");
-      if (mapBadge) {
-        mapBadge.innerText = `${frequencyView.maps.length} maps · ${frequencyView.rotationSlots} slots`;
-      }
+      const comp = FrequencyUptime.compareEvents(rawEvents, currentDuelA, currentDuelB, { nowMs, timeframe, query });
+      const condA = comp.condA;
+      const condB = comp.condB;
 
-      const freqBars = document.getElementById("frequencyBars");
-      const mapBars = document.getElementById("mapBars");
-      if (frequencyView.empty) {
-        const emptyMessage = `<div class="rounded-xl border border-slate-700/80 bg-slate-900/60 px-4 py-5 text-sm text-slate-400">No recorded slots match the selected filters</div>`;
-        if (freqBars) freqBars.innerHTML = emptyMessage;
-        if (mapBars) mapBars.innerHTML = "";
-      } else {
-        if (freqBars) {
-          freqBars.innerHTML = frequencyView.conditions.map(entry => {
-            const sharePct = (entry.share * 100).toFixed(1);
-            const barWidthPct = entry.share * 100;
-            return `
+      const badgeA = document.getElementById("duelBadgeA");
+      if (badgeA) badgeA.innerText = `${comp.intelA.totalSlots} Slots`;
+      const badgeB = document.getElementById("duelBadgeB");
+      if (badgeB) badgeB.innerText = `${comp.intelB.totalSlots} Slots`;
+
+      const banner = document.getElementById("duelWinnerBanner");
+      if (banner) {
+        if (comp.diffSlots > 0) {
+          banner.className = "rounded-2xl p-4 border border-amber-500/40 bg-amber-500/10 text-amber-200 transition flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-lg";
+          banner.innerHTML = `
+            <div class="flex items-center gap-3">
+              <span class="text-2xl">🏆</span>
               <div>
-                <div class="flex items-center justify-between text-xs mb-1.5 gap-2">
-                  <span class="font-bold text-white flex items-center gap-2 truncate max-w-[180px] md:max-w-[240px]">
-                    ${CONDITION_ICONS[entry.name] ? `<img src="${CONDITION_ICONS[entry.name]}" alt="${entry.name}" class="w-5 h-5 rounded object-contain bg-slate-900 border border-slate-700/60 flex-shrink-0" onerror="this.style.display='none'">` : ''}
-                    <span class="truncate">${entry.name}</span>
-                  </span>
-                  <div class="flex items-center gap-1.5 flex-shrink-0 font-mono text-[10px] sm:text-[11px]">
-                    <span class="font-extrabold text-sm text-white">${entry.rotationSlots} slots</span>
-                    <span class="text-slate-400">· ${entry.regionalInstances} regional instances</span>
-                    <span class="text-slate-400">· ${formatHours(entry.serverHours)} server-hours</span>
-                    <span class="font-bold text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20">${sharePct}% of slots</span>
-                  </div>
+                <div class="font-bold text-sm text-white">
+                  <span class="text-amber-400 font-extrabold">${condA}</span> leads with <span class="font-mono text-amber-300 font-bold">+${comp.diffSlots}</span> more recorded rotations
                 </div>
-                <div class="w-full bg-slate-800/80 rounded-full h-2.5 overflow-hidden">
-                  <div class="bg-gradient-to-r from-amber-500 to-amber-300 h-2.5 rounded-full transition-all duration-500" style="width: ${barWidthPct}%"></div>
+                <div class="text-xs text-amber-300/80 mt-0.5">
+                  ${comp.intelA.totalSlots} slots vs. ${comp.intelB.totalSlots} slots (${comp.intelA.uniqueHours}h vs. ${comp.intelB.uniqueHours}h active)
                 </div>
               </div>
+            </div>
+            <div class="flex items-center gap-2 self-start md:self-auto font-mono text-xs bg-amber-500/20 px-3 py-1.5 rounded-xl border border-amber-500/30">
+              <span>Presence Margin:</span>
+              <span class="font-bold text-amber-300">+${(comp.presenceRateA - comp.presenceRateB).toFixed(1)}%</span>
+            </div>
+          `;
+        } else if (comp.diffSlots < 0) {
+          const margin = Math.abs(comp.diffSlots);
+          banner.className = "rounded-2xl p-4 border border-sky-500/40 bg-sky-500/10 text-sky-200 transition flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-lg";
+          banner.innerHTML = `
+            <div class="flex items-center gap-3">
+              <span class="text-2xl">🏆</span>
+              <div>
+                <div class="font-bold text-sm text-white">
+                  <span class="text-sky-400 font-extrabold">${condB}</span> leads with <span class="font-mono text-sky-300 font-bold">+${margin}</span> more recorded rotations
+                </div>
+                <div class="text-xs text-sky-300/80 mt-0.5">
+                  ${comp.intelB.totalSlots} slots vs. ${comp.intelA.totalSlots} slots (${comp.intelB.uniqueHours}h vs. ${comp.intelA.uniqueHours}h active)
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 self-start md:self-auto font-mono text-xs bg-sky-500/20 px-3 py-1.5 rounded-xl border border-sky-500/30">
+              <span>Presence Margin:</span>
+              <span class="font-bold text-sky-300">+${(comp.presenceRateB - comp.presenceRateA).toFixed(1)}%</span>
+            </div>
+          `;
+        } else {
+          banner.className = "rounded-2xl p-4 border border-slate-700 bg-slate-900/80 text-slate-300 transition flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-lg";
+          banner.innerHTML = `
+            <div class="flex items-center gap-3">
+              <span class="text-2xl">⚖️</span>
+              <div>
+                <div class="font-bold text-sm text-white">
+                  Equal Frequency: Both events have exactly <span class="font-mono text-amber-400 font-bold">${comp.intelA.totalSlots}</span> recorded rotations
+                </div>
+                <div class="text-xs text-slate-400 mt-0.5">
+                  Both events appeared with identical slot counts in the selected timeframe.
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 self-start md:self-auto font-mono text-xs bg-slate-800 px-3 py-1.5 rounded-xl border border-slate-700 text-slate-300">
+              <span>Presence Rate:</span>
+              <span class="font-bold text-white">${comp.presenceRateA}%</span>
+            </div>
+          `;
+        }
+      }
+
+      const slotLabelA = document.getElementById("kpiLabelSlotA");
+      if (slotLabelA) slotLabelA.innerText = condA;
+      const slotLabelB = document.getElementById("kpiLabelSlotB");
+      if (slotLabelB) slotLabelB.innerText = condB;
+
+      const slotsAEl = document.getElementById("kpiDuelSlotsA");
+      if (slotsAEl) slotsAEl.innerText = comp.intelA.totalSlots;
+      const slotsBEl = document.getElementById("kpiDuelSlotsB");
+      if (slotsBEl) slotsBEl.innerText = comp.intelB.totalSlots;
+
+      const slotsDiffEl = document.getElementById("kpiDuelSlotsDiff");
+      if (slotsDiffEl) {
+        if (comp.diffSlots > 0) {
+          slotsDiffEl.innerHTML = `<span class="text-amber-400 font-bold">+${comp.diffSlots} advantage</span> <span class="text-slate-400">for ${condA}</span>`;
+        } else if (comp.diffSlots < 0) {
+          slotsDiffEl.innerHTML = `<span class="text-sky-400 font-bold">+${Math.abs(comp.diffSlots)} advantage</span> <span class="text-slate-400">for ${condB}</span>`;
+        } else {
+          slotsDiffEl.innerHTML = `<span class="text-slate-400">Equal slot counts</span>`;
+        }
+      }
+
+      const rateAEl = document.getElementById("kpiDuelRateA");
+      if (rateAEl) rateAEl.innerText = `${comp.presenceRateA}%`;
+      const rateBEl = document.getElementById("kpiDuelRateB");
+      if (rateBEl) rateBEl.innerText = `${comp.presenceRateB}%`;
+
+      const rateSub = document.getElementById("kpiDuelRateSubtitle");
+      if (rateSub) {
+        rateSub.innerText = `${comp.intelA.uniqueHours}h active vs ${comp.intelB.uniqueHours}h active (of ${comp.totalHours}h)`;
+      }
+
+      const intAEl = document.getElementById("kpiDuelIntervalA");
+      if (intAEl) intAEl.innerText = comp.intelA.hasData && comp.intelA.avgIntervalHours > 0 ? `${comp.intelA.avgIntervalHours}h` : "—";
+      const intBEl = document.getElementById("kpiDuelIntervalB");
+      if (intBEl) intBEl.innerText = comp.intelB.hasData && comp.intelB.avgIntervalHours > 0 ? `${comp.intelB.avgIntervalHours}h` : "—";
+
+      const statAEl = document.getElementById("kpiDuelStatusA");
+      if (statAEl) {
+        if (comp.intelA.isActiveNow) {
+          statAEl.innerHTML = `<span class="text-amber-400 truncate max-w-[100px]">${condA}:</span> <span class="text-emerald-400 font-mono font-bold flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>Active (${comp.intelA.remainingMinutes}m)</span>`;
+        } else if (comp.intelA.lastSeenTimestamp) {
+          statAEl.innerHTML = `<span class="text-amber-400 truncate max-w-[100px]">${condA}:</span> <span class="text-slate-400 font-mono">Downtime ${comp.intelA.downtimeHours}h ${comp.intelA.downtimeMinutes}m</span>`;
+        } else {
+          statAEl.innerHTML = `<span class="text-amber-400 truncate max-w-[100px]">${condA}:</span> <span class="text-slate-500 font-mono">No data</span>`;
+        }
+      }
+
+      const statBEl = document.getElementById("kpiDuelStatusB");
+      if (statBEl) {
+        if (comp.intelB.isActiveNow) {
+          statBEl.innerHTML = `<span class="text-sky-400 truncate max-w-[100px]">${condB}:</span> <span class="text-emerald-400 font-mono font-bold flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>Active (${comp.intelB.remainingMinutes}m)</span>`;
+        } else if (comp.intelB.lastSeenTimestamp) {
+          statBEl.innerHTML = `<span class="text-sky-400 truncate max-w-[100px]">${condB}:</span> <span class="text-slate-400 font-mono">Downtime ${comp.intelB.downtimeHours}h ${comp.intelB.downtimeMinutes}m</span>`;
+        } else {
+          statBEl.innerHTML = `<span class="text-sky-400 truncate max-w-[100px]">${condB}:</span> <span class="text-slate-500 font-mono">No data</span>`;
+        }
+      }
+
+      const totalUnionHours = comp.onlyACount + comp.bothCount + comp.onlyBCount;
+      const pctOnlyA = totalUnionHours > 0 ? ((comp.onlyACount / totalUnionHours) * 100).toFixed(1) : 0;
+      const pctBoth = totalUnionHours > 0 ? ((comp.bothCount / totalUnionHours) * 100).toFixed(1) : 0;
+      const pctOnlyB = totalUnionHours > 0 ? ((comp.onlyBCount / totalUnionHours) * 100).toFixed(1) : 0;
+
+      const overlapBadge = document.getElementById("duelOverlapSummaryBadge");
+      if (overlapBadge) {
+        overlapBadge.className = comp.bothCount > 0
+          ? "text-xs font-mono font-bold px-2.5 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/30"
+          : "text-xs font-mono font-bold px-2.5 py-1 rounded-lg bg-slate-800 text-slate-400 border border-slate-700";
+        overlapBadge.innerText = `${comp.bothCount}h Parallel Collision (${pctBoth}% co-occurrence)`;
+      }
+
+      const barEl = document.getElementById("duelOverlapBar");
+      if (barEl) {
+        if (totalUnionHours === 0) {
+          barEl.innerHTML = `<div class="w-full h-full flex items-center justify-center text-[10px] text-slate-500 font-mono">No rotation hours recorded</div>`;
+        } else {
+          barEl.innerHTML = `
+            <div class="bg-gradient-to-r from-amber-500 to-amber-400 h-full transition-all duration-500" style="width: ${pctOnlyA}%" title="${condA} Only: ${comp.onlyACount}h (${pctOnlyA}%)"></div>
+            <div class="bg-gradient-to-r from-emerald-500 to-teal-400 h-full transition-all duration-500" style="width: ${pctBoth}%" title="Parallel (Both Active): ${comp.bothCount}h (${pctBoth}%)"></div>
+            <div class="bg-gradient-to-r from-sky-400 to-sky-500 h-full transition-all duration-500" style="width: ${pctOnlyB}%" title="${condB} Only: ${comp.onlyBCount}h (${pctOnlyB}%)"></div>
+          `;
+        }
+      }
+
+      const legA = document.getElementById("duelLegendA");
+      if (legA) legA.innerText = `Only ${condA}`;
+      const hrsA = document.getElementById("duelOnlyAHours");
+      if (hrsA) hrsA.innerText = `${comp.onlyACount}h`;
+      const pctAEl = document.getElementById("duelOnlyAPct");
+      if (pctAEl) pctAEl.innerText = `${pctOnlyA}%`;
+
+      const hrsBoth = document.getElementById("duelBothHours");
+      if (hrsBoth) hrsBoth.innerText = `${comp.bothCount}h`;
+      const pctBothEl = document.getElementById("duelBothPct");
+      if (pctBothEl) pctBothEl.innerText = `${pctBoth}%`;
+
+      const legB = document.getElementById("duelLegendB");
+      if (legB) legB.innerText = `Only ${condB}`;
+      const hrsB = document.getElementById("duelOnlyBHours");
+      if (hrsB) hrsB.innerText = `${comp.onlyBCount}h`;
+      const pctBEl = document.getElementById("duelOnlyBPct");
+      if (pctBEl) pctBEl.innerText = `${pctOnlyB}%`;
+
+      const thA = document.getElementById("thMapDuelA");
+      if (thA) thA.innerText = `${condA} Slots`;
+      const thB = document.getElementById("thMapDuelB");
+      if (thB) thB.innerText = `${condB} Slots`;
+
+      const tableBody = document.getElementById("duelMapTableBody");
+      if (tableBody) {
+        if (!comp.mapComparisons || comp.mapComparisons.length === 0) {
+          tableBody.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-slate-500">No map occurrences recorded for either event in this timeframe</td></tr>`;
+        } else {
+          tableBody.innerHTML = comp.mapComparisons.map(m => {
+            const maxCount = Math.max(m.countA, m.countB, 1);
+            const widthA = Math.round((m.countA / maxCount) * 100);
+            const widthB = Math.round((m.countB / maxCount) * 100);
+
+            let leaderHtml = `<span class="text-slate-500 font-mono">Tied (${m.countA})</span>`;
+            if (m.diff > 0) {
+              leaderHtml = `<span class="text-amber-400 font-bold font-mono">+${m.diff} (${condA})</span>`;
+            } else if (m.diff < 0) {
+              leaderHtml = `<span class="text-sky-400 font-bold font-mono">+${Math.abs(m.diff)} (${condB})</span>`;
+            }
+
+            return `
+              <tr class="hover:bg-slate-800/40 transition">
+                <td class="py-2.5 px-3 font-bold text-white flex items-center gap-2">
+                  <span class="text-amber-400">🗺️</span>
+                  <span>${m.map}</span>
+                </td>
+                <td class="py-2.5 px-3 font-mono">
+                  <span class="font-bold text-amber-400 text-sm">${m.countA}</span>
+                  <span class="text-slate-500 text-[10px] ml-1">(${m.pctA}%)</span>
+                </td>
+                <td class="py-2.5 px-3 font-mono">
+                  <span class="font-bold text-sky-400 text-sm">${m.countB}</span>
+                  <span class="text-slate-500 text-[10px] ml-1">(${m.pctB}%)</span>
+                </td>
+                <td class="py-2.5 px-3 min-w-[140px]">
+                  <div class="space-y-1">
+                    <div class="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                      <div class="bg-amber-400 h-1.5 rounded-full" style="width: ${widthA}%"></div>
+                    </div>
+                    <div class="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                      <div class="bg-sky-400 h-1.5 rounded-full" style="width: ${widthB}%"></div>
+                    </div>
+                  </div>
+                </td>
+                <td class="py-2.5 px-3 text-right">
+                  ${leaderHtml}
+                </td>
+              </tr>
             `;
           }).join('');
         }
+      }
+    }
 
-        if (mapBars) {
-          mapBars.innerHTML = frequencyView.maps.map(entry => {
-            const sharePct = (entry.share * 100).toFixed(1);
-            const barWidthPct = entry.share * 100;
-            return `
+    function renderMapComparison() {
+      const now = new Date();
+      const nowMs = now.getTime();
+      const timeframe = (document.getElementById("selectedTimeframe") && document.getElementById("selectedTimeframe").value) || "ALL";
+      const query = (document.getElementById("searchInput") && document.getElementById("searchInput").value || "").toLowerCase();
+
+      const comp = FrequencyUptime.compareMaps(rawEvents, currentSectorA, currentSectorB, { nowMs, timeframe, query });
+      const mapA = comp.mapA.name;
+      const mapB = comp.mapB.name;
+
+      const badgeA = document.getElementById("sectorBadgeA");
+      if (badgeA) badgeA.innerText = `${comp.mapA.totalSlots} Slots`;
+      const badgeB = document.getElementById("sectorBadgeB");
+      if (badgeB) badgeB.innerText = `${comp.mapB.totalSlots} Slots`;
+
+      const banner = document.getElementById("sectorWinnerBanner");
+      if (banner) {
+        if (comp.diffSlots > 0) {
+          banner.className = "rounded-2xl p-4 border border-amber-500/40 bg-amber-500/10 text-amber-200 transition flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-lg";
+          banner.innerHTML = `
+            <div class="flex items-center gap-3">
+              <span class="text-2xl">🏆</span>
               <div>
-                <div class="flex items-center justify-between text-xs mb-1.5 gap-2">
-                  <span class="font-bold text-white flex items-center gap-1.5 truncate">
-                    <span class="text-amber-400">🗺️</span>
-                    <span class="truncate">${entry.name}</span>
-                  </span>
-                  <div class="flex items-center gap-1.5 font-mono text-[10px] sm:text-[11px] flex-shrink-0">
-                    <span class="font-extrabold text-sm text-white">${entry.rotationSlots} slots</span>
-                    <span class="text-slate-400">· ${entry.regionalInstances} regional instances</span>
-                    <span class="text-slate-400">· ${formatHours(entry.serverHours)} server-hours</span>
-                    <span class="font-bold text-sky-400 bg-sky-500/10 px-1.5 py-0.5 rounded border border-sky-500/20">${sharePct}% of slots</span>
-                  </div>
+                <div class="font-bold text-sm text-white">
+                  <span class="text-amber-400 font-extrabold">${mapA}</span> is more active with <span class="font-mono text-amber-300 font-bold">+${comp.diffSlots}</span> more modifier slots
                 </div>
-                <div class="w-full bg-slate-800/80 rounded-full h-2.5 overflow-hidden">
-                  <div class="bg-gradient-to-r from-sky-500 to-sky-300 h-2.5 rounded-full transition-all duration-500" style="width: ${barWidthPct}%"></div>
+                <div class="text-xs text-amber-300/80 mt-0.5">
+                  ${comp.mapA.totalSlots} slots (${comp.mapA.condCount} distinct conditions) vs. ${comp.mapB.totalSlots} slots (${comp.mapB.condCount} distinct conditions)
                 </div>
               </div>
+            </div>
+            <div class="flex items-center gap-2 self-start md:self-auto font-mono text-xs bg-amber-500/20 px-3 py-1.5 rounded-xl border border-amber-500/30">
+              <span>Slot Margin:</span>
+              <span class="font-bold text-amber-300">+${comp.diffSlots}</span>
+            </div>
+          `;
+        } else if (comp.diffSlots < 0) {
+          const margin = Math.abs(comp.diffSlots);
+          banner.className = "rounded-2xl p-4 border border-sky-500/40 bg-sky-500/10 text-sky-200 transition flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-lg";
+          banner.innerHTML = `
+            <div class="flex items-center gap-3">
+              <span class="text-2xl">🏆</span>
+              <div>
+                <div class="font-bold text-sm text-white">
+                  <span class="text-sky-400 font-extrabold">${mapB}</span> leads with <span class="font-mono text-sky-300 font-bold">+${margin}</span> more modifier slots
+                </div>
+                <div class="text-xs text-sky-300/80 mt-0.5">
+                  ${comp.mapB.totalSlots} slots (${comp.mapB.condCount} distinct conditions) vs. ${comp.mapA.totalSlots} slots (${comp.mapA.condCount} distinct conditions)
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 self-start md:self-auto font-mono text-xs bg-sky-500/20 px-3 py-1.5 rounded-xl border border-sky-500/30">
+              <span>Slot Margin:</span>
+              <span class="font-bold text-sky-300">+${margin}</span>
+            </div>
+          `;
+        } else {
+          banner.className = "rounded-2xl p-4 border border-slate-700 bg-slate-900/80 text-slate-300 transition flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-lg";
+          banner.innerHTML = `
+            <div class="flex items-center gap-3">
+              <span class="text-2xl">⚖️</span>
+              <div>
+                <div class="font-bold text-sm text-white">
+                  Equal Activity: Both sectors have exactly <span class="font-mono text-amber-400 font-bold">${comp.mapA.totalSlots}</span> modifier slots
+                </div>
+                <div class="text-xs text-slate-400 mt-0.5">
+                  Both maps hosted identical total event counts in the selected timeframe.
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 self-start md:self-auto font-mono text-xs bg-slate-800 px-3 py-1.5 rounded-xl border border-slate-700 text-slate-300">
+              <span>Variety:</span>
+              <span class="font-bold text-white">${comp.mapA.condCount} vs ${comp.mapB.condCount}</span>
+            </div>
+          `;
+        }
+      }
+
+      const slotLabelA = document.getElementById("kpiLabelSectorSlotA");
+      if (slotLabelA) slotLabelA.innerText = mapA;
+      const slotLabelB = document.getElementById("kpiLabelSectorSlotB");
+      if (slotLabelB) slotLabelB.innerText = mapB;
+
+      const slotsAEl = document.getElementById("kpiSectorSlotsA");
+      if (slotsAEl) slotsAEl.innerText = comp.mapA.totalSlots;
+      const slotsBEl = document.getElementById("kpiSectorSlotsB");
+      if (slotsBEl) slotsBEl.innerText = comp.mapB.totalSlots;
+
+      const diffSlotsEl = document.getElementById("kpiSectorSlotsDiff");
+      if (diffSlotsEl) {
+        if (comp.diffSlots > 0) {
+          diffSlotsEl.innerHTML = `<span class="text-amber-400 font-bold">+${comp.diffSlots} advantage</span> <span class="text-slate-400">for ${mapA}</span>`;
+        } else if (comp.diffSlots < 0) {
+          diffSlotsEl.innerHTML = `<span class="text-sky-400 font-bold">+${Math.abs(comp.diffSlots)} advantage</span> <span class="text-slate-400">for ${mapB}</span>`;
+        } else {
+          diffSlotsEl.innerHTML = `<span class="text-slate-400">Equal slot volume</span>`;
+        }
+      }
+
+      const varAEl = document.getElementById("kpiSectorVarietyA");
+      if (varAEl) varAEl.innerText = comp.mapA.condCount;
+      const varBEl = document.getElementById("kpiSectorVarietyB");
+      if (varBEl) varBEl.innerText = comp.mapB.condCount;
+
+      const liveAEl = document.getElementById("kpiSectorLiveA");
+      if (liveAEl) {
+        if (comp.mapA.isActiveNow) {
+          liveAEl.innerHTML = `<span class="text-amber-400 font-bold truncate max-w-[100px]">${mapA}:</span> <span class="text-emerald-400 font-mono font-bold flex items-center gap-1 truncate"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>${comp.mapA.activeConditions.join(', ')}</span>`;
+        } else {
+          liveAEl.innerHTML = `<span class="text-amber-400 font-bold truncate max-w-[100px]">${mapA}:</span> <span class="text-slate-500 font-mono">None active</span>`;
+        }
+      }
+
+      const liveBEl = document.getElementById("kpiSectorLiveB");
+      if (liveBEl) {
+        if (comp.mapB.isActiveNow) {
+          liveBEl.innerHTML = `<span class="text-sky-400 font-bold truncate max-w-[100px]">${mapB}:</span> <span class="text-emerald-400 font-mono font-bold flex items-center gap-1 truncate"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>${comp.mapB.activeConditions.join(', ')}</span>`;
+        } else {
+          liveBEl.innerHTML = `<span class="text-sky-400 font-bold truncate max-w-[100px]">${mapB}:</span> <span class="text-slate-500 font-mono">None active</span>`;
+        }
+      }
+
+      const colTitleA = document.getElementById("colTitleExclA");
+      if (colTitleA) colTitleA.innerText = `Exclusive to ${mapA}`;
+      const badgeExclA = document.getElementById("colBadgeExclA");
+      if (badgeExclA) badgeExclA.innerText = comp.onlyMapAConditions.length;
+
+      const listA = document.getElementById("listExclA");
+      if (listA) {
+        if (comp.onlyMapAConditions.length === 0) {
+          listA.innerHTML = `<span class="text-slate-500 text-xs italic">No exclusive events</span>`;
+        } else {
+          listA.innerHTML = comp.onlyMapAConditions.map(c => {
+            const icon = CONDITION_ICONS[c] || "";
+            return `
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-amber-500/10 border border-amber-500/30 text-amber-300">
+                ${icon ? `<img src="${icon}" class="w-4 h-4 rounded" onerror="this.style.display='none'">` : ''}
+                <span>${c}</span>
+              </span>
             `;
           }).join('');
         }
       }
 
-      // Render Rotation & Concurrency Intelligence
-      renderIntelligence();
+      const badgeShared = document.getElementById("colBadgeShared");
+      if (badgeShared) badgeShared.innerText = comp.commonConditions.length;
+
+      const listShared = document.getElementById("listShared");
+      if (listShared) {
+        if (comp.commonConditions.length === 0) {
+          listShared.innerHTML = `<span class="text-slate-500 text-xs italic">No shared events</span>`;
+        } else {
+          listShared.innerHTML = comp.commonConditions.map(c => {
+            const icon = CONDITION_ICONS[c] || "";
+            return `
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-500/10 border border-emerald-500/30 text-emerald-300">
+                ${icon ? `<img src="${icon}" class="w-4 h-4 rounded" onerror="this.style.display='none'">` : ''}
+                <span>${c}</span>
+              </span>
+            `;
+          }).join('');
+        }
+      }
+
+      const colTitleB = document.getElementById("colTitleExclB");
+      if (colTitleB) colTitleB.innerText = `Exclusive to ${mapB}`;
+      const badgeExclB = document.getElementById("colBadgeExclB");
+      if (badgeExclB) badgeExclB.innerText = comp.onlyMapBConditions.length;
+
+      const listB = document.getElementById("listExclB");
+      if (listB) {
+        if (comp.onlyMapBConditions.length === 0) {
+          listB.innerHTML = `<span class="text-slate-500 text-xs italic">No exclusive events</span>`;
+        } else {
+          listB.innerHTML = comp.onlyMapBConditions.map(c => {
+            const icon = CONDITION_ICONS[c] || "";
+            return `
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-sky-500/10 border border-sky-500/30 text-sky-300">
+                ${icon ? `<img src="${icon}" class="w-4 h-4 rounded" onerror="this.style.display='none'">` : ''}
+                <span>${c}</span>
+              </span>
+            `;
+          }).join('');
+        }
+      }
+
+      const thSecA = document.getElementById("thSectorDuelA");
+      if (thSecA) thSecA.innerText = `${mapA} Slots`;
+      const thSecB = document.getElementById("thSectorDuelB");
+      if (thSecB) thSecB.innerText = `${mapB} Slots`;
+
+      const secTableBody = document.getElementById("sectorTableBody");
+      if (secTableBody) {
+        if (!comp.conditionComparisons || comp.conditionComparisons.length === 0) {
+          secTableBody.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-slate-500">No condition occurrences recorded for either sector in this timeframe</td></tr>`;
+        } else {
+          secTableBody.innerHTML = comp.conditionComparisons.map(c => {
+            const maxCount = Math.max(c.countA, c.countB, 1);
+            const widthA = Math.round((c.countA / maxCount) * 100);
+            const widthB = Math.round((c.countB / maxCount) * 100);
+            const diff = c.countA - c.countB;
+
+            let leaderHtml = `<span class="text-slate-500 font-mono">Tied (${c.countA})</span>`;
+            if (diff > 0) {
+              leaderHtml = `<span class="text-amber-400 font-bold font-mono">+${diff} (${mapA})</span>`;
+            } else if (diff < 0) {
+              leaderHtml = `<span class="text-sky-400 font-bold font-mono">+${Math.abs(diff)} (${mapB})</span>`;
+            }
+
+            const icon = CONDITION_ICONS[c.condition] || "";
+
+            return `
+              <tr class="hover:bg-slate-800/40 transition">
+                <td class="py-2.5 px-3 font-bold text-white flex items-center gap-2">
+                  ${icon ? `<img src="${icon}" alt="${c.condition}" class="w-5 h-5 rounded object-contain bg-slate-900 border border-slate-700/60 flex-shrink-0" onerror="this.style.display='none'">` : ''}
+                  <span>${c.condition}</span>
+                </td>
+                <td class="py-2.5 px-3 font-mono">
+                  <span class="font-bold text-amber-400 text-sm">${c.countA}</span>
+                  <span class="text-slate-500 text-[10px] ml-1">(${c.pctA}%)</span>
+                </td>
+                <td class="py-2.5 px-3 font-mono">
+                  <span class="font-bold text-sky-400 text-sm">${c.countB}</span>
+                  <span class="text-slate-500 text-[10px] ml-1">(${c.pctB}%)</span>
+                </td>
+                <td class="py-2.5 px-3 min-w-[140px]">
+                  <div class="space-y-1">
+                    <div class="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                      <div class="bg-amber-400 h-1.5 rounded-full" style="width: ${widthA}%"></div>
+                    </div>
+                    <div class="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                      <div class="bg-sky-400 h-1.5 rounded-full" style="width: ${widthB}%"></div>
+                    </div>
+                  </div>
+                </td>
+                <td class="py-2.5 px-3 text-right">
+                  ${leaderHtml}
+                </td>
+              </tr>
+            `;
+          }).join('');
+        }
+      }
     }
 
     let currentIntelCondition = "Night Raid";

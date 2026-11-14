@@ -618,6 +618,142 @@
     };
   }
 
+  function compareEvents(events, condA, condB, options) {
+    const nowMs = isFiniteNumber(options && options.nowMs) ? options.nowMs : Date.now();
+    const timeframe = (options && options.timeframe) || "ALL";
+    const query = (options && options.query) || "";
+
+    const intelA = buildRotationIntelligence(events, { condition: condA, nowMs, timeframe, query, scope: "ALL" });
+    const intelB = buildRotationIntelligence(events, { condition: condB, nowMs, timeframe, query, scope: "ALL" });
+    const matrix = buildConcurrencyMatrix(events, { nowMs, timeframe, query, scope: "ALL" });
+
+    const bothCount = matrix.getPairCount(condA, condB);
+    const onlyACount = Math.max(0, intelA.uniqueHours - bothCount);
+    const onlyBCount = Math.max(0, intelB.uniqueHours - bothCount);
+    const totalHours = intelA.totalUniqueHours || 1;
+
+    const allMaps = new Set();
+    intelA.mapBreakdown.forEach(m => allMaps.add(m.map));
+    intelB.mapBreakdown.forEach(m => allMaps.add(m.map));
+
+    const mapComparisons = Array.from(allMaps).sort().map(map => {
+      const itemA = intelA.mapBreakdown.find(m => m.map === map) || { count: 0, percentage: 0 };
+      const itemB = intelB.mapBreakdown.find(m => m.map === map) || { count: 0, percentage: 0 };
+      return {
+        map,
+        countA: itemA.count,
+        pctA: itemA.percentage,
+        countB: itemB.count,
+        pctB: itemB.percentage,
+        diff: itemA.count - itemB.count
+      };
+    }).sort((a, b) => (b.countA + b.countB) - (a.countA + a.countB));
+
+    const diffSlots = intelA.totalSlots - intelB.totalSlots;
+    const diffHours = intelA.uniqueHours - intelB.uniqueHours;
+
+    return {
+      condA,
+      condB,
+      intelA,
+      intelB,
+      diffSlots,
+      diffHours,
+      bothCount,
+      onlyACount,
+      onlyBCount,
+      totalHours,
+      presenceRateA: totalHours > 0 ? Math.round((intelA.uniqueHours / totalHours) * 1000) / 10 : 0,
+      presenceRateB: totalHours > 0 ? Math.round((intelB.uniqueHours / totalHours) * 1000) / 10 : 0,
+      mapComparisons
+    };
+  }
+
+  function compareMaps(events, mapA, mapB, options) {
+    const nowMs = isFiniteNumber(options && options.nowMs) ? options.nowMs : Date.now();
+    const timeframe = (options && options.timeframe) || "ALL";
+    const query = (options && options.query) || "";
+
+    const view = buildFrequencyView(events, { scope: "ALL", timeframe, query, nowMs });
+    const records = (view.records || []).map(r => r.event);
+
+    const slotsA = records.filter(e => e.map === mapA);
+    const slotsB = records.filter(e => e.map === mapB);
+
+    const condsA = {};
+    const activeCondsA = [];
+    slotsA.forEach(e => {
+      condsA[e.condition] = (condsA[e.condition] || 0) + 1;
+      const st = parseTimestamp(e.startTime) || 0;
+      const et = parseTimestamp(e.endTime) || (st + MS_PER_HOUR);
+      if (st <= nowMs && nowMs < et && !activeCondsA.includes(e.condition)) {
+        activeCondsA.push(e.condition);
+      }
+    });
+
+    const condsB = {};
+    const activeCondsB = [];
+    slotsB.forEach(e => {
+      condsB[e.condition] = (condsB[e.condition] || 0) + 1;
+      const st = parseTimestamp(e.startTime) || 0;
+      const et = parseTimestamp(e.endTime) || (st + MS_PER_HOUR);
+      if (st <= nowMs && nowMs < et && !activeCondsB.includes(e.condition)) {
+        activeCondsB.push(e.condition);
+      }
+    });
+
+    const allConds = new Set();
+    Object.keys(condsA).forEach(c => allConds.add(c));
+    Object.keys(condsB).forEach(c => allConds.add(c));
+
+    const commonConditions = [];
+    const onlyMapAConditions = [];
+    const onlyMapBConditions = [];
+
+    allConds.forEach(c => {
+      if (condsA[c] && condsB[c]) commonConditions.push(c);
+      else if (condsA[c]) onlyMapAConditions.push(c);
+      else onlyMapBConditions.push(c);
+    });
+
+    const conditionComparisons = Array.from(allConds).map(cond => {
+      const countA = condsA[cond] || 0;
+      const countB = condsB[cond] || 0;
+      return {
+        condition: cond,
+        countA,
+        pctA: slotsA.length > 0 ? Math.round((countA / slotsA.length) * 1000) / 10 : 0,
+        countB,
+        pctB: slotsB.length > 0 ? Math.round((countB / slotsB.length) * 1000) / 10 : 0,
+        total: countA + countB
+      };
+    }).sort((a, b) => b.total - a.total);
+
+    const diffSlots = slotsA.length - slotsB.length;
+
+    return {
+      mapA: {
+        name: mapA,
+        totalSlots: slotsA.length,
+        condCount: Object.keys(condsA).length,
+        activeConditions: activeCondsA,
+        isActiveNow: activeCondsA.length > 0
+      },
+      mapB: {
+        name: mapB,
+        totalSlots: slotsB.length,
+        condCount: Object.keys(condsB).length,
+        activeConditions: activeCondsB,
+        isActiveNow: activeCondsB.length > 0
+      },
+      diffSlots,
+      commonConditions,
+      onlyMapAConditions,
+      onlyMapBConditions,
+      conditionComparisons
+    };
+  }
+
   return {
     MS_PER_HOUR,
     REGION_KEYS: REGION_KEYS.slice(),
@@ -636,6 +772,8 @@
     buildFrequencyView,
     buildRotationIntelligence,
     buildConcurrencyMatrix,
+    compareEvents,
+    compareMaps,
     formatLocalDateTime
   };
 });

@@ -245,3 +245,31 @@ test("buildConcurrencyMatrix computes pair counts symmetrically", () => {
   assert.equal(matrix.getPairCount("CondA", "CondC"), 1);
   assert.equal(matrix.getPairCount("CondA", "NonExistent"), 0);
 });
+
+test("compareEvents compares two events side by side", () => {
+  const e1 = event("Alpha", "Map1", NOW - (3 * HOUR), regionalRanges(NOW - (3 * HOUR)));
+  const e2 = event("Beta", "Map2", NOW - (3 * HOUR), regionalRanges(NOW - (3 * HOUR)));
+  const e3 = event("Alpha", "Map2", NOW - (2 * HOUR), regionalRanges(NOW - (2 * HOUR)));
+
+  const comparison = FrequencyUptime.compareEvents([e1, e2, e3], "Alpha", "Beta", { nowMs: NOW });
+  assert.equal(comparison.intelA.totalSlots, 2);
+  assert.equal(comparison.intelB.totalSlots, 1);
+  assert.equal(comparison.bothCount, 1);
+  assert.equal(comparison.onlyACount, 1);
+  assert.equal(comparison.onlyBCount, 0);
+  assert.equal(comparison.diffSlots, 1);
+});
+
+test("compareMaps compares two maps and identifies exclusive conditions", () => {
+  const e1 = event("Alpha", "Sector1", NOW - (3 * HOUR), regionalRanges(NOW - (3 * HOUR)));
+  const e2 = event("Shared", "Sector1", NOW - (2 * HOUR), regionalRanges(NOW - (2 * HOUR)));
+  const e3 = event("Shared", "Sector2", NOW - (2 * HOUR), regionalRanges(NOW - (2 * HOUR)));
+  const e4 = event("Beta", "Sector2", NOW - (1 * HOUR), regionalRanges(NOW - (1 * HOUR)));
+
+  const comparison = FrequencyUptime.compareMaps([e1, e2, e3, e4], "Sector1", "Sector2", { nowMs: NOW });
+  assert.equal(comparison.mapA.totalSlots, 2);
+  assert.equal(comparison.mapB.totalSlots, 2);
+  assert.deepEqual(comparison.commonConditions, ["Shared"]);
+  assert.deepEqual(comparison.onlyMapAConditions, ["Alpha"]);
+  assert.deepEqual(comparison.onlyMapBConditions, ["Beta"]);
+});
