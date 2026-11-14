@@ -288,9 +288,8 @@
         </div>
 
         <div class="bg-slate-900/90 border border-purple-500/25 rounded-2xl p-4 shadow-lg flex flex-col justify-between">
-          <div class="text-[11px] uppercase tracking-wider font-bold text-purple-400">Archive Retention</div>
-          <div class="text-2xl font-black font-mono text-white mt-1">Permanent</div>
-          <div class="text-[10px] text-[var(--muted)] mt-1">Tracking active since Nov 11, 2026 · MongoDB Atlas</div>
+          <div class="text-[11px] uppercase tracking-wider font-bold text-purple-400">Tracked Since</div>
+          <div class="text-2xl lg:text-3xl font-black font-mono text-white mt-1">Nov 11, 2026</div>
         </div>
       </div>
 
@@ -301,7 +300,7 @@
             <h2 class="text-base font-bold text-white">Condition Occurrence & Uptime</h2>
             <span id="conditionTotalBadge" class="text-xs font-mono font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-lg"></span>
           </div>
-          <p class="text-xs text-[var(--muted)] mb-4">Rotations & server runs across 5 global regions · Tracked since Nov 11, 2026</p>
+          <p class="text-xs text-[var(--muted)] mb-4">Rotations & server runs across 5 global regions</p>
           <div id="frequencyBars" class="space-y-3.5"></div>
         </div>
 
@@ -311,7 +310,7 @@
             <h2 class="text-base font-bold text-white">Most Active Map Sectors</h2>
             <span id="mapTotalBadge" class="text-xs font-mono font-bold text-sky-400 bg-sky-500/10 border border-sky-500/20 px-2.5 py-1 rounded-lg"></span>
           </div>
-          <p class="text-xs text-[var(--muted)] mb-4">Total sector instances & rotation distribution · Tracked since Nov 11, 2026</p>
+          <p class="text-xs text-[var(--muted)] mb-4">Total sector instances & rotation distribution</p>
           <div id="mapBars" class="space-y-3.5"></div>
         </div>
       </div>
@@ -900,22 +899,24 @@
       if (mapBadge) mapBadge.innerText = `${totalFilteredEvents} Sector Instances · ${totalServerRuns} Server-Runs`;
 
       // Build sorted conditions list including active and off-rotation
-      const sortedCondList = Object.entries(condCounts).sort((a,b) => b[1] - a[1]);
+      // Sort by server-runs (total regional instances) so the ranking matches
+      // what users see on arcraiders.com where each region is listed separately
+      const sortedCondList = Object.entries(condServerRuns).sort((a,b) => b[1] - a[1]);
       ALL_KNOWN_CONDITIONS.forEach(c => {
-        if (!condCounts[c]) {
+        if (!condServerRuns[c]) {
           sortedCondList.push([c, 0]);
         }
       });
 
-      const maxCount = Math.max(...Object.values(condCounts), 1);
+      const maxServerRuns = Math.max(...Object.values(condServerRuns), 1);
       const freqBars = document.getElementById("frequencyBars");
       if (freqBars) {
-        freqBars.innerHTML = sortedCondList.map(([cond, count]) => {
+        freqBars.innerHTML = sortedCondList.map(([cond, serverRuns]) => {
+          const count = condCounts[cond] || 0;
           const isOffRotation = count === 0;
-          const sharePct = totalFilteredEvents > 0 ? ((count / totalFilteredEvents) * 100).toFixed(1) : "0.0";
-          const barWidthPct = totalFilteredEvents > 0 ? Math.max((count / maxCount) * 100, 0) : 0;
+          const sharePct = totalServerRuns > 0 ? ((serverRuns / totalServerRuns) * 100).toFixed(1) : "0.0";
+          const barWidthPct = totalServerRuns > 0 ? Math.max((serverRuns / maxServerRuns) * 100, 0) : 0;
           const hours = (condHours[cond] || 0).toFixed(0);
-          const serverRuns = condServerRuns[cond] || 0;
 
           return `
             <div class="${isOffRotation ? 'opacity-45' : ''}">
@@ -926,8 +927,8 @@
                   ${isOffRotation ? `<span class="text-[9px] text-amber-400 font-mono font-bold uppercase bg-amber-500/10 px-1 py-0.5 rounded border border-amber-500/20">Off-Rotation</span>` : ''}
                 </span>
                 <div class="flex items-center gap-2 flex-shrink-0 font-mono">
-                  <span class="font-extrabold text-sm ${count > 0 ? 'text-white' : 'text-slate-500'}">${count}x</span>
-                  ${serverRuns > 0 ? `<span class="text-[10px] text-slate-400 bg-slate-800/80 px-1.5 py-0.5 rounded border border-slate-700/60 hidden sm:inline" title="${serverRuns} runs across 5 servers">${serverRuns} runs</span>` : ''}
+                  <span class="font-extrabold text-sm ${serverRuns > 0 ? 'text-white' : 'text-slate-500'}">${serverRuns}x</span>
+                  <span class="text-[10px] text-slate-400 bg-slate-800/80 px-1.5 py-0.5 rounded border border-slate-700/60 hidden sm:inline" title="${count} unique rotation slots across 5 servers">${count} slots</span>
                   <span class="text-[11px] font-bold text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20">${sharePct}%</span>
                   <span class="text-[11px] text-[var(--muted)]">(${hours}h)</span>
                 </div>
