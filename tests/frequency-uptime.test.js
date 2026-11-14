@@ -191,3 +191,57 @@ test("exposes local timezone and valid regional range helpers", () => {
   assert.equal(FrequencyUptime.hasStartedInScope(futureSlot, "ALL", NOW), false);
   assert.equal(typeof FrequencyUptime.getLocalTimeZone(), "string");
 });
+
+test("buildRotationIntelligence analyzes map breakdown, downtime and concurrent conditions", () => {
+  const intelRunning = FrequencyUptime.buildRotationIntelligence(fixture, {
+    condition: "Running",
+    nowMs: NOW,
+    scope: "ALL"
+  });
+
+  assert.equal(intelRunning.hasData, true);
+  assert.equal(intelRunning.isActiveNow, true);
+  assert.deepEqual(intelRunning.activeMaps, ["Riven Tides"]);
+  assert.equal(intelRunning.downtimeHours, 0);
+  assert.equal(intelRunning.mapBreakdown.length, 1);
+  assert.equal(intelRunning.mapBreakdown[0].map, "Riven Tides");
+  assert.equal(intelRunning.mapBreakdown[0].count, 1);
+
+  const intelEnded = FrequencyUptime.buildRotationIntelligence(fixture, {
+    condition: "Ended",
+    nowMs: NOW,
+    scope: "ALL"
+  });
+
+  assert.equal(intelEnded.hasData, true);
+  assert.equal(intelEnded.isActiveNow, false);
+  assert.ok(intelEnded.downtimeHours >= 9);
+  assert.equal(intelEnded.mapBreakdown[0].map, "The Blue Gate");
+
+  const intelEmpty = FrequencyUptime.buildRotationIntelligence(fixture, {
+    condition: "NonExistent",
+    nowMs: NOW,
+    scope: "ALL"
+  });
+
+  assert.equal(intelEmpty.hasData, false);
+  assert.equal(intelEmpty.totalSlots, 0);
+  assert.deepEqual(intelEmpty.mapBreakdown, []);
+  assert.deepEqual(intelEmpty.concurrentConditions, []);
+});
+
+test("buildConcurrencyMatrix computes pair counts symmetrically", () => {
+  const concurrentA = event("CondA", "Map1", NOW - (2 * HOUR), regionalRanges(NOW - (2 * HOUR)));
+  const concurrentB = event("CondB", "Map2", NOW - (2 * HOUR), regionalRanges(NOW - (2 * HOUR)));
+  const concurrentC = event("CondC", "Map3", NOW - (2 * HOUR), regionalRanges(NOW - (2 * HOUR)));
+
+  const matrix = FrequencyUptime.buildConcurrencyMatrix([concurrentA, concurrentB, concurrentC], {
+    nowMs: NOW,
+    scope: "ALL"
+  });
+
+  assert.equal(matrix.getPairCount("CondA", "CondB"), 1);
+  assert.equal(matrix.getPairCount("CondB", "CondA"), 1);
+  assert.equal(matrix.getPairCount("CondA", "CondC"), 1);
+  assert.equal(matrix.getPairCount("CondA", "NonExistent"), 0);
+});

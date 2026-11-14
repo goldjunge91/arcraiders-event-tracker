@@ -48,9 +48,8 @@ When Embark Studios reintroduces them to the schedule, their slots automatically
 * **Flat Data Export (`data/events.json`):** Every run auto-exports the cumulative database into versioned JSON in the repo, allowing the static frontend on GitHub Pages to load instantly with zero server lag.
 * **Analytical Tabs:**
   * **⏰ World Schedule Table:** Chronological table with local times for all 5 regions and live countdowns.
-  * **👥 Concurrent Sector Combinations:** Inspect which modifiers run simultaneously across sectors during each 1-hour window.
-  * **📊 Frequency & Uptime:** Total occurrences and active hours per condition.
-  * **🗺️ Map Matrix:** Cross-matrix showing the frequency of every condition across each map sector.
+  * **📊 Frequency & Server-Hours:** Total occurrences, regional instances, server-hours, and percentage shares per condition and map.
+  * **🔄 Rotation & Concurrency Intelligence:** Deep dive into map availability, rotation cadences, cooldown/downtime tracking, concurrent event combinations (e.g. how often Night Raid runs parallel to ARC Frigate), interactive pair comparisons, and full Condition × Condition concurrency matrix.
 * **Rich Tooltips:** Integrated with `<script async src="https://static.metaforge.app/arcraiders-tooltips.min.js"></script>` for interactive item and event tooltips.
 
 ---

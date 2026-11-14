@@ -384,6 +384,240 @@
     return new Intl.DateTimeFormat(undefined, formatOptions).format(new Date(parsedTimestamp));
   }
 
+  function buildRotationIntelligence(events, options) {
+    const targetCondition = (options && options.condition) || "";
+    const nowMs = isFiniteNumber(options && options.nowMs) ? options.nowMs : Date.now();
+    const timeframe = (options && options.timeframe) || "ALL";
+    const scope = (options && options.scope) || "ALL";
+    const query = (options && options.query) || "";
+
+    const view = buildFrequencyView(events, { scope, timeframe, query, nowMs });
+    const records = view.records || [];
+
+    const slotsByStartTime = new Map();
+    records.forEach(rec => {
+      const st = rec.event.startTime;
+      if (!slotsByStartTime.has(st)) {
+        slotsByStartTime.set(st, []);
+      }
+      slotsByStartTime.get(st).push(rec.event);
+    });
+
+    const targetSlots = records
+      .map(r => r.event)
+      .filter(e => e.condition === targetCondition);
+
+    const hasData = targetSlots.length > 0;
+
+    // 1. Map Breakdown
+    const mapCounts = {};
+    const mapLastSeen = {};
+    const mapActiveNow = {};
+
+    targetSlots.forEach(slot => {
+      const map = slot.map;
+      mapCounts[map] = (mapCounts[map] || 0) + 1;
+      const stMs = parseTimestamp(slot.startTime) || 0;
+      const etMs = parseTimestamp(slot.endTime) || (stMs + MS_PER_HOUR);
+      if (!mapLastSeen[map] || stMs > mapLastSeen[map].timestamp) {
+        mapLastSeen[map] = {
+          timestamp: stMs,
+          endTimestamp: etMs,
+          formatted: formatLocalDateTime(stMs)
+        };
+      }
+      if (stMs <= nowMs && nowMs < etMs) {
+        mapActiveNow[map] = true;
+      }
+    });
+
+    const mapBreakdown = Object.keys(mapCounts)
+      .map(map => {
+        const count = mapCounts[map];
+        const percentage = targetSlots.length > 0 ? (count / targetSlots.length) * 100 : 0;
+        return {
+          map,
+          count,
+          percentage: Math.round(percentage * 10) / 10,
+          lastSeen: mapLastSeen[map],
+          isActive: !!mapActiveNow[map]
+        };
+      })
+      .sort((a, b) => b.count - a.count);
+
+    // 2. Status & Downtime / Cooldown Tracker
+    let isActiveNow = false;
+    const activeMaps = [];
+    let remainingMinutes = 0;
+    let lastSeenTimestamp = null;
+    let lastSeenStartMs = null;
+
+    targetSlots.forEach(slot => {
+      const stMs = parseTimestamp(slot.startTime) || 0;
+      const etMs = parseTimestamp(slot.endTime) || (stMs + MS_PER_HOUR);
+      if (stMs <= nowMs && nowMs < etMs) {
+        isActiveNow = true;
+        if (!activeMaps.includes(slot.map)) activeMaps.push(slot.map);
+        remainingMinutes = Math.max(remainingMinutes, Math.round((etMs - nowMs) / 60000));
+      }
+      if (lastSeenTimestamp === null || etMs > lastSeenTimestamp) {
+        lastSeenTimestamp = etMs;
+        lastSeenStartMs = stMs;
+      }
+    });
+
+    let downtimeMs = 0;
+    let downtimeHours = 0;
+    let downtimeMinutes = 0;
+
+    if (isActiveNow) {
+      downtimeMs = 0;
+    } else if (lastSeenTimestamp !== null) {
+      downtimeMs = Math.max(0, nowMs - lastSeenTimestamp);
+      downtimeHours = Math.floor(downtimeMs / MS_PER_HOUR);
+      downtimeMinutes = Math.floor((downtimeMs % MS_PER_HOUR) / (60 * 1000));
+    }
+
+    // 3. Cadence & Gap Analysis (Rhythm between rotations)
+    const uniqueStartTimes = Array.from(new Set(targetSlots.map(s => parseTimestamp(s.startTime))))
+      .filter(t => t !== null)
+      .sort((a, b) => a - b);
+
+    const gapsHours = [];
+    for (let i = 1; i < uniqueStartTimes.length; i++) {
+      const diffHours = (uniqueStartTimes[i] - uniqueStartTimes[i - 1]) / MS_PER_HOUR;
+      gapsHours.push(diffHours);
+    }
+
+    const rawAvgInterval = gapsHours.length > 0 ? (gapsHours.reduce((a, b) => a + b, 0) / gapsHours.length) : 0;
+    const avgIntervalHours = Math.round(rawAvgInterval * 10) / 10;
+    const minIntervalHours = gapsHours.length > 0 ? Math.round(Math.min(...gapsHours) * 10) / 10 : 0;
+    const maxIntervalHours = gapsHours.length > 0 ? Math.round(Math.max(...gapsHours) * 10) / 10 : 0;
+    const avgPauseHours = Math.max(0, Math.round((rawAvgInterval - 1.0) * 10) / 10);
+
+    // 4. Concurrency Analysis (Which conditions ran simultaneously with targetCondition)
+    const concurrentCounts = {};
+    const sharedSlotsMap = {};
+
+    slotsByStartTime.forEach((eventsInHour, startTimeKey) => {
+      const targetEventsInHour = eventsInHour.filter(e => e.condition === targetCondition);
+      if (targetEventsInHour.length === 0) return;
+
+      const otherEventsInHour = eventsInHour.filter(e => e.condition && e.condition !== targetCondition);
+      const seenOtherInThisHour = new Set();
+
+      otherEventsInHour.forEach(otherEvent => {
+        const otherCond = otherEvent.condition;
+        if (!seenOtherInThisHour.has(otherCond)) {
+          seenOtherInThisHour.add(otherCond);
+          concurrentCounts[otherCond] = (concurrentCounts[otherCond] || 0) + 1;
+        }
+        if (!sharedSlotsMap[otherCond]) sharedSlotsMap[otherCond] = [];
+        targetEventsInHour.forEach(te => {
+          sharedSlotsMap[otherCond].push({
+            startTime: startTimeKey,
+            targetMap: te.map,
+            otherMap: otherEvent.map
+          });
+        });
+      });
+    });
+
+    const concurrentConditions = Object.keys(concurrentCounts)
+      .map(otherCond => {
+        const sharedSlots = concurrentCounts[otherCond];
+        const percentage = uniqueStartTimes.length > 0 ? (sharedSlots / uniqueStartTimes.length) * 100 : 0;
+        return {
+          condition: otherCond,
+          sharedSlots,
+          percentage: Math.round(percentage * 10) / 10,
+          pairSlots: sharedSlotsMap[otherCond] || []
+        };
+      })
+      .sort((a, b) => b.sharedSlots - a.sharedSlots);
+
+    return {
+      targetCondition,
+      hasData,
+      totalSlots: targetSlots.length,
+      uniqueHours: uniqueStartTimes.length,
+      isActiveNow,
+      activeMaps,
+      remainingMinutes,
+      lastSeenTimestamp,
+      lastSeenStartMs,
+      lastSeenFormatted: lastSeenStartMs !== null ? formatLocalDateTime(lastSeenStartMs) : "—",
+      downtimeMs,
+      downtimeHours,
+      downtimeMinutes,
+      avgIntervalHours,
+      avgPauseHours,
+      minIntervalHours,
+      maxIntervalHours,
+      mapBreakdown,
+      concurrentConditions,
+      totalUniqueHours: slotsByStartTime.size
+    };
+  }
+
+  function buildConcurrencyMatrix(events, options) {
+    const nowMs = isFiniteNumber(options && options.nowMs) ? options.nowMs : Date.now();
+    const timeframe = (options && options.timeframe) || "ALL";
+    const scope = (options && options.scope) || "ALL";
+    const query = (options && options.query) || "";
+
+    const view = buildFrequencyView(events, { scope, timeframe, query, nowMs });
+    const records = view.records || [];
+
+    const slotsByStartTime = new Map();
+    const condCounts = {};
+
+    records.forEach(rec => {
+      const st = rec.event.startTime;
+      if (!slotsByStartTime.has(st)) slotsByStartTime.set(st, []);
+      slotsByStartTime.get(st).push(rec.event);
+      condCounts[rec.event.condition] = (condCounts[rec.event.condition] || 0) + 1;
+    });
+
+    const pairCounts = new Map();
+    const pairMapBreakdown = new Map();
+
+    slotsByStartTime.forEach((eventsInHour, startTime) => {
+      const condSet = new Set(eventsInHour.map(e => e.condition));
+      const condList = Array.from(condSet);
+
+      for (let i = 0; i < condList.length; i++) {
+        for (let j = 0; j < condList.length; j++) {
+          if (i === j) continue;
+          const c1 = condList[i];
+          const c2 = condList[j];
+          const key = `${c1}\u001f${c2}`;
+          pairCounts.set(key, (pairCounts.get(key) || 0) + 1);
+
+          const e1List = eventsInHour.filter(e => e.condition === c1);
+          const e2List = eventsInHour.filter(e => e.condition === c2);
+          if (!pairMapBreakdown.has(key)) pairMapBreakdown.set(key, {});
+          const breakdown = pairMapBreakdown.get(key);
+          e1List.forEach(e1 => {
+            e2List.forEach(e2 => {
+              const mapPair = `${e1.map} + ${e2.map}`;
+              breakdown[mapPair] = (breakdown[mapPair] || 0) + 1;
+            });
+          });
+        }
+      }
+    });
+
+    const activeConditions = Object.keys(condCounts).sort((a, b) => condCounts[b] - condCounts[a]);
+
+    return {
+      totalHours: slotsByStartTime.size,
+      activeConditions,
+      getPairCount: (c1, c2) => pairCounts.get(`${c1}\u001f${c2}`) || 0,
+      getPairMapBreakdown: (c1, c2) => pairMapBreakdown.get(`${c1}\u001f${c2}`) || {}
+    };
+  }
+
   return {
     MS_PER_HOUR,
     REGION_KEYS: REGION_KEYS.slice(),
@@ -400,6 +634,8 @@
     getStartedRegionalRanges,
     hasStartedInScope,
     buildFrequencyView,
+    buildRotationIntelligence,
+    buildConcurrencyMatrix,
     formatLocalDateTime
   };
 });
