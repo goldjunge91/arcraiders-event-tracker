@@ -268,26 +268,29 @@
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <div class="bg-slate-900/90 border border-amber-500/25 rounded-2xl p-4 shadow-lg flex flex-col justify-between">
           <div class="text-[11px] uppercase tracking-wider font-bold text-amber-400">Total Rotations Tracked</div>
-          <div id="kpiTotalEvents" class="text-3xl font-black font-mono text-white mt-1">0</div>
-          <div class="text-[10px] text-[var(--muted)] mt-0.5">Across all 5 global server regions</div>
+          <div class="flex items-baseline gap-2 mt-1">
+            <span id="kpiTotalEvents" class="text-3xl font-black font-mono text-white">0</span>
+            <span id="kpiTotalServerRuns" class="text-xs font-mono font-bold text-amber-400/90 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">0 Server-Runs</span>
+          </div>
+          <div class="text-[10px] text-[var(--muted)] mt-1">Across 5 global server regions (EU, NA, SA, ASIA, OCE)</div>
         </div>
 
         <div class="bg-slate-900/90 border border-emerald-500/25 rounded-2xl p-4 shadow-lg flex flex-col justify-between">
           <div class="text-[11px] uppercase tracking-wider font-bold text-emerald-400">Total Tracked Uptime</div>
           <div id="kpiTotalUptime" class="text-3xl font-black font-mono text-white mt-1">0h</div>
-          <div class="text-[10px] text-[var(--muted)] mt-0.5">Cumulative event rotation hours</div>
+          <div class="text-[10px] text-[var(--muted)] mt-1">Cumulative event rotation hours</div>
         </div>
 
         <div class="bg-slate-900/90 border border-sky-500/25 rounded-2xl p-4 shadow-lg flex flex-col justify-between">
           <div class="text-[11px] uppercase tracking-wider font-bold text-sky-400">Active Map Sectors</div>
           <div id="kpiTotalMaps" class="text-3xl font-black font-mono text-white mt-1">7</div>
-          <div class="text-[10px] text-[var(--muted)] mt-0.5">Maps in live rotation</div>
+          <div class="text-[10px] text-[var(--muted)] mt-1">Maps in live rotation</div>
         </div>
 
         <div class="bg-slate-900/90 border border-purple-500/25 rounded-2xl p-4 shadow-lg flex flex-col justify-between">
-          <div class="text-[11px] uppercase tracking-wider font-bold text-purple-400">Tracked Conditions</div>
-          <div id="kpiTotalConditions" class="text-3xl font-black font-mono text-white mt-1">18</div>
-          <div class="text-[10px] text-[var(--muted)] mt-0.5">13 in rotation · 5 off-rotation</div>
+          <div class="text-[11px] uppercase tracking-wider font-bold text-purple-400">Archive Retention</div>
+          <div class="text-2xl font-black font-mono text-white mt-1">Permanent</div>
+          <div class="text-[10px] text-[var(--muted)] mt-1">Tracking active since Nov 11, 2026 · MongoDB Atlas</div>
         </div>
       </div>
 
@@ -298,7 +301,7 @@
             <h2 class="text-base font-bold text-white">Condition Occurrence & Uptime</h2>
             <span id="conditionTotalBadge" class="text-xs font-mono font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-lg"></span>
           </div>
-          <p class="text-xs text-[var(--muted)] mb-4">Total occurrences, exact share of all events, and active duration</p>
+          <p class="text-xs text-[var(--muted)] mb-4">Rotations & server runs across 5 global regions · Tracked since Nov 11, 2026</p>
           <div id="frequencyBars" class="space-y-3.5"></div>
         </div>
 
@@ -308,7 +311,7 @@
             <h2 class="text-base font-bold text-white">Most Active Map Sectors</h2>
             <span id="mapTotalBadge" class="text-xs font-mono font-bold text-sky-400 bg-sky-500/10 border border-sky-500/20 px-2.5 py-1 rounded-lg"></span>
           </div>
-          <p class="text-xs text-[var(--muted)] mb-4">Total event instances and sector rotation distribution</p>
+          <p class="text-xs text-[var(--muted)] mb-4">Total sector instances & rotation distribution · Tracked since Nov 11, 2026</p>
           <div id="mapBars" class="space-y-3.5"></div>
         </div>
       </div>
@@ -856,30 +859,45 @@
       // Render Frequency Bars & KPI Overview
       const condCounts = {};
       const condHours = {};
+      const condServerRuns = {};
       const totalFilteredEvents = filtered.length;
       let totalFilteredHours = 0;
+      let totalServerRuns = 0;
 
       filtered.forEach(e => {
         const durH = (e.durationMinutes || 60) / 60;
         condCounts[e.condition] = (condCounts[e.condition] || 0) + 1;
         condHours[e.condition] = (condHours[e.condition] || 0) + durH;
         totalFilteredHours += durH;
+
+        // Count server regions (defaults to 5 if not customized in data)
+        const rts = e.regionTimestamps || {};
+        let activeRegCount = 0;
+        Object.keys(REGIONS).forEach(rk => {
+          if (rts[rk] && rts[rk].length === 2) activeRegCount++;
+        });
+        if (activeRegCount === 0) activeRegCount = 5;
+
+        condServerRuns[e.condition] = (condServerRuns[e.condition] || 0) + activeRegCount;
+        totalServerRuns += activeRegCount;
       });
 
       // Update Top KPI Cards
       const kpiEventsEl = document.getElementById("kpiTotalEvents");
       if (kpiEventsEl) kpiEventsEl.innerText = totalFilteredEvents;
+      const kpiServerRunsEl = document.getElementById("kpiTotalServerRuns");
+      if (kpiServerRunsEl) kpiServerRunsEl.innerText = `${totalServerRuns} Server-Runs`;
       const kpiUptimeEl = document.getElementById("kpiTotalUptime");
       if (kpiUptimeEl) kpiUptimeEl.innerText = `${Math.round(totalFilteredHours)}h`;
       
       const condBadge = document.getElementById("conditionTotalBadge");
-      if (condBadge) condBadge.innerText = `${totalFilteredEvents} Total Rotations (${Math.round(totalFilteredHours)}h)`;
+      if (condBadge) condBadge.innerText = `${totalFilteredEvents} Rotations · ${totalServerRuns} Server-Runs (${Math.round(totalFilteredHours)}h)`;
 
       // Map counts
       const mapCounts = {};
       filtered.forEach(e => { mapCounts[e.map] = (mapCounts[e.map] || 0) + 1; });
       const mapBadge = document.getElementById("mapTotalBadge");
-      if (mapBadge) mapBadge.innerText = `${totalFilteredEvents} Total Sector Instances`;
+      if (mapBadge) mapBadge.innerText = `${totalFilteredEvents} Sector Instances · ${totalServerRuns} Server-Runs`;
 
       // Build sorted conditions list including active and off-rotation
       const sortedCondList = Object.entries(condCounts).sort((a,b) => b[1] - a[1]);
@@ -897,17 +915,19 @@
           const sharePct = totalFilteredEvents > 0 ? ((count / totalFilteredEvents) * 100).toFixed(1) : "0.0";
           const barWidthPct = totalFilteredEvents > 0 ? Math.max((count / maxCount) * 100, 0) : 0;
           const hours = (condHours[cond] || 0).toFixed(0);
+          const serverRuns = condServerRuns[cond] || 0;
 
           return `
             <div class="${isOffRotation ? 'opacity-45' : ''}">
               <div class="flex items-center justify-between text-xs mb-1.5">
-                <span class="font-bold text-white flex items-center gap-2 truncate max-w-[200px] md:max-w-[260px]">
+                <span class="font-bold text-white flex items-center gap-2 truncate max-w-[180px] md:max-w-[240px]">
                   ${CONDITION_ICONS[cond] ? `<img src="${CONDITION_ICONS[cond]}" class="w-5 h-5 rounded object-contain bg-slate-900 border border-slate-700/60 flex-shrink-0" onerror="this.style.display='none'">` : ''}
                   <span class="truncate">${cond}</span>
                   ${isOffRotation ? `<span class="text-[9px] text-amber-400 font-mono font-bold uppercase bg-amber-500/10 px-1 py-0.5 rounded border border-amber-500/20">Off-Rotation</span>` : ''}
                 </span>
                 <div class="flex items-center gap-2 flex-shrink-0 font-mono">
                   <span class="font-extrabold text-sm ${count > 0 ? 'text-white' : 'text-slate-500'}">${count}x</span>
+                  ${serverRuns > 0 ? `<span class="text-[10px] text-slate-400 bg-slate-800/80 px-1.5 py-0.5 rounded border border-slate-700/60 hidden sm:inline" title="${serverRuns} runs across 5 servers">${serverRuns} runs</span>` : ''}
                   <span class="text-[11px] font-bold text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20">${sharePct}%</span>
                   <span class="text-[11px] text-[var(--muted)]">(${hours}h)</span>
                 </div>
