@@ -225,6 +225,20 @@ def export_full_history_to_json(mongo_uri: str = None, output_path: str = "data/
         json.dump(docs, f, indent=2, ensure_ascii=False)
     print(f"Historie dauerhaft exportiert: {len(docs)} Events in {output_path} gesichert.")
 
+    # Synchronize index.html EMBEDDED_DATASET as well
+    index_path = os.path.join(os.path.dirname(output_path), "..", "index.html")
+    if os.path.exists(index_path):
+        try:
+            with open(index_path, "r", encoding="utf-8") as f:
+                content = f.read()
+            min_json = json.dumps(docs, ensure_ascii=False)
+            new_content = re.sub(r"const EMBEDDED_DATASET = \[.*?\];", f"const EMBEDDED_DATASET = {min_json};", content, flags=re.DOTALL)
+            with open(index_path, "w", encoding="utf-8") as f:
+                f.write(new_content)
+            print(f"index.html EMBEDDED_DATASET mit {len(docs)} Events synchronisiert.")
+        except Exception as e:
+            print(f"Hinweis: index.html konnte nicht aktualisiert werden ({e}).")
+
 
 def sync_to_mongodb(events, mongo_uri: str, db_name: str = "arcraiders"):
     """

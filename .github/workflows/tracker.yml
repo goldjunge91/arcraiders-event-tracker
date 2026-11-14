@@ -37,5 +37,5 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action Tracker"
-          git add data/events.json || true
-          git diff --staged --quiet || (git commit -m "chore: auto-update event history snapshot [skip ci]" && git push)
+          git add data/events.json index.html || true
+          git diff --staged --quiet || (git commit -m "chore: auto-update event history snapshot" && git push)
