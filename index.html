@@ -188,7 +188,7 @@
             </div>
 
             <div id="timelineRangeInfo" class="text-xs font-mono text-amber-400 bg-amber-500/10 px-2.5 py-1.5 rounded-xl border border-amber-500/20 ml-1">
-              CET Window
+              Europe/Berlin Window
             </div>
           </div>
 
@@ -464,28 +464,65 @@
       return d.toLocaleTimeString("en-GB", { timeZone: timeZone, hour: '2-digit', minute: '2-digit' });
     }
 
-    function getTimelineSlots() {
-      const now = new Date();
-      const cetDateStr = now.toLocaleString("en-US", { timeZone: "Europe/Berlin" });
-      const cetNow = new Date(cetDateStr);
+    const TIMELINE_TIME_ZONE = "Europe/Berlin";
 
+    function getTimeZoneParts(timestamp, timeZone) {
+      const partValues = new Intl.DateTimeFormat("en-US", {
+        timeZone,
+        hourCycle: "h23",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+      }).formatToParts(new Date(timestamp)).reduce((values, part) => {
+        if (part.type !== "literal") values[part.type] = Number(part.value);
+        return values;
+      }, {});
+      if (partValues.hour === 24) partValues.hour = 0;
+      return partValues;
+    }
+
+    function getTimeZoneHourStartMs(timestamp, timeZone) {
+      const roundedTimestamp = Math.floor(timestamp / 1000) * 1000;
+      const parts = getTimeZoneParts(roundedTimestamp, timeZone);
+      const wallClockMs = Date.UTC(
+        parts.year,
+        parts.month - 1,
+        parts.day,
+        parts.hour,
+        parts.minute,
+        parts.second
+      );
+      const offsetMs = wallClockMs - roundedTimestamp;
+      const wallHourMs = Date.UTC(parts.year, parts.month - 1, parts.day, parts.hour);
+      return wallHourMs - offsetMs;
+    }
+
+    function formatTimelineDate(timestamp) {
+      return new Intl.DateTimeFormat("en-GB", {
+        timeZone: TIMELINE_TIME_ZONE,
+        weekday: "short",
+        day: "2-digit",
+        month: "short"
+      }).format(new Date(timestamp));
+    }
+
+    function getTimelineSlots() {
+      const nowMs = Date.now();
+      const currentHourStartMs = getTimeZoneHourStartMs(nowMs, TIMELINE_TIME_ZONE);
       const startHourOffset = -(NUM_SLOTS - 1) + Math.min(timelineOffsetHours, 0);
 
       const slots = [];
       for (let i = 0; i < NUM_SLOTS; i++) {
-        const d = new Date(cetNow);
-        d.setHours(cetNow.getHours() + startHourOffset + i, 0, 0, 0);
-
-        const hourLabel = `${String(d.getHours()).padStart(2, '0')}:00`;
-        const dateLabel = d.toLocaleDateString("en-GB", { weekday: 'short', day: '2-digit', month: 'short' });
-
-        const slotStartMs = d.getTime();
-        const slotEndMs = slotStartMs + 3600 * 1000;
-        const isCurrentHour = (startHourOffset + i === 0);
+        const slotStartMs = currentHourStartMs + ((startHourOffset + i) * 3600 * 1000);
+        const slotEndMs = slotStartMs + (3600 * 1000);
+        const isCurrentHour = slotStartMs <= nowMs && nowMs < slotEndMs;
 
         slots.push({
-          label: hourLabel,
-          dateLabel: dateLabel,
+          label: formatRegionalTime(slotStartMs, TIMELINE_TIME_ZONE),
+          dateLabel: formatTimelineDate(slotStartMs),
           startMs: slotStartMs,
           endMs: slotEndMs,
           isCurrentHour: isCurrentHour
@@ -498,11 +535,8 @@
       const container = document.getElementById("timelineGridContainer");
       if (!container) return;
 
-      const now = new Date();
-      const nowMs = now.getTime();
-      const cetDateStr = now.toLocaleString("en-US", { timeZone: "Europe/Berlin" });
-      const cetNow = new Date(cetDateStr);
-      const currentHM = `${String(cetNow.getHours()).padStart(2, '0')}:${String(cetNow.getMinutes()).padStart(2, '0')}`;
+      const nowMs = Date.now();
+      const currentHM = formatRegionalTime(nowMs, TIMELINE_TIME_ZONE);
 
       const slots = getTimelineSlots();
       const firstSlot = slots[0];
@@ -511,7 +545,7 @@
       // Update range info pill
       const rangePill = document.getElementById("timelineRangeInfo");
       if (rangePill) {
-        rangePill.innerText = `${firstSlot.dateLabel} ${firstSlot.label} ➔ ${lastSlot.dateLabel} ${lastSlot.label} CET (${timelineOffsetHours >= 0 ? '+' : ''}${timelineOffsetHours}h)`;
+        rangePill.innerText = `${firstSlot.dateLabel} ${firstSlot.label} ➔ ${lastSlot.dateLabel} ${lastSlot.label} Europe/Berlin (${timelineOffsetHours >= 0 ? '+' : ''}${timelineOffsetHours}h)`;
       }
 
       const trackStartMs = firstSlot.startMs;
@@ -544,7 +578,7 @@
             <!-- Sticky Frozen Left Header (w-80 min-w-[20rem]) -->
             <div class="sticky-col z-30 w-80 min-w-[20rem] flex-shrink-0 border-r border-[var(--border)] px-4 py-3 flex items-center justify-between">
               <span class="text-xs font-bold uppercase tracking-wider text-[var(--muted)]">Condition & Regions</span>
-              <span class="text-[11px] text-amber-400 font-mono font-bold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">CET Clock</span>
+              <span class="text-[11px] text-amber-400 font-mono font-bold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">Europe/Berlin Clock</span>
             </div>
 
             <!-- Scrollable Timeline Hour Slots Header -->
@@ -775,20 +809,14 @@
       refreshTimeframeOptions(nowMs);
       const query = (document.getElementById("searchInput").value || "").toLowerCase();
       const timeframe = document.getElementById("selectedTimeframe").value;
-
-      const filtered = rawEvents.filter(e => {
-        const matchesQuery = (e.condition || "").toLowerCase().includes(query) || 
-          (e.map || "").toLowerCase().includes(query);
-        if (!matchesQuery) return false;
-
-        // Keine Zukunft anzeigen - strikt nur bis zur aktuellen Zeit!
-        const evStartMs = FrequencyUptime.parseTimestamp(e.startTime);
-        if (evStartMs !== null && evStartMs > nowMs) return false;
-        if (timeframe === "ALL") return true;
-        if (evStartMs === null) return false;
-        const timeWindow = FrequencyUptime.getTimeWindow(timeframe, nowMs);
-        return evStartMs >= (timeWindow.startMs === null ? -Infinity : timeWindow.startMs) && evStartMs <= timeWindow.endMs;
+      const allRegionsView = FrequencyUptime.buildFrequencyView(rawEvents, {
+        scope: "ALL",
+        timeframe,
+        query,
+        nowMs
       });
+      const filteredRecords = allRegionsView.records;
+      const filtered = filteredRecords.map(record => record.event);
 
       // Update schedule counter
       const counterEl = document.getElementById("scheduleCounter");

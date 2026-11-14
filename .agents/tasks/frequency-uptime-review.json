@@ -1,18 +1,21 @@
 {
   "verdict": "APPROVED",
-  "reviewedAt": "2026-11-14T04:58:31+01:00",
-  "scope": "Frequency & Server-Hours frontend, local date filtering, regional scope calculations, timeline and matrix presentation",
+  "reviewedAt": "2026-11-14T07:43:22+01:00",
+  "scope": "Frequency & Server-Hours frontend, regional future filtering, timezone-safe timeline and browser smoke verification",
   "findings": [],
   "checks": {
     "frequencyTests": "8 passed",
     "frequencySyntax": "passed",
     "trackerSyntax": "passed",
     "diffCheck": "passed",
-    "inlineHtmlScriptSyntax": "passed"
+    "inlineHtmlScriptSyntax": "passed",
+    "httpSmoke": "passed with headless Chrome over python3 -m http.server"
   },
   "notes": [
-    "Future slots and future local days are excluded from the selectable and rendered history.",
-    "Unscoped regional timestamps are shown as a data-quality case and are not converted into assumed regional instances.",
-    "No availability or Off-Rotation status is inferred from missing observations."
+    "The existing Concurrent Slots area remains outside this explicitly limited Frequency task; no unrelated tab was restored or changed.",
+    "Schedule and matrix filtering now share the regional-start-aware ALL view; unscoped records use local browser time only as a documented fallback.",
+    "Timeline slot boundaries are absolute epoch values; Europe/Berlin is used only for display formatting.",
+    "The smoke test covered empty search, ARC Frigate search, all five single/all-region scopes, future exclusion, live and shifted timeline views, visible units and absence of inferred Off-Rotation text.",
+    "The reported f48ffb4 hash is not a Git object in the current checkout; the current implementation was verified from eff0ccb."
   ]
 }
