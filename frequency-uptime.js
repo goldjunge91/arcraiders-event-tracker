@@ -10,6 +10,15 @@
   const MS_PER_HOUR = 60 * 60 * 1000;
   const MS_PER_DAY = 24 * MS_PER_HOUR;
   const REGION_KEYS = ["europe", "north-america", "south-america", "oceania", "asia"];
+  const KNOWN_MAPS = [
+    "Buried City",
+    "Dam Battlegrounds",
+    "Stella Montis",
+    "Spaceport",
+    "Pendola Pass",
+    "The Blue Gate",
+    "Riven Tides"
+  ];
   const SCOPE_LABELS = {
     ALL: "All five regions",
     europe: "Europe",
@@ -627,6 +636,36 @@
       })
       .sort((a, b) => b.sharedSlots - a.sharedSlots);
 
+    // 7. Time of Day Analysis (24-Hour Distribution)
+    const hourlyCounts = new Array(24).fill(0);
+    uniqueStartTimes.forEach(t => {
+      const h = new Date(t).getHours();
+      if (h >= 0 && h < 24) {
+        hourlyCounts[h]++;
+      }
+    });
+    let peakHour = 0;
+    let peakHourCount = 0;
+    hourlyCounts.forEach((cnt, h) => {
+      if (cnt > peakHourCount) {
+        peakHourCount = cnt;
+        peakHour = h;
+      }
+    });
+
+    // 8. Dormant / Excluded Maps (Where condition never spawns)
+    const activeMapsSet = new Set(Object.keys(mapCounts));
+    const dormantMaps = KNOWN_MAPS.filter(m => !activeMapsSet.has(m));
+
+    // 9. Key Lifecycle Summaries
+    const minInRotationHours = runDurations.length > 0 ? Math.round(Math.min(...runDurations) * 10) / 10 : 0;
+    const avgCycleHours = Math.round((avgInRotationHours + avgOutRotationHours) * 10) / 10;
+    const totalServerHours = slotsByStartTime.size || 1;
+    const presenceRate = Math.round((uniqueStartTimes.length / totalServerHours) * 1000) / 10;
+    const topMap = mapBreakdown.length > 0 ? mapBreakdown[0] : null;
+    const targetComparison = allEventsComparison.find(e => e.isTarget);
+    const sharePct = targetComparison ? targetComparison.sharePct : 0;
+
     return {
       targetCondition,
       hasData,
@@ -635,6 +674,8 @@
       uniqueHours: uniqueStartTimes.length,
       targetRank,
       totalConditionsCount,
+      sharePct,
+      presenceRate,
       allEventsComparison,
       isActiveNow,
       activeMaps,
@@ -651,14 +692,21 @@
       maxIntervalHours,
       runs,
       avgInRotationHours,
+      minInRotationHours,
       maxInRotationHours,
       downtimeGaps,
       avgOutRotationHours,
       minOutRotationHours,
       maxOutRotationHours,
+      avgCycleHours,
       cycles,
       mapBreakdown,
+      dormantMaps,
+      topMap,
       concurrentConditions,
+      hourlyCounts,
+      peakHour,
+      peakHourCount,
       totalUniqueHours: slotsByStartTime.size
     };
   }
@@ -860,6 +908,7 @@
   return {
     MS_PER_HOUR,
     REGION_KEYS: REGION_KEYS.slice(),
+    KNOWN_MAPS: KNOWN_MAPS.slice(),
     SCOPE_LABELS: Object.assign({}, SCOPE_LABELS),
     parseTimestamp,
     getLocalTimeZone,

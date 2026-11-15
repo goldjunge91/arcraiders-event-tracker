@@ -164,7 +164,7 @@
         ⚔️ Custom Comparisons
       </button>
       <button onclick="setTab('matrix')" id="tab-matrix" class="pb-3 text-[var(--muted)] hover:text-white transition flex items-center gap-1.5 whitespace-nowrap">
-        🎯 Event Cycles & Intelligence
+        🎯 Single Event Deep Dive
       </button>
     </div>
 
@@ -644,7 +644,7 @@
       </div>
     </div>
 
-    <!-- TAB 4: EVENT INTELLIGENCE & ROTATION CYCLES -->
+    <!-- TAB 4: SINGLE EVENT DEEP DIVE & 360° INSIGHTS -->
     <div id="view-matrix" class="hidden space-y-5">
 
       <!-- Control Toolbar & Condition Switcher Card -->
@@ -653,10 +653,10 @@
           <div>
             <div class="flex items-center gap-2">
               <span class="text-xl">🎯</span>
-              <h2 class="text-lg font-bold text-white">Event Intelligence & Rotation Cycles</h2>
+              <h2 class="text-lg font-bold text-white">Single Event Deep Dive & 360° Insights</h2>
             </div>
             <p class="text-xs text-[var(--muted)] mt-0.5">
-              Times up vs. other events, active in-rotation runs, out-of-rotation cooldowns, and cycle logs.
+              Complete profile for any selected event: active streaks, cooldown downtime, sector spawns, 24h peak times, and companions.
             </p>
           </div>
 
@@ -678,7 +678,12 @@
         </div>
       </div>
 
-      <!-- 4 Lifecycle KPI Cards for the Selected Event -->
+      <!-- Hero Event Spotlight Banner -->
+      <div id="intelHeroBanner" class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-xl">
+        <!-- Populated dynamically -->
+      </div>
+
+      <!-- 4 Core Lifecycle KPI Cards for the Selected Event -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
 
         <!-- KPI 1: Times Up & Global Frequency Rank -->
@@ -723,16 +728,83 @@
 
       </div>
 
+      <!-- Time of Day & 24-Hour Peak Activity Pattern Card -->
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-xl">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 mb-3 border-b border-[var(--border)]">
+          <div>
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <span>⏰</span>
+              <span>24-Hour Activity Pattern & Peak Times</span>
+            </h3>
+            <p class="text-xs text-[var(--muted)] mt-0.5">
+              When during the day is this event most likely to spawn? (Local time / 00:00 to 23:00)
+            </p>
+          </div>
+          <span id="intelPeakTimeBanner" class="text-xs font-mono font-bold px-2.5 py-1 rounded-lg bg-amber-500/10 text-amber-300 border border-amber-500/30"></span>
+        </div>
+        <div id="intelHourlyChartContainer" class="pt-2">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+      <!-- Main 2-Column Split: Map Spawns (Left) vs Concurrent Events (Right) -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+
+        <!-- Column Left: Map Distribution & Dormant Maps -->
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 flex flex-col shadow-xl">
+          <div class="flex items-center justify-between pb-3 mb-3 border-b border-[var(--border)]">
+            <div>
+              <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
+                <span>🗺️</span>
+                <span>Map Distribution & Spawns</span>
+                <span id="intelSelectedCondNameMap" class="text-amber-400 font-mono text-xs"></span>
+              </h3>
+              <p class="text-xs text-[var(--muted)] mt-0.5">On which sectors and how many times was this event active?</p>
+            </div>
+            <span id="intelMapCountBadge" class="text-xs font-mono font-bold text-sky-400 bg-sky-500/10 border border-sky-500/20 px-2 py-0.5 rounded-lg"></span>
+          </div>
+
+          <div id="intelMapBreakdownContainer" class="space-y-3 flex-1 overflow-y-auto max-h-[340px] pr-1">
+            <!-- Populated dynamically -->
+          </div>
+
+          <!-- Dormant Maps / Never Spawns Area -->
+          <div id="intelDormantMapsContainer" class="mt-4 pt-3 border-t border-[var(--border)]">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Column Right: Concurrent Companion Events -->
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 flex flex-col shadow-xl">
+          <div class="flex items-center justify-between pb-3 mb-3 border-b border-[var(--border)]">
+            <div>
+              <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
+                <span>⚡</span>
+                <span>Companion Events (Running Alongside)</span>
+                <span id="intelSelectedCondNameConc" class="text-amber-400 font-mono text-xs"></span>
+              </h3>
+              <p class="text-xs text-[var(--muted)] mt-0.5">Which other events ran simultaneously in the same 1-hour window? Click any to inspect.</p>
+            </div>
+            <span id="intelConcCountBadge" class="text-xs font-mono font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-lg"></span>
+          </div>
+
+          <div id="intelConcurrencyContainer" class="space-y-2.5 flex-1 overflow-y-auto max-h-[420px] pr-1">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+      </div>
+
       <!-- SECTION 1: Times Up vs. Other Events (Frequency Ranking) -->
       <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-xl">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 mb-3 border-b border-[var(--border)]">
           <div>
             <h3 class="text-base font-bold text-white flex items-center gap-2">
               <span>📊</span>
-              <span>Times Up vs. Other Events (Frequency Ranking)</span>
+              <span>Global Frequency Ranking (Standing in Pool)</span>
             </h3>
             <p class="text-xs text-[var(--muted)] mt-0.5">
-              How often was this event up compared to every other condition in the rotation pool?
+              How often was this event up compared to every other condition in the rotation pool? Click any row to inspect it.
             </p>
           </div>
           <span id="intelComparisonSummaryBadge" class="text-xs font-mono font-bold px-2.5 py-1 rounded-lg bg-amber-500/10 text-amber-300 border border-amber-500/30"></span>
@@ -775,92 +847,6 @@
         <div id="intelCycleHistoryLogContainer" class="space-y-2 mt-3 max-h-[380px] overflow-y-auto pr-1">
           <!-- Populated dynamically -->
         </div>
-      </div>
-
-      <!-- Main 2-Column Split: Map Spawns (Left) vs Concurrent Events (Right) -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-
-        <!-- Column Left: Map Distribution -->
-        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 flex flex-col shadow-xl">
-          <div class="flex items-center justify-between pb-3 mb-3 border-b border-[var(--border)]">
-            <div>
-              <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
-                <span>🗺️</span>
-                <span>Map Distribution & Spawns</span>
-                <span id="intelSelectedCondNameMap" class="text-amber-400 font-mono text-xs"></span>
-              </h3>
-              <p class="text-xs text-[var(--muted)] mt-0.5">On which maps and how many times was this event active?</p>
-            </div>
-            <span id="intelMapCountBadge" class="text-xs font-mono font-bold text-sky-400 bg-sky-500/10 border border-sky-500/20 px-2 py-0.5 rounded-lg"></span>
-          </div>
-
-          <div id="intelMapBreakdownContainer" class="space-y-3 flex-1 overflow-y-auto max-h-[460px] pr-1">
-            <!-- Populated dynamically -->
-          </div>
-        </div>
-
-        <!-- Column Right: Concurrent Events -->
-        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 flex flex-col shadow-xl">
-          <div class="flex items-center justify-between pb-3 mb-3 border-b border-[var(--border)]">
-            <div>
-              <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
-                <span>⚡</span>
-                <span>Concurrent Events (Running Alongside)</span>
-                <span id="intelSelectedCondNameConc" class="text-amber-400 font-mono text-xs"></span>
-              </h3>
-              <p class="text-xs text-[var(--muted)] mt-0.5">Which other events ran simultaneously in the same 1-hour window?</p>
-            </div>
-            <span id="intelConcCountBadge" class="text-xs font-mono font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-lg"></span>
-          </div>
-
-          <div id="intelConcurrencyContainer" class="space-y-2.5 flex-1 overflow-y-auto max-h-[460px] pr-1">
-            <!-- Populated dynamically -->
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Interactive Event-Pair Comparator -->
-      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-xl">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 mb-4 border-b border-[var(--border)]">
-          <div>
-            <h3 class="text-sm font-bold text-white flex items-center gap-2">
-              <span>🎯</span>
-              <span>Interactive Pair Comparator (Event A vs. Event B)</span>
-            </h3>
-            <p class="text-xs text-[var(--muted)] mt-0.5">Direct co-occurrence comparison: how often and where did they appear together?</p>
-          </div>
-          <div class="flex flex-wrap items-center gap-2">
-            <select id="pairSelectA" onchange="renderPairComparison()" class="bg-slate-900 text-white text-xs font-semibold rounded-xl px-2.5 py-1.5 border border-slate-700 focus:outline-none cursor-pointer"></select>
-            <span class="text-xs text-amber-400 font-bold">✕</span>
-            <select id="pairSelectB" onchange="renderPairComparison()" class="bg-slate-900 text-white text-xs font-semibold rounded-xl px-2.5 py-1.5 border border-slate-700 focus:outline-none cursor-pointer"></select>
-          </div>
-        </div>
-        <div id="pairResultContainer" class="p-4 rounded-xl bg-slate-900/60 border border-slate-800">
-          <!-- Populated dynamically -->
-        </div>
-      </div>
-
-      <!-- Complete Concurrency Matrix (Condition x Condition) -->
-      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 overflow-x-auto shadow-xl">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 mb-3 border-b border-[var(--border)]">
-          <div>
-            <h3 class="text-sm font-bold text-white flex items-center gap-2">
-              <span>📊</span>
-              <span>Complete Concurrency Matrix (Condition × Condition)</span>
-            </h3>
-            <p class="text-xs text-[var(--muted)] mt-0.5">How many rotation hours did both conditions run simultaneously across all maps?</p>
-          </div>
-          <span class="text-[11px] font-mono text-slate-400 bg-slate-800/80 px-2.5 py-1 rounded-lg border border-slate-700/80">
-            Row × Column = Shared 1h Rotations
-          </span>
-        </div>
-        <table class="w-full text-left text-xs border-collapse">
-          <thead>
-            <tr id="concurrencyMatrixHeader" class="border-b border-[var(--border)] text-[var(--muted)]"></tr>
-          </thead>
-          <tbody id="concurrencyMatrixBody" class="divide-y divide-[var(--border)]"></tbody>
-        </table>
       </div>
 
     </div>
@@ -2200,6 +2186,61 @@
         scope: "ALL"
       });
 
+      // Render Hero Event Spotlight Banner
+      const heroBanner = document.getElementById("intelHeroBanner");
+      if (heroBanner) {
+        const icon = CONDITION_ICONS[currentIntelCondition] || "";
+        const topMapName = intel.topMap ? intel.topMap.map : "None";
+        const topMapPct = intel.topMap ? intel.topMap.percentage : 0;
+
+        let statusBadgeHtml = "";
+        if (intel.isActiveNow) {
+          statusBadgeHtml = `<span class="px-3 py-1 rounded-xl text-xs font-bold uppercase bg-emerald-500/15 text-emerald-400 border border-emerald-500/40 animate-pulse flex items-center gap-1.5 shadow-sm">🟢 Active Now on ${intel.activeMaps.join(', ')}</span>`;
+        } else if (intel.hasData) {
+          statusBadgeHtml = `<span class="px-3 py-1 rounded-xl text-xs font-bold uppercase bg-slate-800 text-slate-300 border border-slate-700 flex items-center gap-1.5">💤 Out of Rotation · Cooldown: ${intel.downtimeHours}h ${intel.downtimeMinutes}m</span>`;
+        } else {
+          statusBadgeHtml = `<span class="px-3 py-1 rounded-xl text-xs font-bold uppercase bg-rose-500/15 text-rose-400 border border-rose-500/30">Off-Rotation</span>`;
+        }
+
+        heroBanner.innerHTML = `
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+              <div class="w-14 h-14 rounded-2xl bg-slate-900 border border-amber-500/40 p-1 flex items-center justify-center flex-shrink-0 shadow-lg shadow-amber-500/10">
+                ${icon ? `<img src="${icon}" alt="${currentIntelCondition}" class="w-full h-full object-contain rounded-xl">` : `<span class="text-2xl">🎯</span>`}
+              </div>
+              <div>
+                <div class="flex flex-wrap items-center gap-2.5 mb-1">
+                  <h1 class="text-xl sm:text-2xl font-black text-white">${currentIntelCondition}</h1>
+                  ${statusBadgeHtml}
+                </div>
+                <p class="text-xs text-slate-400">
+                  Comprehensive 360° Profile · Everything recorded for this condition in the selected timeframe
+                </p>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2 self-start lg:self-auto">
+              <div class="bg-slate-900/90 border border-slate-800 rounded-xl px-3 py-1.5 text-xs">
+                <span class="text-slate-400 block text-[10px] uppercase font-semibold">Rank in Pool</span>
+                <span class="font-mono font-bold text-amber-400 text-sm">#${intel.targetRank}</span> <span class="text-slate-500 text-[11px]">of ${intel.totalConditionsCount} (${intel.sharePct}%)</span>
+              </div>
+              <div class="bg-slate-900/90 border border-slate-800 rounded-xl px-3 py-1.5 text-xs">
+                <span class="text-slate-400 block text-[10px] uppercase font-semibold">Streak</span>
+                <span class="font-mono font-bold text-emerald-400 text-sm">Ø ${intel.avgInRotationHours}h</span> <span class="text-slate-500 text-[11px]">(Max ${intel.maxInRotationHours}h)</span>
+              </div>
+              <div class="bg-slate-900/90 border border-slate-800 rounded-xl px-3 py-1.5 text-xs">
+                <span class="text-slate-400 block text-[10px] uppercase font-semibold">Cooldown</span>
+                <span class="font-mono font-bold text-sky-400 text-sm">Ø ${intel.avgOutRotationHours}h</span> <span class="text-slate-500 text-[11px]">(${intel.minOutRotationHours}h - ${intel.maxOutRotationHours}h)</span>
+              </div>
+              <div class="bg-slate-900/90 border border-slate-800 rounded-xl px-3 py-1.5 text-xs">
+                <span class="text-slate-400 block text-[10px] uppercase font-semibold">Primary Map</span>
+                <span class="font-bold text-white text-sm">${topMapName}</span> <span class="font-mono text-amber-300 text-[11px]">(${topMapPct}%)</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
       // Update Names in subheaders
       const nameMapEl = document.getElementById("intelSelectedCondNameMap");
       if (nameMapEl) nameMapEl.innerText = `(${currentIntelCondition})`;
@@ -2212,7 +2253,7 @@
       if (rankMain && rankSub) {
         if (intel.hasData) {
           rankMain.innerHTML = `<span class="text-amber-400 font-mono font-black">${intel.totalSlots}</span> <span class="text-xs font-normal text-slate-300">Rotations</span> <span class="text-xs text-slate-500 font-mono">(${intel.uniqueHours}h)</span>`;
-          rankSub.innerHTML = `<span class="text-amber-300 font-bold">Rank #${intel.targetRank}</span> <span class="text-slate-400">of ${intel.totalConditionsCount} events</span>`;
+          rankSub.innerHTML = `<span class="text-amber-300 font-bold">Rank #${intel.targetRank}</span> <span class="text-slate-400">of ${intel.totalConditionsCount} events (${intel.sharePct}%)</span>`;
         } else {
           rankMain.innerHTML = `<span class="text-slate-500 font-mono">0 Rotations</span>`;
           rankSub.innerText = "Not in rotation pool";
@@ -2225,7 +2266,7 @@
       if (runMain && runSub) {
         if (intel.hasData && intel.runs.length > 0) {
           runMain.innerHTML = `<span class="text-emerald-400 font-mono font-black">Avg ${intel.avgInRotationHours}h</span> <span class="text-xs font-normal text-slate-300">Run</span>`;
-          runSub.innerHTML = `<span>Max streak:</span> <strong class="text-emerald-300 font-mono font-bold">${intel.maxInRotationHours}h</strong> <span class="text-slate-500">consecutive</span>`;
+          runSub.innerHTML = `<span>Max:</span> <strong class="text-emerald-300 font-mono font-bold">${intel.maxInRotationHours}h</strong> <span class="text-slate-500">· Min:</span> <strong class="text-slate-300 font-mono">${intel.minInRotationHours}h</strong> <span class="text-slate-500">streak</span>`;
         } else {
           runMain.innerHTML = `<span class="text-slate-500">—</span>`;
           runSub.innerText = "No active streaks recorded";
@@ -2238,7 +2279,7 @@
       if (pauseMain && pauseSub) {
         if (intel.hasData && intel.downtimeGaps.length > 0) {
           pauseMain.innerHTML = `<span class="text-sky-300 font-mono font-black">Avg ${intel.avgOutRotationHours}h</span> <span class="text-xs font-normal text-slate-300">Cooldown</span>`;
-          pauseSub.innerHTML = `<span>Min:</span> <strong class="text-slate-200 font-mono">${intel.minOutRotationHours}h</strong> <span class="text-slate-500">·</span> <span>Max:</span> <strong class="text-sky-300 font-mono">${intel.maxOutRotationHours}h</strong>`;
+          pauseSub.innerHTML = `<span>Min:</span> <strong class="text-slate-200 font-mono">${intel.minOutRotationHours}h</strong> <span class="text-slate-500">· Max:</span> <strong class="text-sky-300 font-mono">${intel.maxOutRotationHours}h</strong> <span class="text-slate-500">(~${intel.avgCycleHours}h cycle)</span>`;
         } else if (intel.hasData) {
           pauseMain.innerHTML = `<span class="text-slate-300 font-mono">Single Run</span>`;
           pauseSub.innerText = "No cooldown intervals between runs";
@@ -2305,11 +2346,11 @@
             }
 
             const rowBg = isTarget
-              ? "bg-amber-500/10 border-l-4 border-amber-400 font-semibold"
-              : "hover:bg-slate-800/40 transition";
+              ? "bg-amber-500/10 border-l-4 border-amber-400 font-semibold cursor-pointer"
+              : "hover:bg-slate-800/60 transition cursor-pointer";
 
             return `
-              <tr class="${rowBg}">
+              <tr onclick="selectIntelCondition('${item.condition}')" class="${rowBg}" title="Click to view single-event dossier for ${item.condition}">
                 <td class="py-2.5 px-3 font-mono font-bold ${isTarget ? 'text-amber-400' : 'text-slate-400'}">
                   #${rank}
                 </td>
@@ -2398,6 +2439,47 @@
         }
       }
 
+      // Render 24-Hour Peak Activity Pattern
+      const peakBanner = document.getElementById("intelPeakTimeBanner");
+      if (peakBanner) {
+        if (intel.hasData && intel.peakHourCount > 0) {
+          const nextH = (intel.peakHour + 2) % 24;
+          peakBanner.innerHTML = `<span>🔥 Peak Window:</span> <strong class="text-white">${String(intel.peakHour).padStart(2, '0')}:00 – ${String(nextH).padStart(2, '0')}:00</strong> <span class="text-amber-400 font-mono">(${intel.peakHourCount} rotations)</span>`;
+        } else {
+          peakBanner.innerText = "No activity data in timeframe";
+        }
+      }
+
+      const hourlyContainer = document.getElementById("intelHourlyChartContainer");
+      if (hourlyContainer) {
+        const counts = intel.hourlyCounts || new Array(24).fill(0);
+        const maxH = Math.max(...counts, 1);
+        hourlyContainer.innerHTML = `
+          <div class="grid grid-cols-12 sm:grid-cols-24 gap-1 items-end h-24 pt-4 px-1">
+            ${counts.map((count, h) => {
+              const pct = Math.round((count / maxH) * 100);
+              const isPeak = count === intel.peakHourCount && count > 0;
+              const barColor = isPeak ? 'bg-amber-400 shadow-sm shadow-amber-400/30' : (count > 0 ? 'bg-sky-500/70 hover:bg-sky-400' : 'bg-slate-800/40');
+              const hLabel = String(h).padStart(2, '0');
+              return `
+                <div class="flex flex-col items-center h-full justify-end group relative cursor-pointer" title="${hLabel}:00 - ${count} active rotations">
+                  <div class="w-full ${barColor} rounded-t transition-all duration-300 min-h-[4px]" style="height: ${Math.max(4, pct)}%"></div>
+                  <span class="text-[9px] font-mono text-slate-500 mt-1 block sm:hidden">${h % 4 === 0 ? h : ''}</span>
+                  <span class="text-[9px] font-mono text-slate-500 mt-1 hidden sm:block">${h % 2 === 0 ? hLabel : ''}</span>
+                </div>
+              `;
+            }).join('')}
+          </div>
+          <div class="flex items-center justify-between text-[11px] text-slate-500 mt-2 px-1 font-mono">
+            <span>00:00 (Midnight)</span>
+            <span>06:00 (Morning)</span>
+            <span>12:00 (Noon)</span>
+            <span>18:00 (Evening)</span>
+            <span>23:00</span>
+          </div>
+        `;
+      }
+
       // Render Map Breakdown (Left Column)
       const mapContainer = document.getElementById("intelMapBreakdownContainer");
       const mapBadge = document.getElementById("intelMapCountBadge");
@@ -2432,7 +2514,39 @@
         }
       }
 
-      // Render Concurrency Ranking (Right Column)
+      // Render Dormant Maps
+      const dormantContainer = document.getElementById("intelDormantMapsContainer");
+      if (dormantContainer) {
+        if (intel.dormantMaps && intel.dormantMaps.length > 0) {
+          dormantContainer.innerHTML = `
+            <div class="bg-rose-500/5 border border-rose-500/20 rounded-xl p-3 text-xs">
+              <div class="flex items-center gap-2 font-bold text-rose-300 mb-1">
+                <span>🚫</span>
+                <span>Never Recorded On (${intel.dormantMaps.length === 1 ? '1 Sector' : `${intel.dormantMaps.length} Sectors`}):</span>
+              </div>
+              <div class="flex flex-wrap gap-1.5 mt-1.5">
+                ${intel.dormantMaps.map(m => `
+                  <span class="px-2 py-0.5 rounded-lg bg-rose-500/10 text-rose-300 border border-rose-500/20 text-[11px] font-mono">
+                    ${m}
+                  </span>
+                `).join('')}
+              </div>
+              <p class="text-[10px] text-slate-500 mt-1.5 italic">
+                This condition has had 0 spawns on these sectors in the selected timeframe.
+              </p>
+            </div>
+          `;
+        } else {
+          dormantContainer.innerHTML = `
+            <div class="bg-emerald-500/5 border border-emerald-500/20 rounded-xl p-2.5 text-xs flex items-center gap-2 text-emerald-300">
+              <span>✅</span>
+              <span>Active across all 7 sectors — no excluded maps recorded.</span>
+            </div>
+          `;
+        }
+      }
+
+      // Render Companion Events (Right Column) - INTERACTIVE!
       const concContainer = document.getElementById("intelConcurrencyContainer");
       const concBadge = document.getElementById("intelConcCountBadge");
       if (concBadge) concBadge.innerText = `${intel.concurrentConditions.length} Partner Events`;
@@ -2443,11 +2557,11 @@
           concContainer.innerHTML = intel.concurrentConditions.map(item => {
             const icon = CONDITION_ICONS[item.condition] || "";
             return `
-              <div class="bg-slate-900/60 border border-[var(--border)] hover:border-slate-700 rounded-xl p-3 transition flex items-center justify-between gap-3">
+              <div onclick="selectIntelCondition('${item.condition}')" class="bg-slate-900/60 border border-[var(--border)] hover:border-amber-500/50 hover:bg-slate-800/80 rounded-xl p-3 transition flex items-center justify-between gap-3 cursor-pointer group" title="Click to view full dossier for ${item.condition}">
                 <div class="flex items-center gap-2.5 min-w-0">
-                  ${icon ? `<img src="${icon}" alt="${item.condition}" class="w-6 h-6 rounded object-contain bg-slate-900 border border-slate-700/60 flex-shrink-0">` : ''}
+                  ${icon ? `<img src="${icon}" alt="${item.condition}" class="w-6 h-6 rounded object-contain bg-slate-900 border border-slate-700/60 flex-shrink-0 group-hover:scale-105 transition">` : ''}
                   <div class="min-w-0">
-                    <div class="text-xs font-bold text-white truncate">${item.condition}</div>
+                    <div class="text-xs font-bold text-white group-hover:text-amber-300 transition truncate">${item.condition}</div>
                     <div class="w-28 sm:w-40 bg-slate-800 h-1.5 rounded-full mt-1 overflow-hidden">
                       <div class="bg-emerald-400 h-full rounded-full" style="width: ${item.percentage}%"></div>
                     </div>
@@ -2461,52 +2575,6 @@
             `;
           }).join('');
         }
-      }
-
-      // Render Pair Comparison
-      renderPairComparison();
-
-      // Render Full Concurrency Matrix
-      const matrix = FrequencyUptime.buildConcurrencyMatrix(rawEvents, { nowMs, timeframe, query, scope: "ALL" });
-      const mHeader = document.getElementById("concurrencyMatrixHeader");
-      const mBody = document.getElementById("concurrencyMatrixBody");
-      const activeConds = matrix.activeConditions || [];
-
-      if (mHeader) {
-        mHeader.innerHTML = `<th class="py-2.5 px-3 font-semibold text-white whitespace-nowrap">Condition</th>` +
-          activeConds.map(c => `
-            <th class="py-2 px-2 font-semibold text-center text-slate-300 whitespace-nowrap" title="${c}">
-              <div class="flex flex-col items-center">
-                ${CONDITION_ICONS[c] ? `<img src="${CONDITION_ICONS[c]}" class="w-4 h-4 rounded mb-0.5" title="${c}">` : ''}
-                <span class="text-[10px] max-w-[50px] truncate">${c}</span>
-              </div>
-            </th>
-          `).join('');
-      }
-
-      if (mBody) {
-        mBody.innerHTML = activeConds.map(c1 => {
-          return `
-            <tr class="hover:bg-slate-800/40 transition">
-              <td class="py-2 px-3 font-medium text-white flex items-center gap-1.5 whitespace-nowrap">
-                ${CONDITION_ICONS[c1] ? `<img src="${CONDITION_ICONS[c1]}" class="w-4 h-4 rounded" onerror="this.style.display='none'">` : ''}
-                <span>${c1}</span>
-              </td>
-              ${activeConds.map(c2 => {
-                if (c1 === c2) {
-                  return `<td class="py-2 px-2 text-center text-slate-700 bg-slate-900/30">—</td>`;
-                }
-                const cnt = matrix.getPairCount(c1, c2);
-                if (cnt > 0) {
-                  const bgClass = cnt >= 40 ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' : (cnt >= 15 ? 'bg-sky-500/15 text-sky-300 border-sky-500/30' : 'bg-slate-800 text-slate-300 border-slate-700');
-                  return `<td class="py-2 px-2 text-center"><span class="inline-block ${bgClass} font-mono font-bold px-1.5 py-0.5 rounded border text-[10px]">${cnt}x</span></td>`;
-                } else {
-                  return `<td class="py-2 px-2 text-center text-slate-600">-</td>`;
-                }
-              }).join('')}
-            </tr>
-          `;
-        }).join('');
       }
     }
 

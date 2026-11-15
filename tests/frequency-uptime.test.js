@@ -298,4 +298,10 @@ test("buildRotationIntelligence tracks in-rotation runs and out-of-rotation down
   assert.equal(intel.targetRank, 1);
   assert.equal(intel.timesUp, 3);
   assert.equal(intel.allEventsComparison.length, 2);
+
+  assert.equal(intel.minInRotationHours, 1);
+  assert.equal(intel.avgCycleHours, 3.5);
+  assert.equal(intel.hourlyCounts.length, 24);
+  assert.ok(Array.isArray(intel.dormantMaps));
+  assert.ok(intel.dormantMaps.includes("Buried City"));
 });
