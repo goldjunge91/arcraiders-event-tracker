@@ -495,7 +495,98 @@
     const maxIntervalHours = gapsHours.length > 0 ? Math.round(Math.max(...gapsHours) * 10) / 10 : 0;
     const avgPauseHours = Math.max(0, Math.round((rawAvgInterval - 1.0) * 10) / 10);
 
-    // 4. Concurrency Analysis (Which conditions ran simultaneously with targetCondition)
+    // 4. Continuous In-Rotation Streaks (Runs) & Out-of-Rotation Downtime Gaps
+    const runs = [];
+    if (uniqueStartTimes.length > 0) {
+      let runStart = uniqueStartTimes[0];
+      let runEnd = runStart + MS_PER_HOUR;
+      let runMaps = new Set();
+      targetSlots.filter(s => parseTimestamp(s.startTime) === runStart).forEach(s => runMaps.add(s.map));
+
+      for (let i = 1; i < uniqueStartTimes.length; i++) {
+        const t = uniqueStartTimes[i];
+        if (t === runEnd) {
+          runEnd = t + MS_PER_HOUR;
+          targetSlots.filter(s => parseTimestamp(s.startTime) === t).forEach(s => runMaps.add(s.map));
+        } else {
+          runs.push({
+            startMs: runStart,
+            endMs: runEnd,
+            durationHours: Math.round(((runEnd - runStart) / MS_PER_HOUR) * 10) / 10,
+            maps: Array.from(runMaps),
+            startFormatted: formatLocalDateTime(runStart),
+            endFormatted: formatLocalDateTime(runEnd)
+          });
+          runStart = t;
+          runEnd = t + MS_PER_HOUR;
+          runMaps = new Set();
+          targetSlots.filter(s => parseTimestamp(s.startTime) === t).forEach(s => runMaps.add(s.map));
+        }
+      }
+      runs.push({
+        startMs: runStart,
+        endMs: runEnd,
+        durationHours: Math.round(((runEnd - runStart) / MS_PER_HOUR) * 10) / 10,
+        maps: Array.from(runMaps),
+        startFormatted: formatLocalDateTime(runStart),
+        endFormatted: formatLocalDateTime(runEnd)
+      });
+    }
+
+    const runDurations = runs.map(r => r.durationHours);
+    const avgInRotationHours = runDurations.length > 0 ? Math.round((runDurations.reduce((a, b) => a + b, 0) / runDurations.length) * 10) / 10 : 0;
+    const maxInRotationHours = runDurations.length > 0 ? Math.round(Math.max(...runDurations) * 10) / 10 : 0;
+
+    const downtimeGaps = [];
+    const cycles = [];
+    for (let i = 0; i < runs.length - 1; i++) {
+      const gapHours = Math.round(((runs[i + 1].startMs - runs[i].endMs) / MS_PER_HOUR) * 10) / 10;
+      downtimeGaps.push(gapHours);
+      cycles.push({
+        run: runs[i],
+        gapHoursAfter: gapHours
+      });
+    }
+    if (runs.length > 0) {
+      cycles.push({
+        run: runs[runs.length - 1],
+        gapHoursAfter: isActiveNow ? 0 : Math.round((downtimeMs / MS_PER_HOUR) * 10) / 10
+      });
+    }
+
+    const avgOutRotationHours = downtimeGaps.length > 0 ? Math.round((downtimeGaps.reduce((a, b) => a + b, 0) / downtimeGaps.length) * 10) / 10 : 0;
+    const minOutRotationHours = downtimeGaps.length > 0 ? Math.round(Math.min(...downtimeGaps) * 10) / 10 : 0;
+    const maxOutRotationHours = downtimeGaps.length > 0 ? Math.round(Math.max(...downtimeGaps) * 10) / 10 : 0;
+
+    // 5. Global Times Up Ranking vs Other Events
+    const allCondCounts = {};
+    records.forEach(r => {
+      const c = r.event.condition;
+      if (c) allCondCounts[c] = (allCondCounts[c] || 0) + 1;
+    });
+    const totalRecordsCount = records.length || 1;
+    const allEventsComparison = Object.keys(allCondCounts).map(cond => {
+      const timesUp = allCondCounts[cond];
+      const sharePct = Math.round((timesUp / totalRecordsCount) * 1000) / 10;
+      const diffVsTarget = timesUp - targetSlots.length;
+      return {
+        condition: cond,
+        timesUp,
+        sharePct,
+        diffVsTarget,
+        isTarget: cond === targetCondition
+      };
+    }).sort((a, b) => b.timesUp - a.timesUp);
+
+    allEventsComparison.forEach((item, idx) => {
+      item.rank = idx + 1;
+    });
+
+    const targetRankIndex = allEventsComparison.findIndex(e => e.condition === targetCondition);
+    const targetRank = targetRankIndex !== -1 ? targetRankIndex + 1 : 0;
+    const totalConditionsCount = allEventsComparison.length;
+
+    // 6. Concurrency Analysis (Which conditions ran simultaneously with targetCondition)
     const concurrentCounts = {};
     const sharedSlotsMap = {};
 
@@ -540,7 +631,11 @@
       targetCondition,
       hasData,
       totalSlots: targetSlots.length,
+      timesUp: targetSlots.length,
       uniqueHours: uniqueStartTimes.length,
+      targetRank,
+      totalConditionsCount,
+      allEventsComparison,
       isActiveNow,
       activeMaps,
       remainingMinutes,
@@ -554,6 +649,14 @@
       avgPauseHours,
       minIntervalHours,
       maxIntervalHours,
+      runs,
+      avgInRotationHours,
+      maxInRotationHours,
+      downtimeGaps,
+      avgOutRotationHours,
+      minOutRotationHours,
+      maxOutRotationHours,
+      cycles,
       mapBreakdown,
       concurrentConditions,
       totalUniqueHours: slotsByStartTime.size

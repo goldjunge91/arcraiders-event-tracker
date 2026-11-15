@@ -273,3 +273,29 @@ test("compareMaps compares two maps and identifies exclusive conditions", () => 
   assert.deepEqual(comparison.onlyMapAConditions, ["Alpha"]);
   assert.deepEqual(comparison.onlyMapBConditions, ["Beta"]);
 });
+
+test("buildRotationIntelligence tracks in-rotation runs and out-of-rotation downtime", () => {
+  // Alpha runs at: NOW - 6h, NOW - 5h (2h run)
+  // Gap of 2h (out of rotation: NOW - 4h, NOW - 3h)
+  // Alpha runs at: NOW - 2h (1h run)
+  const e1 = event("Alpha", "Map1", NOW - (6 * HOUR), regionalRanges(NOW - (6 * HOUR)));
+  const e2 = event("Alpha", "Map2", NOW - (5 * HOUR), regionalRanges(NOW - (5 * HOUR)));
+  const e3 = event("Beta", "Map1", NOW - (4 * HOUR), regionalRanges(NOW - (4 * HOUR)));
+  const e4 = event("Alpha", "Map1", NOW - (2 * HOUR), regionalRanges(NOW - (2 * HOUR)));
+
+  const intel = FrequencyUptime.buildRotationIntelligence([e1, e2, e3, e4], { condition: "Alpha", nowMs: NOW });
+
+  assert.equal(intel.runs.length, 2);
+  assert.equal(intel.runs[0].durationHours, 2);
+  assert.equal(intel.runs[1].durationHours, 1);
+  assert.equal(intel.avgInRotationHours, 1.5);
+  assert.equal(intel.maxInRotationHours, 2);
+
+  assert.equal(intel.downtimeGaps.length, 1);
+  assert.equal(intel.downtimeGaps[0], 2);
+  assert.equal(intel.avgOutRotationHours, 2);
+
+  assert.equal(intel.targetRank, 1);
+  assert.equal(intel.timesUp, 3);
+  assert.equal(intel.allEventsComparison.length, 2);
+});

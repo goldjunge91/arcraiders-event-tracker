@@ -136,9 +136,9 @@
         <div class="flex items-center bg-[var(--card)] border border-[var(--border)] rounded-xl p-1 text-xs">
           <span class="text-[11px] text-[var(--muted)] px-2 font-semibold">History:</span>
           <select id="selectedTimeframe" onchange="renderAll()" class="bg-slate-900 text-white font-medium rounded-lg px-2.5 py-1.5 focus:outline-none border border-slate-700 cursor-pointer">
-            <option value="ALL" selected>📅 Aufgezeichnet bis Jetzt (Live-Stand)</option>
-            <option value="TODAY">⚡ Heute (Bis jetzt)</option>
-            <option value="WEEK">🗓️ Letzte 7 Tage</option>
+            <option value="ALL" selected>📅 All Recorded History (Up to Now)</option>
+            <option value="TODAY">⚡ Today (Up to Now)</option>
+            <option value="WEEK">🗓️ Last 7 Days</option>
           </select>
         </div>
 
@@ -164,7 +164,7 @@
         ⚔️ Custom Comparisons
       </button>
       <button onclick="setTab('matrix')" id="tab-matrix" class="pb-3 text-[var(--muted)] hover:text-white transition flex items-center gap-1.5 whitespace-nowrap">
-        🔄 Rotation & Concurrency
+        🎯 Event Cycles & Intelligence
       </button>
     </div>
 
@@ -201,7 +201,7 @@
               <span class="w-3 h-3 rounded border border-slate-700 bg-slate-800"></span> Finished
             </span>
             <span class="flex items-center gap-1.5 text-slate-500 font-semibold text-xs">
-              Only recorded slots through now
+              Only recorded rotations through now
             </span>
           </div>
         </div>
@@ -327,9 +327,9 @@
 
         <!-- 4 Head-to-Head KPI Cards -->
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
-          <!-- Card 1: Total Slots -->
+          <!-- Card 1: Total Rotations -->
           <div class="bg-slate-900/90 border border-[var(--border)] rounded-2xl p-4 shadow-lg flex flex-col justify-between">
-            <div class="text-[11px] uppercase tracking-wider font-bold text-[var(--muted)]">Recorded Slots (Anzahl)</div>
+            <div class="text-[11px] uppercase tracking-wider font-bold text-[var(--muted)]">Total Rotations (Occurrences)</div>
             <div class="flex items-baseline justify-between mt-2">
               <div>
                 <span class="text-[10px] text-amber-400 font-bold block" id="kpiLabelSlotA">A</span>
@@ -454,7 +454,7 @@
               <h3 class="text-base font-bold text-white flex items-center gap-2">
                 <span>🗺️</span> Sector-by-Sector Distribution
               </h3>
-              <p class="text-xs text-[var(--muted)]">Where does each event spawn most often? Compare slot counts per map.</p>
+              <p class="text-xs text-[var(--muted)]">Where does each event spawn most often? Compare event rotations per map.</p>
             </div>
           </div>
 
@@ -463,8 +463,8 @@
               <thead class="text-[10px] uppercase tracking-wider text-[var(--muted)] border-b border-[var(--border)] bg-slate-900/50">
                 <tr>
                   <th class="py-2.5 px-3">Map Sector</th>
-                  <th class="py-2.5 px-3 text-amber-400" id="thMapDuelA">Event A Slots</th>
-                  <th class="py-2.5 px-3 text-sky-400" id="thMapDuelB">Event B Slots</th>
+                  <th class="py-2.5 px-3 text-amber-400" id="thMapDuelA">Event A Rotations</th>
+                  <th class="py-2.5 px-3 text-sky-400" id="thMapDuelB">Event B Rotations</th>
                   <th class="py-2.5 px-3">Visual Distribution</th>
                   <th class="py-2.5 px-3 text-right">Sector Leader</th>
                 </tr>
@@ -521,9 +521,9 @@
 
         <!-- 3 Head-to-Head Sector KPI Cards -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <!-- Card 1: Total Modifier Slots -->
+          <!-- Card 1: Total Event Rotations -->
           <div class="bg-slate-900/90 border border-[var(--border)] rounded-2xl p-4 shadow-lg flex flex-col justify-between">
-            <div class="text-[11px] uppercase tracking-wider font-bold text-[var(--muted)]">Total Modifier Slots</div>
+            <div class="text-[11px] uppercase tracking-wider font-bold text-[var(--muted)]">Total Event Rotations</div>
             <div class="flex items-baseline justify-between mt-2">
               <div>
                 <span class="text-[10px] text-amber-400 font-bold block" id="kpiLabelSectorSlotA">Sector A</span>
@@ -619,9 +619,9 @@
           <div class="flex items-center justify-between mb-2">
             <div>
               <h3 class="text-base font-bold text-white flex items-center gap-2">
-                <span>📊</span> Modifier-by-Modifier Frequency Duel
+                <span>📊</span> Event-by-Event Frequency Duel
               </h3>
-              <p class="text-xs text-[var(--muted)]">Side-by-side slot count and share for every event between the two sectors.</p>
+              <p class="text-xs text-[var(--muted)]">Side-by-side rotation count and share for every event between the two maps.</p>
             </div>
           </div>
 
@@ -630,8 +630,8 @@
               <thead class="text-[10px] uppercase tracking-wider text-[var(--muted)] border-b border-[var(--border)] bg-slate-900/50">
                 <tr>
                   <th class="py-2.5 px-3">Condition / Event</th>
-                  <th class="py-2.5 px-3 text-amber-400" id="thSectorDuelA">Map A Slots</th>
-                  <th class="py-2.5 px-3 text-sky-400" id="thSectorDuelB">Map B Slots</th>
+                  <th class="py-2.5 px-3 text-amber-400" id="thSectorDuelA">Map A Events</th>
+                  <th class="py-2.5 px-3 text-sky-400" id="thSectorDuelB">Map B Events</th>
                   <th class="py-2.5 px-3">Comparative Volume</th>
                   <th class="py-2.5 px-3 text-right">Dominant Sector</th>
                 </tr>
@@ -644,7 +644,7 @@
       </div>
     </div>
 
-    <!-- TAB 4: ROTATION & CONCURRENCY INTELLIGENCE -->
+    <!-- TAB 4: EVENT INTELLIGENCE & ROTATION CYCLES -->
     <div id="view-matrix" class="hidden space-y-5">
 
       <!-- Control Toolbar & Condition Switcher Card -->
@@ -652,17 +652,17 @@
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-[var(--border)]">
           <div>
             <div class="flex items-center gap-2">
-              <span class="text-xl">🔄</span>
-              <h2 class="text-lg font-bold text-white">Rotation & Concurrency Intelligence</h2>
+              <span class="text-xl">🎯</span>
+              <h2 class="text-lg font-bold text-white">Event Intelligence & Rotation Cycles</h2>
             </div>
             <p class="text-xs text-[var(--muted)] mt-0.5">
-              Map-Verfügbarkeit, Koinzidenz-Analyse (Parallel-Events), Rotationsrhythmus und Downtime-Tracker
+              Times up vs. other events, active in-rotation runs, out-of-rotation cooldowns, and cycle logs.
             </p>
           </div>
 
           <!-- Condition Dropdown -->
           <div class="flex items-center gap-2.5">
-            <label for="intelConditionSelect" class="text-xs text-[var(--muted)] font-semibold whitespace-nowrap">Event wählen:</label>
+            <label for="intelConditionSelect" class="text-xs text-[var(--muted)] font-semibold whitespace-nowrap">Select Event:</label>
             <select id="intelConditionSelect" onchange="onIntelConditionChange()" class="bg-slate-900 text-white text-xs font-semibold rounded-xl px-3 py-2 border border-slate-700 focus:outline-none focus:border-amber-400 cursor-pointer">
               <!-- Populated dynamically -->
             </select>
@@ -671,71 +671,125 @@
 
         <!-- Quick Switcher Badges -->
         <div class="pt-3">
-          <div class="text-[11px] text-[var(--muted)] uppercase font-semibold tracking-wider mb-2">Schnellauswahl:</div>
+          <div class="text-[11px] text-[var(--muted)] uppercase font-semibold tracking-wider mb-2">Quick Select:</div>
           <div id="intelQuickBadges" class="flex flex-wrap gap-1.5 overflow-x-auto pb-1">
             <!-- Populated dynamically -->
           </div>
         </div>
       </div>
 
-      <!-- 4 KPI Cards for the Selected Condition -->
+      <!-- 4 Lifecycle KPI Cards for the Selected Event -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
 
-        <!-- KPI 1: Live Status & Downtime / Cooldown -->
+        <!-- KPI 1: Times Up & Global Frequency Rank -->
         <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 flex flex-col justify-between">
           <div class="flex items-center justify-between text-xs text-[var(--muted)] font-medium mb-1">
-            <span>Status & Downtime</span>
+            <span>Times Up & Rank</span>
+            <span class="text-amber-400 font-mono text-[11px]">🏆 Frequency</span>
+          </div>
+          <div id="intelRankMain" class="text-base sm:text-lg font-extrabold text-white my-1">—</div>
+          <div id="intelRankSub" class="text-[11px] text-[var(--muted)] truncate">—</div>
+        </div>
+
+        <!-- KPI 2: In-Rotation Duration (Active Streak) -->
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 flex flex-col justify-between">
+          <div class="flex items-center justify-between text-xs text-[var(--muted)] font-medium mb-1">
+            <span>In-Rotation Duration</span>
+            <span class="text-emerald-400 font-mono text-[11px]">⚡ Active Run</span>
+          </div>
+          <div id="intelRunMain" class="text-base sm:text-lg font-extrabold text-white my-1">—</div>
+          <div id="intelRunSub" class="text-[11px] text-[var(--muted)] truncate">—</div>
+        </div>
+
+        <!-- KPI 3: Out-of-Rotation Downtime (Cooldown) -->
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 flex flex-col justify-between">
+          <div class="flex items-center justify-between text-xs text-[var(--muted)] font-medium mb-1">
+            <span>Out-of-Rotation Downtime</span>
+            <span class="text-sky-400 font-mono text-[11px]">⏸️ Cooldown</span>
+          </div>
+          <div id="intelPauseMain" class="text-base sm:text-lg font-extrabold text-white my-1">—</div>
+          <div id="intelPauseSub" class="text-[11px] text-[var(--muted)] truncate">—</div>
+        </div>
+
+        <!-- KPI 4: Live Status & Downtime Elapsed -->
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 flex flex-col justify-between">
+          <div class="flex items-center justify-between text-xs text-[var(--muted)] font-medium mb-1">
+            <span>Current Status</span>
             <span id="intelStatusBadge" class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-slate-800 text-slate-400">—</span>
           </div>
           <div id="intelStatusMain" class="text-base sm:text-lg font-extrabold text-white my-1">—</div>
           <div id="intelStatusSub" class="text-[11px] text-[var(--muted)] truncate">—</div>
         </div>
 
-        <!-- KPI 2: Rotation Cadence & Interval -->
-        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 flex flex-col justify-between">
-          <div class="flex items-center justify-between text-xs text-[var(--muted)] font-medium mb-1">
-            <span>Rotations-Rhythmus</span>
-            <span class="text-amber-400 font-mono text-[11px]">⏱️ Intervall</span>
-          </div>
-          <div id="intelCadenceMain" class="text-base sm:text-lg font-extrabold text-white my-1">—</div>
-          <div id="intelCadenceSub" class="text-[11px] text-[var(--muted)] truncate">—</div>
-        </div>
-
-        <!-- KPI 3: Cooldown / Pause zwischen Slots -->
-        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 flex flex-col justify-between">
-          <div class="flex items-center justify-between text-xs text-[var(--muted)] font-medium mb-1">
-            <span>Cooldown-Statistik</span>
-            <span class="text-sky-400 font-mono text-[11px]">⏸️ Pause</span>
-          </div>
-          <div id="intelPauseMain" class="text-base sm:text-lg font-extrabold text-white my-1">—</div>
-          <div id="intelPauseSub" class="text-[11px] text-[var(--muted)] truncate">—</div>
-        </div>
-
-        <!-- KPI 4: Maps Represented -->
-        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 flex flex-col justify-between">
-          <div class="flex items-center justify-between text-xs text-[var(--muted)] font-medium mb-1">
-            <span>Karten-Pool</span>
-            <span class="text-emerald-400 font-mono text-[11px]">🗺️ Sektoren</span>
-          </div>
-          <div id="intelMapsMain" class="text-base sm:text-lg font-extrabold text-white my-1">—</div>
-          <div id="intelMapsSub" class="text-[11px] text-[var(--muted)] truncate">—</div>
-        </div>
-
       </div>
 
-      <!-- Main 2-Column Split: Map Breakdown (Left) vs Concurrency (Right) -->
+      <!-- SECTION 1: Times Up vs. Other Events (Frequency Ranking) -->
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-xl">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 mb-3 border-b border-[var(--border)]">
+          <div>
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <span>📊</span>
+              <span>Times Up vs. Other Events (Frequency Ranking)</span>
+            </h3>
+            <p class="text-xs text-[var(--muted)] mt-0.5">
+              How often was this event up compared to every other condition in the rotation pool?
+            </p>
+          </div>
+          <span id="intelComparisonSummaryBadge" class="text-xs font-mono font-bold px-2.5 py-1 rounded-lg bg-amber-500/10 text-amber-300 border border-amber-500/30"></span>
+        </div>
+
+        <div class="overflow-x-auto mt-2">
+          <table class="w-full text-left text-xs">
+            <thead class="text-[10px] uppercase tracking-wider text-[var(--muted)] border-b border-[var(--border)] bg-slate-900/50">
+              <tr>
+                <th class="py-2.5 px-3">Rank</th>
+                <th class="py-2.5 px-3">Event Name</th>
+                <th class="py-2.5 px-3 text-right">Times Up (Rotations)</th>
+                <th class="py-2.5 px-3 text-right">Difference vs Target</th>
+                <th class="py-2.5 px-3 text-right">Share of Pool</th>
+                <th class="py-2.5 px-3">Relative Volume</th>
+              </tr>
+            </thead>
+            <tbody id="intelAllEventsRankingBody" class="divide-y divide-[var(--border)]">
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SECTION 2: Rotation Cycle History Log (In-Rotation vs Out-of-Rotation) -->
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-xl">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 mb-3 border-b border-[var(--border)]">
+          <div>
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <span>⏳</span>
+              <span>Rotation Cycle History Log (In-Rotation vs. Out-of-Rotation)</span>
+            </h3>
+            <p class="text-xs text-[var(--muted)] mt-0.5">
+              Chronological log of recent active streaks and out-of-rotation cooldown gaps.
+            </p>
+          </div>
+          <span id="intelCycleLogSummaryBadge" class="text-xs font-mono font-bold px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 border border-slate-700"></span>
+        </div>
+
+        <div id="intelCycleHistoryLogContainer" class="space-y-2 mt-3 max-h-[380px] overflow-y-auto pr-1">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+      <!-- Main 2-Column Split: Map Spawns (Left) vs Concurrent Events (Right) -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
 
-        <!-- Column Left: Map-Verfügbarkeit -->
-        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 flex flex-col">
+        <!-- Column Left: Map Distribution -->
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 flex flex-col shadow-xl">
           <div class="flex items-center justify-between pb-3 mb-3 border-b border-[var(--border)]">
             <div>
               <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
                 <span>🗺️</span>
-                <span>Karten-Verfügbarkeit</span>
+                <span>Map Distribution & Spawns</span>
                 <span id="intelSelectedCondNameMap" class="text-amber-400 font-mono text-xs"></span>
               </h3>
-              <p class="text-xs text-[var(--muted)] mt-0.5">Auf welchen Maps und wie oft war dieses Event verfügbar?</p>
+              <p class="text-xs text-[var(--muted)] mt-0.5">On which maps and how many times was this event active?</p>
             </div>
             <span id="intelMapCountBadge" class="text-xs font-mono font-bold text-sky-400 bg-sky-500/10 border border-sky-500/20 px-2 py-0.5 rounded-lg"></span>
           </div>
@@ -745,16 +799,16 @@
           </div>
         </div>
 
-        <!-- Column Right: Koinzidenz / Parallele Events -->
-        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 flex flex-col">
+        <!-- Column Right: Concurrent Events -->
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 flex flex-col shadow-xl">
           <div class="flex items-center justify-between pb-3 mb-3 border-b border-[var(--border)]">
             <div>
               <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
                 <span>⚡</span>
-                <span>Gleichzeitige Modifikatoren</span>
+                <span>Concurrent Events (Running Alongside)</span>
                 <span id="intelSelectedCondNameConc" class="text-amber-400 font-mono text-xs"></span>
               </h3>
-              <p class="text-xs text-[var(--muted)] mt-0.5">Welche Events liefen zeitgleich im selben 1-Stunden-Fenster parallel?</p>
+              <p class="text-xs text-[var(--muted)] mt-0.5">Which other events ran simultaneously in the same 1-hour window?</p>
             </div>
             <span id="intelConcCountBadge" class="text-xs font-mono font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-lg"></span>
           </div>
@@ -772,9 +826,9 @@
           <div>
             <h3 class="text-sm font-bold text-white flex items-center gap-2">
               <span>🎯</span>
-              <span>Interaktiver Paar-Vergleich (Event A vs. Event B)</span>
+              <span>Interactive Pair Comparator (Event A vs. Event B)</span>
             </h3>
-            <p class="text-xs text-[var(--muted)] mt-0.5">Direkter Abgleich zweier Modifikatoren: Wie oft und wo traten sie gemeinsam auf?</p>
+            <p class="text-xs text-[var(--muted)] mt-0.5">Direct co-occurrence comparison: how often and where did they appear together?</p>
           </div>
           <div class="flex flex-wrap items-center gap-2">
             <select id="pairSelectA" onchange="renderPairComparison()" class="bg-slate-900 text-white text-xs font-semibold rounded-xl px-2.5 py-1.5 border border-slate-700 focus:outline-none cursor-pointer"></select>
@@ -787,18 +841,18 @@
         </div>
       </div>
 
-      <!-- Vollständige Koinzidenz-Matrix (Condition x Condition) -->
+      <!-- Complete Concurrency Matrix (Condition x Condition) -->
       <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 overflow-x-auto shadow-xl">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 mb-3 border-b border-[var(--border)]">
           <div>
             <h3 class="text-sm font-bold text-white flex items-center gap-2">
               <span>📊</span>
-              <span>Vollständige Koinzidenz-Matrix (Condition × Condition)</span>
+              <span>Complete Concurrency Matrix (Condition × Condition)</span>
             </h3>
-            <p class="text-xs text-[var(--muted)] mt-0.5">Wie viele Rotations-Slots liefen beide Conditions gleichzeitig über alle Sektoren hinweg?</p>
+            <p class="text-xs text-[var(--muted)] mt-0.5">How many rotation hours did both conditions run simultaneously across all maps?</p>
           </div>
           <span class="text-[11px] font-mono text-slate-400 bg-slate-800/80 px-2.5 py-1 rounded-lg border border-slate-700/80">
-            Zeile × Spalte = Gemeinsame 1h-Slots
+            Row × Column = Shared 1h Rotations
           </span>
         </div>
         <table class="w-full text-left text-xs border-collapse">
@@ -1249,9 +1303,9 @@
 
       const selectedValue = select.value || "ALL";
       const options = [
-        { value: "ALL", label: "📅 Aufgezeichnet bis Jetzt (Live-Stand)" },
-        { value: "TODAY", label: "⚡ Heute (Bis jetzt)" },
-        { value: "WEEK", label: "🗓️ Letzte 7 Tage" }
+        { value: "ALL", label: "📅 All Recorded History (Up to Now)" },
+        { value: "TODAY", label: "⚡ Today (Up to Now)" },
+        { value: "WEEK", label: "🗓️ Last 7 Days" }
       ];
       const dateKeys = FrequencyUptime.getAvailableDateKeys(rawEvents, nowMs);
       select.innerHTML = "";
@@ -1264,7 +1318,7 @@
       dateKeys.forEach(dateKey => {
         const option = document.createElement("option");
         option.value = `DATE:${dateKey}`;
-        option.textContent = `📆 ${FrequencyUptime.formatDateKey(dateKey)}`;
+        option.textContent = `📆 Day: ${FrequencyUptime.formatDateKey(dateKey)}`;
         select.appendChild(option);
       });
       select.value = Array.from(select.options).some(option => option.value === selectedValue)
@@ -1668,9 +1722,9 @@
       if (pctBEl) pctBEl.innerText = `${pctOnlyB}%`;
 
       const thA = document.getElementById("thMapDuelA");
-      if (thA) thA.innerText = `${condA} Slots`;
+      if (thA) thA.innerText = `${condA} Rotations`;
       const thB = document.getElementById("thMapDuelB");
-      if (thB) thB.innerText = `${condB} Slots`;
+      if (thB) thB.innerText = `${condB} Rotations`;
 
       const tableBody = document.getElementById("duelMapTableBody");
       if (tableBody) {
@@ -1734,9 +1788,9 @@
       const mapB = comp.mapB.name;
 
       const badgeA = document.getElementById("sectorBadgeA");
-      if (badgeA) badgeA.innerText = `${comp.mapA.totalSlots} Slots`;
+      if (badgeA) badgeA.innerText = `${comp.mapA.totalSlots} Rotations`;
       const badgeB = document.getElementById("sectorBadgeB");
-      if (badgeB) badgeB.innerText = `${comp.mapB.totalSlots} Slots`;
+      if (badgeB) badgeB.innerText = `${comp.mapB.totalSlots} Rotations`;
 
       const banner = document.getElementById("sectorWinnerBanner");
       if (banner) {
@@ -1747,15 +1801,15 @@
               <span class="text-2xl">🏆</span>
               <div>
                 <div class="font-bold text-sm text-white">
-                  <span class="text-amber-400 font-extrabold">${mapA}</span> is more active with <span class="font-mono text-amber-300 font-bold">+${comp.diffSlots}</span> more modifier slots
+                  <span class="text-amber-400 font-extrabold">${mapA}</span> is more active with <span class="font-mono text-amber-300 font-bold">+${comp.diffSlots}</span> more event rotations
                 </div>
                 <div class="text-xs text-amber-300/80 mt-0.5">
-                  ${comp.mapA.totalSlots} slots (${comp.mapA.condCount} distinct conditions) vs. ${comp.mapB.totalSlots} slots (${comp.mapB.condCount} distinct conditions)
+                  ${comp.mapA.totalSlots} rotations (${comp.mapA.condCount} distinct conditions) vs. ${comp.mapB.totalSlots} rotations (${comp.mapB.condCount} distinct conditions)
                 </div>
               </div>
             </div>
             <div class="flex items-center gap-2 self-start md:self-auto font-mono text-xs bg-amber-500/20 px-3 py-1.5 rounded-xl border border-amber-500/30">
-              <span>Slot Margin:</span>
+              <span>Rotation Margin:</span>
               <span class="font-bold text-amber-300">+${comp.diffSlots}</span>
             </div>
           `;
@@ -1767,15 +1821,15 @@
               <span class="text-2xl">🏆</span>
               <div>
                 <div class="font-bold text-sm text-white">
-                  <span class="text-sky-400 font-extrabold">${mapB}</span> leads with <span class="font-mono text-sky-300 font-bold">+${margin}</span> more modifier slots
+                  <span class="text-sky-400 font-extrabold">${mapB}</span> leads with <span class="font-mono text-sky-300 font-bold">+${margin}</span> more event rotations
                 </div>
                 <div class="text-xs text-sky-300/80 mt-0.5">
-                  ${comp.mapB.totalSlots} slots (${comp.mapB.condCount} distinct conditions) vs. ${comp.mapA.totalSlots} slots (${comp.mapA.condCount} distinct conditions)
+                  ${comp.mapB.totalSlots} rotations (${comp.mapB.condCount} distinct conditions) vs. ${comp.mapA.totalSlots} rotations (${comp.mapA.condCount} distinct conditions)
                 </div>
               </div>
             </div>
             <div class="flex items-center gap-2 self-start md:self-auto font-mono text-xs bg-sky-500/20 px-3 py-1.5 rounded-xl border border-sky-500/30">
-              <span>Slot Margin:</span>
+              <span>Rotation Margin:</span>
               <span class="font-bold text-sky-300">+${margin}</span>
             </div>
           `;
@@ -1786,7 +1840,7 @@
               <span class="text-2xl">⚖️</span>
               <div>
                 <div class="font-bold text-sm text-white">
-                  Equal Activity: Both sectors have exactly <span class="font-mono text-amber-400 font-bold">${comp.mapA.totalSlots}</span> modifier slots
+                  Equal Activity: Both sectors have exactly <span class="font-mono text-amber-400 font-bold">${comp.mapA.totalSlots}</span> event rotations
                 </div>
                 <div class="text-xs text-slate-400 mt-0.5">
                   Both maps hosted identical total event counts in the selected timeframe.
@@ -1818,7 +1872,7 @@
         } else if (comp.diffSlots < 0) {
           diffSlotsEl.innerHTML = `<span class="text-sky-400 font-bold">+${Math.abs(comp.diffSlots)} advantage</span> <span class="text-slate-400">for ${mapB}</span>`;
         } else {
-          diffSlotsEl.innerHTML = `<span class="text-slate-400">Equal slot volume</span>`;
+          diffSlotsEl.innerHTML = `<span class="text-slate-400">Equal rotation volume</span>`;
         }
       }
 
@@ -1910,9 +1964,9 @@
       }
 
       const thSecA = document.getElementById("thSectorDuelA");
-      if (thSecA) thSecA.innerText = `${mapA} Slots`;
+      if (thSecA) thSecA.innerText = `${mapA} Rotations`;
       const thSecB = document.getElementById("thSectorDuelB");
-      if (thSecB) thSecB.innerText = `${mapB} Slots`;
+      if (thSecB) thSecB.innerText = `${mapB} Rotations`;
 
       const secTableBody = document.getElementById("sectorTableBody");
       if (secTableBody) {
@@ -2027,33 +2081,33 @@
             <div>
               <div class="text-sm font-bold text-white flex items-center gap-2">
                 <span class="text-amber-300">${condA}</span>
-                <span class="text-slate-500 font-normal">läuft parallel zu</span>
+                <span class="text-slate-500 font-normal">runs concurrent with</span>
                 <span class="text-sky-300">${condB}</span>
               </div>
               <div class="text-xs text-[var(--muted)] mt-0.5">
-                Koinzidenz-Rate im gewählten Zeitraum
+                Co-occurrence rate in selected timeframe
               </div>
             </div>
           </div>
           <div class="flex items-center gap-3">
             <div class="text-right">
               <span class="text-2xl font-black ${sharedCount > 0 ? 'text-emerald-400' : 'text-slate-500'} font-mono">${sharedCount}x</span>
-              <span class="text-xs text-slate-400 block">gemeinsame 1h-Slots</span>
+              <span class="text-xs text-slate-400 block">shared 1h rotations</span>
             </div>
           </div>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
           <div class="bg-slate-900/80 rounded-xl p-3 border border-slate-800/80 text-xs">
-            <span class="text-slate-400 block mb-1">Anteil bei <strong class="text-amber-300">${condA}</strong>:</span>
-            <div class="text-base font-bold text-white font-mono">${pctOfA}% <span class="text-xs font-normal text-slate-400">aller ${intelA.uniqueHours} aktiven Stunden</span></div>
+            <span class="text-slate-400 block mb-1">Share in <strong class="text-amber-300">${condA}</strong>:</span>
+            <div class="text-base font-bold text-white font-mono">${pctOfA}% <span class="text-xs font-normal text-slate-400">of ${intelA.uniqueHours} total active hours</span></div>
             <div class="w-full bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden">
               <div class="bg-amber-400 h-full rounded-full" style="width: ${Math.min(100, pctOfA)}%"></div>
             </div>
           </div>
           <div class="bg-slate-900/80 rounded-xl p-3 border border-slate-800/80 text-xs">
-            <span class="text-slate-400 block mb-1">Anteil bei <strong class="text-sky-300">${condB}</strong>:</span>
-            <div class="text-base font-bold text-white font-mono">${pctOfB}% <span class="text-xs font-normal text-slate-400">aller ${intelB.uniqueHours} aktiven Stunden</span></div>
+            <span class="text-slate-400 block mb-1">Share in <strong class="text-sky-300">${condB}</strong>:</span>
+            <div class="text-base font-bold text-white font-mono">${pctOfB}% <span class="text-xs font-normal text-slate-400">of ${intelB.uniqueHours} total active hours</span></div>
             <div class="w-full bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden">
               <div class="bg-sky-400 h-full rounded-full" style="width: ${Math.min(100, pctOfB)}%"></div>
             </div>
@@ -2061,8 +2115,8 @@
         </div>
 
         <div>
-          <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2">Häufigste Karten-Kombinationen:</div>
-          ${topMapPairs.length === 0 ? `<div class="text-xs text-slate-500 italic">Keine gemeinsamen Rotations-Slots aufgezeichnet.</div>` : `
+          <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2">Top Map Combinations:</div>
+          ${topMapPairs.length === 0 ? `<div class="text-xs text-slate-500 italic">No shared rotation hours recorded.</div>` : `
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
               ${topMapPairs.slice(0, 6).map(([pair, count]) => {
                 const parts = pair.split(' + ');
@@ -2152,67 +2206,195 @@
       const nameConcEl = document.getElementById("intelSelectedCondNameConc");
       if (nameConcEl) nameConcEl.innerText = `(${currentIntelCondition})`;
 
-      // Update KPI 1: Status & Downtime
+      // Update KPI 1: Times Up & Rank
+      const rankMain = document.getElementById("intelRankMain");
+      const rankSub = document.getElementById("intelRankSub");
+      if (rankMain && rankSub) {
+        if (intel.hasData) {
+          rankMain.innerHTML = `<span class="text-amber-400 font-mono font-black">${intel.totalSlots}</span> <span class="text-xs font-normal text-slate-300">Rotations</span> <span class="text-xs text-slate-500 font-mono">(${intel.uniqueHours}h)</span>`;
+          rankSub.innerHTML = `<span class="text-amber-300 font-bold">Rank #${intel.targetRank}</span> <span class="text-slate-400">of ${intel.totalConditionsCount} events</span>`;
+        } else {
+          rankMain.innerHTML = `<span class="text-slate-500 font-mono">0 Rotations</span>`;
+          rankSub.innerText = "Not in rotation pool";
+        }
+      }
+
+      // Update KPI 2: In-Rotation Duration (Active Streak)
+      const runMain = document.getElementById("intelRunMain");
+      const runSub = document.getElementById("intelRunSub");
+      if (runMain && runSub) {
+        if (intel.hasData && intel.runs.length > 0) {
+          runMain.innerHTML = `<span class="text-emerald-400 font-mono font-black">Avg ${intel.avgInRotationHours}h</span> <span class="text-xs font-normal text-slate-300">Run</span>`;
+          runSub.innerHTML = `<span>Max streak:</span> <strong class="text-emerald-300 font-mono font-bold">${intel.maxInRotationHours}h</strong> <span class="text-slate-500">consecutive</span>`;
+        } else {
+          runMain.innerHTML = `<span class="text-slate-500">—</span>`;
+          runSub.innerText = "No active streaks recorded";
+        }
+      }
+
+      // Update KPI 3: Out-of-Rotation Downtime (Cooldown)
+      const pauseMain = document.getElementById("intelPauseMain");
+      const pauseSub = document.getElementById("intelPauseSub");
+      if (pauseMain && pauseSub) {
+        if (intel.hasData && intel.downtimeGaps.length > 0) {
+          pauseMain.innerHTML = `<span class="text-sky-300 font-mono font-black">Avg ${intel.avgOutRotationHours}h</span> <span class="text-xs font-normal text-slate-300">Cooldown</span>`;
+          pauseSub.innerHTML = `<span>Min:</span> <strong class="text-slate-200 font-mono">${intel.minOutRotationHours}h</strong> <span class="text-slate-500">·</span> <span>Max:</span> <strong class="text-sky-300 font-mono">${intel.maxOutRotationHours}h</strong>`;
+        } else if (intel.hasData) {
+          pauseMain.innerHTML = `<span class="text-slate-300 font-mono">Single Run</span>`;
+          pauseSub.innerText = "No cooldown intervals between runs";
+        } else {
+          pauseMain.innerHTML = `<span class="text-slate-500">—</span>`;
+          pauseSub.innerText = "No cooldown data";
+        }
+      }
+
+      // Update KPI 4: Live Status & Downtime Elapsed
       const statusBadge = document.getElementById("intelStatusBadge");
       const statusMain = document.getElementById("intelStatusMain");
       const statusSub = document.getElementById("intelStatusSub");
       if (statusBadge && statusMain && statusSub) {
         if (intel.isActiveNow) {
           statusBadge.className = "px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 animate-pulse";
-          statusBadge.innerText = "Aktiv Jetzt";
-          statusMain.innerHTML = `<span class="text-emerald-400">🟢 Aktiv</span> <span class="text-xs font-medium text-slate-300">auf ${intel.activeMaps.join(", ")}</span>`;
-          statusSub.innerText = `${intel.remainingMinutes}m verbleibend im aktuellen Slot`;
+          statusBadge.innerText = "Active Now";
+          statusMain.innerHTML = `<span class="text-emerald-400">🟢 Active</span> <span class="text-xs font-medium text-slate-300">on ${intel.activeMaps.join(", ")}</span>`;
+          statusSub.innerText = `${intel.remainingMinutes}m remaining in current rotation`;
         } else if (intel.hasData) {
-          statusBadge.className = "px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-slate-800 text-slate-400";
-          statusBadge.innerText = "Pausiert";
-          statusMain.innerHTML = `<span class="text-slate-200">Pause:</span> <span class="text-amber-400 font-mono">${intel.downtimeHours}h ${intel.downtimeMinutes}m</span>`;
-          statusSub.innerText = `Zuletzt bis: ${intel.lastSeenFormatted}`;
+          statusBadge.className = "px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-slate-800 text-slate-400 border border-slate-700";
+          statusBadge.innerText = "Out of Rotation";
+          statusMain.innerHTML = `<span class="text-slate-400 text-xs font-medium">Cooldown:</span> <span class="text-amber-400 font-mono font-bold">${intel.downtimeHours}h ${intel.downtimeMinutes}m</span>`;
+          statusSub.innerText = `Last active until: ${intel.lastSeenFormatted}`;
         } else {
           statusBadge.className = "px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-rose-500/10 text-rose-400 border border-rose-500/20";
           statusBadge.innerText = "Off-Rotation";
-          statusMain.innerHTML = `<span class="text-slate-400 font-medium">Nicht im Pool</span>`;
-          statusSub.innerText = "0 Rotationen im gewählten Zeitraum";
+          statusMain.innerHTML = `<span class="text-slate-400 font-medium text-xs">Not in Rotation Pool</span>`;
+          statusSub.innerText = "0 rotations in selected timeframe";
         }
       }
 
-      // Update KPI 2: Cadence
-      const cadenceMain = document.getElementById("intelCadenceMain");
-      const cadenceSub = document.getElementById("intelCadenceSub");
-      if (cadenceMain && cadenceSub) {
+      // SECTION 1: Times Up vs. Other Events (Frequency Ranking)
+      const compBadge = document.getElementById("intelComparisonSummaryBadge");
+      if (compBadge) {
         if (intel.hasData) {
-          cadenceMain.innerHTML = `<span class="text-white">${intel.totalSlots} Slots</span> <span class="text-xs text-slate-400 font-mono">(${intel.uniqueHours}h)</span>`;
-          cadenceSub.innerText = intel.uniqueHours > 1 ? `Ø Rhythmus: alle ${intel.avgIntervalHours}h` : "Einmaliger Einsatz";
+          compBadge.innerText = `Rank #${intel.targetRank} of ${intel.totalConditionsCount} (${intel.totalSlots} Rotations)`;
         } else {
-          cadenceMain.innerHTML = `<span class="text-slate-500">—</span>`;
-          cadenceSub.innerText = "Keine Daten verfügbar";
+          compBadge.innerText = `Unranked (0 Rotations)`;
         }
       }
 
-      // Update KPI 3: Pause
-      const pauseMain = document.getElementById("intelPauseMain");
-      const pauseSub = document.getElementById("intelPauseSub");
-      if (pauseMain && pauseSub) {
-        if (intel.hasData && intel.uniqueHours > 1) {
-          pauseMain.innerHTML = `<span class="text-sky-300 font-mono">Ø ${intel.avgPauseHours}h</span> <span class="text-xs font-normal text-slate-400">Downtime</span>`;
-          const minP = Math.max(0, Math.round((intel.minIntervalHours - 1.0) * 10) / 10);
-          const maxP = Math.max(0, Math.round((intel.maxIntervalHours - 1.0) * 10) / 10);
-          pauseSub.innerText = `Min: ${minP}h · Max Pause: ${maxP}h`;
+      const rankTableBody = document.getElementById("intelAllEventsRankingBody");
+      if (rankTableBody) {
+        if (!intel.allEventsComparison || intel.allEventsComparison.length === 0) {
+          rankTableBody.innerHTML = `<tr><td colspan="6" class="py-4 text-center text-slate-500">No events found in this timeframe</td></tr>`;
         } else {
-          pauseMain.innerHTML = `<span class="text-slate-500">—</span>`;
-          pauseSub.innerText = "Keine Folgeslots erfasst";
+          const maxTimesUp = Math.max(...intel.allEventsComparison.map(e => e.timesUp), 1);
+          rankTableBody.innerHTML = intel.allEventsComparison.map((item, idx) => {
+            const rank = item.rank || (idx + 1);
+            const isTarget = item.isTarget;
+            const icon = CONDITION_ICONS[item.condition] || "";
+            const widthPct = Math.round((item.timesUp / maxTimesUp) * 100);
+
+            let diffHtml = `<span class="text-slate-500 font-mono text-[11px]">— (Target)</span>`;
+            if (!isTarget) {
+              if (item.diffVsTarget > 0) {
+                diffHtml = `<span class="text-emerald-400 font-bold font-mono text-xs">+${item.diffVsTarget}</span> <span class="text-[10px] text-slate-500">more</span>`;
+              } else if (item.diffVsTarget < 0) {
+                diffHtml = `<span class="text-rose-400 font-bold font-mono text-xs">${item.diffVsTarget}</span> <span class="text-[10px] text-slate-500">fewer</span>`;
+              } else {
+                diffHtml = `<span class="text-slate-400 font-mono text-xs">Tied (0)</span>`;
+              }
+            }
+
+            const rowBg = isTarget
+              ? "bg-amber-500/10 border-l-4 border-amber-400 font-semibold"
+              : "hover:bg-slate-800/40 transition";
+
+            return `
+              <tr class="${rowBg}">
+                <td class="py-2.5 px-3 font-mono font-bold ${isTarget ? 'text-amber-400' : 'text-slate-400'}">
+                  #${rank}
+                </td>
+                <td class="py-2.5 px-3">
+                  <div class="flex items-center gap-2">
+                    ${icon ? `<img src="${icon}" alt="${item.condition}" class="w-5 h-5 rounded object-contain bg-slate-900 border border-slate-700/60 flex-shrink-0" onerror="this.style.display='none'">` : ''}
+                    <span class="${isTarget ? 'text-amber-300 font-bold' : 'text-white'}">${item.condition}</span>
+                    ${isTarget ? `<span class="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-amber-400/20 text-amber-300 border border-amber-400/30">Selected</span>` : ''}
+                  </div>
+                </td>
+                <td class="py-2.5 px-3 text-right font-mono">
+                  <span class="font-bold ${isTarget ? 'text-amber-300' : 'text-white'} text-sm">${item.timesUp}</span>
+                  <span class="text-slate-500 text-[10px] ml-0.5">rotations</span>
+                </td>
+                <td class="py-2.5 px-3 text-right">
+                  ${diffHtml}
+                </td>
+                <td class="py-2.5 px-3 text-right font-mono text-slate-300">
+                  ${item.sharePct}%
+                </td>
+                <td class="py-2.5 px-3 min-w-[140px]">
+                  <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+                    <div class="${isTarget ? 'bg-amber-400' : 'bg-sky-400'} h-2 rounded-full" style="width: ${widthPct}%"></div>
+                  </div>
+                </td>
+              </tr>
+            `;
+          }).join('');
         }
       }
 
-      // Update KPI 4: Maps
-      const mapsMain = document.getElementById("intelMapsMain");
-      const mapsSub = document.getElementById("intelMapsSub");
-      if (mapsMain && mapsSub) {
-        if (intel.hasData) {
-          mapsMain.innerHTML = `<span class="text-emerald-400 font-mono">${intel.mapBreakdown.length}</span> <span class="text-xs font-normal text-slate-400">von 7 Maps</span>`;
-          mapsSub.innerText = intel.mapBreakdown.length > 0 ? `Top: ${intel.mapBreakdown[0].map} (${intel.mapBreakdown[0].count}x)` : "Keine Maps";
+      // SECTION 2: Rotation Cycle History Log (In-Rotation vs Out-of-Rotation)
+      const cycleBadge = document.getElementById("intelCycleLogSummaryBadge");
+      if (cycleBadge) {
+        cycleBadge.innerText = `${intel.runs.length} active runs · ${intel.downtimeGaps.length} cooldowns`;
+      }
+
+      const cycleContainer = document.getElementById("intelCycleHistoryLogContainer");
+      if (cycleContainer) {
+        if (!intel.cycles || intel.cycles.length === 0) {
+          cycleContainer.innerHTML = `<div class="p-6 text-center text-xs text-slate-500 italic bg-slate-900/40 rounded-xl border border-slate-800">No rotation cycles recorded for this event in the selected timeframe.</div>`;
         } else {
-          mapsMain.innerHTML = `<span class="text-slate-500">—</span>`;
-          mapsSub.innerText = "Keine Maps erfasst";
+          // Render newest cycles first (up to 15)
+          const recentCycles = [...intel.cycles].reverse().slice(0, 15);
+          cycleContainer.innerHTML = recentCycles.map(c => {
+            const run = c.run;
+            const mapsText = run.maps && run.maps.length > 0 ? run.maps.join(', ') : 'All Sectors';
+            const gapHours = c.gapHoursAfter;
+
+            return `
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 bg-slate-900/70 border border-slate-800 rounded-xl p-3 hover:border-slate-700 transition">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center flex-shrink-0">
+                    <span class="text-emerald-400 text-sm font-bold font-mono">🟢</span>
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <span class="text-xs font-bold text-white">In Rotation: <span class="text-emerald-400 font-mono font-bold">${run.durationHours}h streak</span></span>
+                      <span class="text-[10px] text-slate-400 bg-slate-800 px-2 py-0.5 rounded border border-slate-700">on ${mapsText}</span>
+                    </div>
+                    <div class="text-[11px] text-slate-400 mt-0.5 font-mono">
+                      <span>${run.startFormatted}</span>
+                      <span class="text-slate-600 mx-1">→</span>
+                      <span>${run.endFormatted}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-3 self-end sm:self-auto">
+                  ${gapHours > 0 ? `
+                    <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-sky-500/10 border border-sky-500/20 text-xs">
+                      <span class="text-sky-400 text-xs">💤</span>
+                      <span class="text-slate-300 font-medium text-[11px]">Out of Rotation:</span>
+                      <span class="font-mono font-bold text-sky-300 text-xs">${gapHours}h cooldown</span>
+                    </div>
+                  ` : `
+                    <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-xs">
+                      <span class="text-emerald-400 animate-pulse text-xs">●</span>
+                      <span class="font-mono font-bold text-emerald-300 text-[11px]">Currently Active</span>
+                    </div>
+                  `}
+                </div>
+              </div>
+            `;
+          }).join('');
         }
       }
 
@@ -2222,12 +2404,12 @@
       if (mapBadge) mapBadge.innerText = `${intel.mapBreakdown.length} Maps`;
       if (mapContainer) {
         if (intel.mapBreakdown.length === 0) {
-          mapContainer.innerHTML = `<div class="p-6 text-center text-xs text-slate-500 italic bg-slate-900/40 rounded-xl border border-slate-800">Keine Karten-Einsätze für dieses Event im ausgewählten Zeitraum.</div>`;
+          mapContainer.innerHTML = `<div class="p-6 text-center text-xs text-slate-500 italic bg-slate-900/40 rounded-xl border border-slate-800">No map spawns recorded for this event in the selected timeframe.</div>`;
         } else {
           mapContainer.innerHTML = intel.mapBreakdown.map(item => {
             const activeTag = item.isActive
-              ? `<span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 animate-pulse">🟢 Aktiv Jetzt</span>`
-              : `<span class="text-[11px] font-mono text-slate-400">Zuletzt: ${item.lastSeen.formatted}</span>`;
+              ? `<span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 animate-pulse">🟢 Active Now</span>`
+              : `<span class="text-[11px] font-mono text-slate-400">Last active: ${item.lastSeen.formatted}</span>`;
 
             return `
               <div class="bg-slate-900/60 border border-[var(--border)] hover:border-slate-700 rounded-xl p-3.5 transition">
@@ -2242,7 +2424,7 @@
                   <div class="flex-1 bg-slate-800 h-2 rounded-full overflow-hidden">
                     <div class="bg-gradient-to-r from-sky-500 to-indigo-500 h-full rounded-full" style="width: ${item.percentage}%"></div>
                   </div>
-                  <span class="font-mono text-[11px] text-slate-300 whitespace-nowrap">${item.percentage}% aller ${intel.totalSlots} Slots</span>
+                  <span class="font-mono text-[11px] text-slate-300 whitespace-nowrap">${item.percentage}% of all ${intel.totalSlots} rotations</span>
                 </div>
               </div>
             `;
@@ -2253,10 +2435,10 @@
       // Render Concurrency Ranking (Right Column)
       const concContainer = document.getElementById("intelConcurrencyContainer");
       const concBadge = document.getElementById("intelConcCountBadge");
-      if (concBadge) concBadge.innerText = `${intel.concurrentConditions.length} Partner-Events`;
+      if (concBadge) concBadge.innerText = `${intel.concurrentConditions.length} Partner Events`;
       if (concContainer) {
         if (intel.concurrentConditions.length === 0) {
-          concContainer.innerHTML = `<div class="p-6 text-center text-xs text-slate-500 italic bg-slate-900/40 rounded-xl border border-slate-800">Keine parallelen Event-Kombinationen im ausgewählten Zeitraum.</div>`;
+          concContainer.innerHTML = `<div class="p-6 text-center text-xs text-slate-500 italic bg-slate-900/40 rounded-xl border border-slate-800">No concurrent event combinations recorded in the selected timeframe.</div>`;
         } else {
           concContainer.innerHTML = intel.concurrentConditions.map(item => {
             const icon = CONDITION_ICONS[item.condition] || "";
@@ -2272,8 +2454,8 @@
                   </div>
                 </div>
                 <div class="text-right flex-shrink-0">
-                  <div class="font-mono font-bold text-emerald-400 text-xs">${item.sharedSlots}x parallel</div>
-                  <div class="text-[10px] text-slate-400 font-mono">${item.percentage}% Überlappung</div>
+                  <div class="font-mono font-bold text-emerald-400 text-xs">${item.sharedSlots}x concurrent</div>
+                  <div class="text-[10px] text-slate-400 font-mono">${item.percentage}% overlap</div>
                 </div>
               </div>
             `;
