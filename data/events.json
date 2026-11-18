@@ -1,5 +1,1195 @@
 [
   {
+    "condition": "Husk Graveyard",
+    "map": "Dam Battlegrounds",
+    "startTime": "2026-11-19T21:00:00",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T22:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/husk-graveyard.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795122000000,
+        1795125600000
+      ],
+      "north-america": [
+        1795147200000,
+        1795150800000
+      ],
+      "south-america": [
+        1795143600000,
+        1795147200000
+      ],
+      "asia": [
+        1795104000000,
+        1795107600000
+      ],
+      "oceania": [
+        1795089600000,
+        1795093200000
+      ]
+    },
+    "slug": "husk-graveyard",
+    "url": "https://arcraiders.com/de/map-conditions/husk-graveyard"
+  },
+  {
+    "map": "Spaceport",
+    "condition": "ARC Frigate",
+    "startTime": "2026-11-19T21:00:00",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T22:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795122000000,
+        1795125600000
+      ],
+      "north-america": [
+        1795147200000,
+        1795150800000
+      ],
+      "south-america": [
+        1795143600000,
+        1795147200000
+      ],
+      "asia": [
+        1795104000000,
+        1795107600000
+      ],
+      "oceania": [
+        1795089600000,
+        1795093200000
+      ]
+    },
+    "slug": "arc-frigate",
+    "url": "https://arcraiders.com/de/map-conditions/arc-frigate"
+  },
+  {
+    "map": "Stella Montis",
+    "condition": "Night Raid",
+    "startTime": "2026-11-19T21:00:00",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T22:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795122000000,
+        1795125600000
+      ],
+      "north-america": [
+        1795147200000,
+        1795150800000
+      ],
+      "south-america": [
+        1795143600000,
+        1795147200000
+      ],
+      "asia": [
+        1795104000000,
+        1795107600000
+      ],
+      "oceania": [
+        1795089600000,
+        1795093200000
+      ]
+    },
+    "slug": "night-raid",
+    "url": "https://arcraiders.com/de/map-conditions/night-raid"
+  },
+  {
+    "map": "Buried City",
+    "condition": "Lush Blooms",
+    "startTime": "2026-11-19T21:00:00",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T22:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/lush.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795122000000,
+        1795125600000
+      ],
+      "north-america": [
+        1795147200000,
+        1795150800000
+      ],
+      "south-america": [
+        1795143600000,
+        1795147200000
+      ],
+      "asia": [
+        1795104000000,
+        1795107600000
+      ],
+      "oceania": [
+        1795089600000,
+        1795093200000
+      ]
+    },
+    "slug": "lush-blooms",
+    "url": "https://arcraiders.com/de/map-conditions/lush-blooms"
+  },
+  {
+    "map": "Dam Battlegrounds",
+    "condition": "Electromagnetic Storm",
+    "startTime": "2026-11-19T20:00:00",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T21:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/electrical.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795118400000,
+        1795122000000
+      ],
+      "north-america": [
+        1795143600000,
+        1795147200000
+      ],
+      "south-america": [
+        1795140000000,
+        1795143600000
+      ],
+      "asia": [
+        1795100400000,
+        1795104000000
+      ],
+      "oceania": [
+        1795086000000,
+        1795089600000
+      ]
+    },
+    "slug": "electromagnetic-storm",
+    "url": "https://arcraiders.com/de/map-conditions/electromagnetic-storm"
+  },
+  {
+    "map": "The Blue Gate",
+    "condition": "Matriarch",
+    "startTime": "2026-11-19T20:00:00",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T21:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/matriarch.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795118400000,
+        1795122000000
+      ],
+      "north-america": [
+        1795143600000,
+        1795147200000
+      ],
+      "south-america": [
+        1795140000000,
+        1795143600000
+      ],
+      "asia": [
+        1795100400000,
+        1795104000000
+      ],
+      "oceania": [
+        1795086000000,
+        1795089600000
+      ]
+    },
+    "slug": "matriarch",
+    "url": "https://arcraiders.com/de/map-conditions/matriarch"
+  },
+  {
+    "map": "Spaceport",
+    "condition": "Hurricane",
+    "startTime": "2026-11-19T20:00:00",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T21:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/hurricane.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795118400000,
+        1795122000000
+      ],
+      "north-america": [
+        1795143600000,
+        1795147200000
+      ],
+      "south-america": [
+        1795140000000,
+        1795143600000
+      ],
+      "asia": [
+        1795100400000,
+        1795104000000
+      ],
+      "oceania": [
+        1795086000000,
+        1795089600000
+      ]
+    },
+    "slug": "hurricane",
+    "url": "https://arcraiders.com/de/map-conditions/hurricane"
+  },
+  {
+    "map": "Riven Tides",
+    "condition": "Night Raid",
+    "startTime": "2026-11-19T20:00:00",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T21:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795118400000,
+        1795122000000
+      ],
+      "north-america": [
+        1795143600000,
+        1795147200000
+      ],
+      "south-america": [
+        1795140000000,
+        1795143600000
+      ],
+      "asia": [
+        1795100400000,
+        1795104000000
+      ],
+      "oceania": [
+        1795086000000,
+        1795089600000
+      ]
+    },
+    "slug": "night-raid",
+    "url": "https://arcraiders.com/de/map-conditions/night-raid"
+  },
+  {
+    "map": "Dam Battlegrounds",
+    "condition": "ARC Frigate",
+    "startTime": "2026-11-19T19:00:00",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T20:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795114800000,
+        1795118400000
+      ],
+      "north-america": [
+        1795140000000,
+        1795143600000
+      ],
+      "south-america": [
+        1795136400000,
+        1795140000000
+      ],
+      "asia": [
+        1795096800000,
+        1795100400000
+      ],
+      "oceania": [
+        1795082400000,
+        1795086000000
+      ]
+    },
+    "slug": "arc-frigate",
+    "url": "https://arcraiders.com/de/map-conditions/arc-frigate"
+  },
+  {
+    "map": "The Blue Gate",
+    "condition": "Harvester",
+    "startTime": "2026-11-19T19:00:00",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T20:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/harvester.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795114800000,
+        1795118400000
+      ],
+      "north-america": [
+        1795140000000,
+        1795143600000
+      ],
+      "south-america": [
+        1795136400000,
+        1795140000000
+      ],
+      "asia": [
+        1795096800000,
+        1795100400000
+      ],
+      "oceania": [
+        1795082400000,
+        1795086000000
+      ]
+    },
+    "slug": "harvester",
+    "url": "https://arcraiders.com/de/map-conditions/harvester"
+  },
+  {
+    "map": "Buried City",
+    "condition": "Bird City",
+    "startTime": "2026-11-19T19:00:00",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T20:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/birdcity.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795114800000,
+        1795118400000
+      ],
+      "north-america": [
+        1795140000000,
+        1795143600000
+      ],
+      "south-america": [
+        1795136400000,
+        1795140000000
+      ],
+      "asia": [
+        1795096800000,
+        1795100400000
+      ],
+      "oceania": [
+        1795082400000,
+        1795086000000
+      ]
+    },
+    "slug": "bird-city",
+    "url": "https://arcraiders.com/de/map-conditions/bird-city"
+  },
+  {
+    "condition": "Hurricane",
+    "map": "The Blue Gate",
+    "startTime": "2026-11-19T18:00:00",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T19:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/hurricane.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795111200000,
+        1795114800000
+      ],
+      "north-america": [
+        1795136400000,
+        1795140000000
+      ],
+      "south-america": [
+        1795132800000,
+        1795136400000
+      ],
+      "asia": [
+        1795093200000,
+        1795096800000
+      ],
+      "oceania": [
+        1795078800000,
+        1795082400000
+      ]
+    },
+    "slug": "hurricane",
+    "url": "https://arcraiders.com/de/map-conditions/hurricane"
+  },
+  {
+    "condition": "Matriarch",
+    "map": "Spaceport",
+    "startTime": "2026-11-19T18:00:00",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T19:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/matriarch.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795111200000,
+        1795114800000
+      ],
+      "north-america": [
+        1795136400000,
+        1795140000000
+      ],
+      "south-america": [
+        1795132800000,
+        1795136400000
+      ],
+      "asia": [
+        1795093200000,
+        1795096800000
+      ],
+      "oceania": [
+        1795078800000,
+        1795082400000
+      ]
+    },
+    "slug": "matriarch",
+    "url": "https://arcraiders.com/de/map-conditions/matriarch"
+  },
+  {
+    "condition": "Night Raid",
+    "map": "Pendola Pass",
+    "startTime": "2026-11-19T18:00:00",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T19:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795111200000,
+        1795114800000
+      ],
+      "north-america": [
+        1795136400000,
+        1795140000000
+      ],
+      "south-america": [
+        1795132800000,
+        1795136400000
+      ],
+      "asia": [
+        1795093200000,
+        1795096800000
+      ],
+      "oceania": [
+        1795078800000,
+        1795082400000
+      ]
+    },
+    "slug": "night-raid",
+    "url": "https://arcraiders.com/de/map-conditions/night-raid"
+  },
+  {
+    "condition": "Husk Graveyard",
+    "map": "Buried City",
+    "startTime": "2026-11-19T18:00:00",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T19:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/husk-graveyard.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795111200000,
+        1795114800000
+      ],
+      "north-america": [
+        1795136400000,
+        1795140000000
+      ],
+      "south-america": [
+        1795132800000,
+        1795136400000
+      ],
+      "asia": [
+        1795093200000,
+        1795096800000
+      ],
+      "oceania": [
+        1795078800000,
+        1795082400000
+      ]
+    },
+    "slug": "husk-graveyard",
+    "url": "https://arcraiders.com/de/map-conditions/husk-graveyard"
+  },
+  {
+    "map": "Dam Battlegrounds",
+    "condition": "Harvester",
+    "startTime": "2026-11-19T17:00:00",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T18:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/harvester.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795107600000,
+        1795111200000
+      ],
+      "north-america": [
+        1795132800000,
+        1795136400000
+      ],
+      "south-america": [
+        1795129200000,
+        1795132800000
+      ],
+      "asia": [
+        1795089600000,
+        1795093200000
+      ],
+      "oceania": [
+        1795075200000,
+        1795078800000
+      ]
+    },
+    "slug": "harvester",
+    "url": "https://arcraiders.com/de/map-conditions/harvester"
+  },
+  {
+    "map": "The Blue Gate",
+    "condition": "ARC Frigate",
+    "startTime": "2026-11-19T17:00:00",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T18:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795107600000,
+        1795111200000
+      ],
+      "north-america": [
+        1795132800000,
+        1795136400000
+      ],
+      "south-america": [
+        1795129200000,
+        1795132800000
+      ],
+      "asia": [
+        1795089600000,
+        1795093200000
+      ],
+      "oceania": [
+        1795075200000,
+        1795078800000
+      ]
+    },
+    "slug": "arc-frigate",
+    "url": "https://arcraiders.com/de/map-conditions/arc-frigate"
+  },
+  {
+    "map": "Spaceport",
+    "condition": "Cold Snap",
+    "startTime": "2026-11-19T17:00:00",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T18:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/coldsnap.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795107600000,
+        1795111200000
+      ],
+      "north-america": [
+        1795132800000,
+        1795136400000
+      ],
+      "south-america": [
+        1795129200000,
+        1795132800000
+      ],
+      "asia": [
+        1795089600000,
+        1795093200000
+      ],
+      "oceania": [
+        1795075200000,
+        1795078800000
+      ]
+    },
+    "slug": "cold-snap",
+    "url": "https://arcraiders.com/de/map-conditions/cold-snap"
+  },
+  {
+    "map": "Riven Tides",
+    "condition": "Lush Blooms",
+    "startTime": "2026-11-19T17:00:00",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T18:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/lush.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795107600000,
+        1795111200000
+      ],
+      "north-america": [
+        1795132800000,
+        1795136400000
+      ],
+      "south-america": [
+        1795129200000,
+        1795132800000
+      ],
+      "asia": [
+        1795089600000,
+        1795093200000
+      ],
+      "oceania": [
+        1795075200000,
+        1795078800000
+      ]
+    },
+    "slug": "lush-blooms",
+    "url": "https://arcraiders.com/de/map-conditions/lush-blooms"
+  },
+  {
+    "map": "Dam Battlegrounds",
+    "condition": "Hurricane",
+    "startTime": "2026-11-19T16:00:00",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T17:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/hurricane.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795104000000,
+        1795107600000
+      ],
+      "north-america": [
+        1795129200000,
+        1795132800000
+      ],
+      "south-america": [
+        1795125600000,
+        1795129200000
+      ],
+      "asia": [
+        1795086000000,
+        1795089600000
+      ],
+      "oceania": [
+        1795071600000,
+        1795075200000
+      ]
+    },
+    "slug": "hurricane",
+    "url": "https://arcraiders.com/de/map-conditions/hurricane"
+  },
+  {
+    "map": "The Blue Gate",
+    "condition": "Locked Gate",
+    "startTime": "2026-11-19T16:00:00",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T17:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/lockedgate.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795104000000,
+        1795107600000
+      ],
+      "north-america": [
+        1795129200000,
+        1795132800000
+      ],
+      "south-america": [
+        1795125600000,
+        1795129200000
+      ],
+      "asia": [
+        1795086000000,
+        1795089600000
+      ],
+      "oceania": [
+        1795071600000,
+        1795075200000
+      ]
+    },
+    "slug": "locked-gate",
+    "url": "https://arcraiders.com/de/map-conditions/locked-gate"
+  },
+  {
+    "map": "Buried City",
+    "condition": "Bird City",
+    "startTime": "2026-11-19T16:00:00",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T17:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/birdcity.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795104000000,
+        1795107600000
+      ],
+      "north-america": [
+        1795129200000,
+        1795132800000
+      ],
+      "south-america": [
+        1795125600000,
+        1795129200000
+      ],
+      "asia": [
+        1795086000000,
+        1795089600000
+      ],
+      "oceania": [
+        1795071600000,
+        1795075200000
+      ]
+    },
+    "slug": "bird-city",
+    "url": "https://arcraiders.com/de/map-conditions/bird-city"
+  },
+  {
+    "map": "The Blue Gate",
+    "condition": "Matriarch",
+    "startTime": "2026-11-19T15:00:00",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T16:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/matriarch.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795100400000,
+        1795104000000
+      ],
+      "north-america": [
+        1795125600000,
+        1795129200000
+      ],
+      "south-america": [
+        1795122000000,
+        1795125600000
+      ],
+      "asia": [
+        1795082400000,
+        1795086000000
+      ],
+      "oceania": [
+        1795068000000,
+        1795071600000
+      ]
+    },
+    "slug": "matriarch",
+    "url": "https://arcraiders.com/de/map-conditions/matriarch"
+  },
+  {
+    "map": "Spaceport",
+    "condition": "Lush Blooms",
+    "startTime": "2026-11-19T15:00:00",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T16:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/lush.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795100400000,
+        1795104000000
+      ],
+      "north-america": [
+        1795125600000,
+        1795129200000
+      ],
+      "south-america": [
+        1795122000000,
+        1795125600000
+      ],
+      "asia": [
+        1795082400000,
+        1795086000000
+      ],
+      "oceania": [
+        1795068000000,
+        1795071600000
+      ]
+    },
+    "slug": "lush-blooms",
+    "url": "https://arcraiders.com/de/map-conditions/lush-blooms"
+  },
+  {
+    "map": "Stella Montis",
+    "condition": "Night Raid",
+    "startTime": "2026-11-19T15:00:00",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T16:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795100400000,
+        1795104000000
+      ],
+      "north-america": [
+        1795125600000,
+        1795129200000
+      ],
+      "south-america": [
+        1795122000000,
+        1795125600000
+      ],
+      "asia": [
+        1795082400000,
+        1795086000000
+      ],
+      "oceania": [
+        1795068000000,
+        1795071600000
+      ]
+    },
+    "slug": "night-raid",
+    "url": "https://arcraiders.com/de/map-conditions/night-raid"
+  },
+  {
+    "map": "Pendola Pass",
+    "condition": "ARC Frigate",
+    "startTime": "2026-11-19T15:00:00",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T16:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795100400000,
+        1795104000000
+      ],
+      "north-america": [
+        1795125600000,
+        1795129200000
+      ],
+      "south-america": [
+        1795122000000,
+        1795125600000
+      ],
+      "asia": [
+        1795082400000,
+        1795086000000
+      ],
+      "oceania": [
+        1795068000000,
+        1795071600000
+      ]
+    },
+    "slug": "arc-frigate",
+    "url": "https://arcraiders.com/de/map-conditions/arc-frigate"
+  },
+  {
+    "map": "Dam Battlegrounds",
+    "condition": "Harvester",
+    "startTime": "2026-11-19T14:00:00",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T15:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/harvester.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795096800000,
+        1795100400000
+      ],
+      "north-america": [
+        1795122000000,
+        1795125600000
+      ],
+      "south-america": [
+        1795118400000,
+        1795122000000
+      ],
+      "asia": [
+        1795078800000,
+        1795082400000
+      ],
+      "oceania": [
+        1795064400000,
+        1795068000000
+      ]
+    },
+    "slug": "harvester",
+    "url": "https://arcraiders.com/de/map-conditions/harvester"
+  },
+  {
+    "map": "The Blue Gate",
+    "condition": "Electromagnetic Storm",
+    "startTime": "2026-11-19T14:00:00",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T15:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/electrical.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795096800000,
+        1795100400000
+      ],
+      "north-america": [
+        1795122000000,
+        1795125600000
+      ],
+      "south-america": [
+        1795118400000,
+        1795122000000
+      ],
+      "asia": [
+        1795078800000,
+        1795082400000
+      ],
+      "oceania": [
+        1795064400000,
+        1795068000000
+      ]
+    },
+    "slug": "electromagnetic-storm",
+    "url": "https://arcraiders.com/de/map-conditions/electromagnetic-storm"
+  },
+  {
+    "map": "Spaceport",
+    "condition": "Hidden Bunker",
+    "startTime": "2026-11-19T14:00:00",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T15:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/hiddenbunker.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795096800000,
+        1795100400000
+      ],
+      "north-america": [
+        1795122000000,
+        1795125600000
+      ],
+      "south-america": [
+        1795118400000,
+        1795122000000
+      ],
+      "asia": [
+        1795078800000,
+        1795082400000
+      ],
+      "oceania": [
+        1795064400000,
+        1795068000000
+      ]
+    },
+    "slug": "hidden-bunker",
+    "url": "https://arcraiders.com/de/map-conditions/hidden-bunker"
+  },
+  {
+    "map": "Riven Tides",
+    "condition": "Husk Graveyard",
+    "startTime": "2026-11-19T14:00:00",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T15:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/husk-graveyard.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795096800000,
+        1795100400000
+      ],
+      "north-america": [
+        1795122000000,
+        1795125600000
+      ],
+      "south-america": [
+        1795118400000,
+        1795122000000
+      ],
+      "asia": [
+        1795078800000,
+        1795082400000
+      ],
+      "oceania": [
+        1795064400000,
+        1795068000000
+      ]
+    },
+    "slug": "husk-graveyard",
+    "url": "https://arcraiders.com/de/map-conditions/husk-graveyard"
+  },
+  {
+    "map": "Dam Battlegrounds",
+    "condition": "Matriarch",
+    "startTime": "2026-11-19T13:00:00",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T14:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/matriarch.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795093200000,
+        1795096800000
+      ],
+      "north-america": [
+        1795118400000,
+        1795122000000
+      ],
+      "south-america": [
+        1795114800000,
+        1795118400000
+      ],
+      "asia": [
+        1795075200000,
+        1795078800000
+      ],
+      "oceania": [
+        1795060800000,
+        1795064400000
+      ]
+    },
+    "slug": "matriarch",
+    "url": "https://arcraiders.com/de/map-conditions/matriarch"
+  },
+  {
+    "map": "The Blue Gate",
+    "startTime": "2026-11-19T13:00:00",
+    "condition": "Cold Snap",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T14:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/coldsnap.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795093200000,
+        1795096800000
+      ],
+      "north-america": [
+        1795118400000,
+        1795122000000
+      ],
+      "south-america": [
+        1795114800000,
+        1795118400000
+      ],
+      "asia": [
+        1795075200000,
+        1795078800000
+      ],
+      "oceania": [
+        1795060800000,
+        1795064400000
+      ]
+    },
+    "slug": "cold-snap",
+    "url": "https://arcraiders.com/de/map-conditions/cold-snap"
+  },
+  {
+    "map": "Spaceport",
+    "startTime": "2026-11-19T13:00:00",
+    "condition": "ARC Frigate",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T14:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795093200000,
+        1795096800000
+      ],
+      "north-america": [
+        1795118400000,
+        1795122000000
+      ],
+      "south-america": [
+        1795114800000,
+        1795118400000
+      ],
+      "asia": [
+        1795075200000,
+        1795078800000
+      ],
+      "oceania": [
+        1795060800000,
+        1795064400000
+      ]
+    },
+    "slug": "arc-frigate",
+    "url": "https://arcraiders.com/de/map-conditions/arc-frigate"
+  },
+  {
+    "map": "Pendola Pass",
+    "condition": "Night Raid",
+    "startTime": "2026-11-19T13:00:00",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T14:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795093200000,
+        1795096800000
+      ],
+      "north-america": [
+        1795118400000,
+        1795122000000
+      ],
+      "south-america": [
+        1795114800000,
+        1795118400000
+      ],
+      "asia": [
+        1795075200000,
+        1795078800000
+      ],
+      "oceania": [
+        1795060800000,
+        1795064400000
+      ]
+    },
+    "slug": "night-raid",
+    "url": "https://arcraiders.com/de/map-conditions/night-raid"
+  },
+  {
+    "map": "Buried City",
+    "condition": "Bird City",
+    "startTime": "2026-11-19T13:00:00",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T14:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/birdcity.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795093200000,
+        1795096800000
+      ],
+      "north-america": [
+        1795118400000,
+        1795122000000
+      ],
+      "south-america": [
+        1795114800000,
+        1795118400000
+      ],
+      "asia": [
+        1795075200000,
+        1795078800000
+      ],
+      "oceania": [
+        1795060800000,
+        1795064400000
+      ]
+    },
+    "slug": "bird-city",
+    "url": "https://arcraiders.com/de/map-conditions/bird-city"
+  },
+  {
     "condition": "Harvester",
     "map": "The Blue Gate",
     "startTime": "2026-11-19T12:00:00",
@@ -7,7 +1197,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T13:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/harvester.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795089600000,
@@ -41,7 +1231,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T13:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/electrical.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795089600000,
@@ -75,7 +1265,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T13:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795089600000,
@@ -109,7 +1299,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T12:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/husk-graveyard.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795086000000,
@@ -143,7 +1333,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T12:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/lush.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795086000000,
@@ -177,7 +1367,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T12:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795086000000,
@@ -204,6 +1394,40 @@
     "url": "https://arcraiders.com/de/map-conditions/arc-frigate"
   },
   {
+    "map": "Pendola Pass",
+    "condition": "Redirection",
+    "startTime": "2026-11-19T10:00:00",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T11:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/redirection.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795082400000,
+        1795086000000
+      ],
+      "north-america": [
+        1795082400000,
+        1795086000000
+      ],
+      "south-america": [
+        1795082400000,
+        1795086000000
+      ],
+      "asia": [
+        1795082400000,
+        1795086000000
+      ],
+      "oceania": [
+        1795082400000,
+        1795086000000
+      ]
+    },
+    "slug": "redirection",
+    "url": "https://arcraiders.com/de/map-conditions/redirection"
+  },
+  {
     "condition": "Close Scrutiny",
     "map": "Dam Battlegrounds",
     "startTime": "2026-11-19T10:00:00",
@@ -211,7 +1435,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T11:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/closescrutiny.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795082400000,
@@ -245,7 +1469,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T11:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795082400000,
@@ -279,7 +1503,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T11:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/hiddenbunker.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795082400000,
@@ -313,7 +1537,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T11:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/harvester.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795082400000,
@@ -347,7 +1571,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T11:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/birdcity.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795082400000,
@@ -381,7 +1605,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T10:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795078800000,
@@ -415,7 +1639,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T10:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/lush.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795078800000,
@@ -449,7 +1673,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T10:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795078800000,
@@ -483,7 +1707,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T10:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/husk-graveyard.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795078800000,
@@ -517,7 +1741,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T09:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/matriarch.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795075200000,
@@ -551,7 +1775,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T09:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795075200000,
@@ -585,7 +1809,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T08:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/husk-graveyard.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795071600000,
@@ -619,7 +1843,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T08:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795071600000,
@@ -653,7 +1877,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T08:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/coldsnap.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795071600000,
@@ -687,7 +1911,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T08:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/birdcity.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795071600000,
@@ -714,6 +1938,40 @@
     "url": "https://arcraiders.com/de/map-conditions/bird-city"
   },
   {
+    "map": "Pendola Pass",
+    "condition": "Redirection",
+    "startTime": "2026-11-19T06:00:00",
+    "createdAt": "2026-11-18T11:59:29.809000",
+    "durationMinutes": 60,
+    "endTime": "2026-11-19T07:00:00",
+    "icon": "https://static.metaforge.app/arc-raiders/custom/redirection.webp",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
+    "regionTimestamps": {
+      "europe": [
+        1795068000000,
+        1795071600000
+      ],
+      "north-america": [
+        1795068000000,
+        1795071600000
+      ],
+      "south-america": [
+        1795068000000,
+        1795071600000
+      ],
+      "asia": [
+        1795068000000,
+        1795071600000
+      ],
+      "oceania": [
+        1795068000000,
+        1795071600000
+      ]
+    },
+    "slug": "redirection",
+    "url": "https://arcraiders.com/de/map-conditions/redirection"
+  },
+  {
     "map": "The Blue Gate",
     "startTime": "2026-11-19T06:00:00",
     "condition": "Matriarch",
@@ -721,7 +1979,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T07:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/matriarch.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795068000000,
@@ -755,7 +2013,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T07:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/launchtowerloot.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795068000000,
@@ -789,7 +2047,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T07:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795068000000,
@@ -823,7 +2081,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T06:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795064400000,
@@ -857,7 +2115,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T06:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/harvester.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795064400000,
@@ -891,7 +2149,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T06:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/coldsnap.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795064400000,
@@ -925,7 +2183,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T06:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/lush.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795064400000,
@@ -959,7 +2217,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T05:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795060800000,
@@ -993,7 +2251,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T05:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/birdcity.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795060800000,
@@ -1027,7 +2285,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T04:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/redirection.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795057200000,
@@ -1061,7 +2319,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T04:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/matriarch.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795057200000,
@@ -1095,7 +2353,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T04:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/lush.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795057200000,
@@ -1129,7 +2387,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T04:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795057200000,
@@ -1163,7 +2421,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T04:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795057200000,
@@ -1197,7 +2455,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T03:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/harvester.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795053600000,
@@ -1231,7 +2489,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T03:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/launchtowerloot.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795053600000,
@@ -1265,7 +2523,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T03:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795053600000,
@@ -1299,7 +2557,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T02:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/coldsnap.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795050000000,
@@ -1333,7 +2591,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T02:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795050000000,
@@ -1367,7 +2625,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T02:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/birdcity.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795050000000,
@@ -1401,7 +2659,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T01:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/matriarch.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795046400000,
@@ -1435,7 +2693,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T01:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/harvester.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795046400000,
@@ -1469,7 +2727,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T01:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795046400000,
@@ -1503,7 +2761,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T00:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/coldsnap.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795042800000,
@@ -1537,7 +2795,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T00:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/lush.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795042800000,
@@ -1571,7 +2829,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T00:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/husk-graveyard.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795042800000,
@@ -1605,7 +2863,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T00:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795042800000,
@@ -1639,7 +2897,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-19T00:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795042800000,
@@ -1673,7 +2931,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T23:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/hurricane.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795039200000,
@@ -1707,7 +2965,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T23:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/harvester.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795039200000,
@@ -1741,7 +2999,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T23:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795039200000,
@@ -1775,7 +3033,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T23:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/birdcity.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795039200000,
@@ -1809,7 +3067,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T22:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/redirection.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795035600000,
@@ -1843,7 +3101,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T22:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/electrical.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795035600000,
@@ -1877,7 +3135,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T22:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/harvester.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795035600000,
@@ -1911,7 +3169,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T22:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795035600000,
@@ -1945,7 +3203,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T22:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/birdcity.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795035600000,
@@ -1979,7 +3237,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T21:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/husk-graveyard.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795032000000,
@@ -2013,7 +3271,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T21:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795032000000,
@@ -2047,7 +3305,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T21:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795032000000,
@@ -2081,7 +3339,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T21:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/lush.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795032000000,
@@ -2115,7 +3373,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T20:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/electrical.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795028400000,
@@ -2149,7 +3407,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T20:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/matriarch.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795028400000,
@@ -2183,7 +3441,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T20:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/hurricane.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795028400000,
@@ -2217,7 +3475,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T20:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795028400000,
@@ -2251,7 +3509,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T19:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795024800000,
@@ -2285,7 +3543,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T19:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/harvester.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795024800000,
@@ -2319,7 +3577,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T19:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/birdcity.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795024800000,
@@ -2353,7 +3611,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T18:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/redirection.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795021200000,
@@ -2387,7 +3645,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T18:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/closescrutiny.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795021200000,
@@ -2421,7 +3679,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T18:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/matriarch.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795021200000,
@@ -2455,7 +3713,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T18:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795021200000,
@@ -2489,7 +3747,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T18:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/husk-graveyard.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795021200000,
@@ -2523,7 +3781,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T17:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/harvester.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795017600000,
@@ -2557,7 +3815,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T17:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795017600000,
@@ -2591,7 +3849,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T17:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/coldsnap.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795017600000,
@@ -2625,7 +3883,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T17:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/lush.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795017600000,
@@ -2659,7 +3917,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T16:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/closescrutiny.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795014000000,
@@ -2693,7 +3951,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T16:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/hurricane.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795014000000,
@@ -2727,7 +3985,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T16:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/birdcity.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795014000000,
@@ -2761,7 +4019,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T15:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/matriarch.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795010400000,
@@ -2795,7 +4053,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T15:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/lush.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795010400000,
@@ -2829,7 +4087,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T15:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795010400000,
@@ -2863,7 +4121,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T15:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795010400000,
@@ -2897,7 +4155,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T14:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/redirection.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795006800000,
@@ -2931,7 +4189,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T14:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/harvester.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795006800000,
@@ -2965,7 +4223,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T14:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/hiddenbunker.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795006800000,
@@ -2999,7 +4257,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T14:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/husk-graveyard.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795006800000,
@@ -3033,7 +4291,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T14:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/closescrutiny.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795006800000,
@@ -3067,7 +4325,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T13:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/matriarch.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795003200000,
@@ -3101,7 +4359,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T13:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/coldsnap.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795003200000,
@@ -3135,7 +4393,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T13:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795003200000,
@@ -3169,7 +4427,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T13:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795003200000,
@@ -3203,7 +4461,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T13:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/birdcity.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1795003200000,
@@ -3237,7 +4495,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T12:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/harvester.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1794999600000,
@@ -3271,7 +4529,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T12:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/hurricane.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1794999600000,
@@ -3305,7 +4563,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T12:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1794999600000,
@@ -3339,7 +4597,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T11:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/husk-graveyard.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1794996000000,
@@ -3373,7 +4631,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T11:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/lush.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1794996000000,
@@ -3407,7 +4665,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T11:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1794996000000,
@@ -3475,7 +4733,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T10:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1794992400000,
@@ -3509,7 +4767,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T10:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/harvester.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1794992400000,
@@ -3543,7 +4801,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T10:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/birdcity.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1794992400000,
@@ -3577,7 +4835,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T09:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1794988800000,
@@ -3611,7 +4869,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T09:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/lush.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1794988800000,
@@ -3645,7 +4903,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T09:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1794988800000,
@@ -3679,7 +4937,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T09:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/husk-graveyard.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1794988800000,
@@ -3713,7 +4971,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T08:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/matriarch.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1794985200000,
@@ -3747,7 +5005,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T08:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1794985200000,
@@ -3781,7 +5039,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T07:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/husk-graveyard.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1794981600000,
@@ -3815,7 +5073,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T07:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1794981600000,
@@ -3849,7 +5107,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T07:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/coldsnap.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1794981600000,
@@ -3883,7 +5141,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T07:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/birdcity.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1794981600000,
@@ -3951,7 +5209,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T06:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/matriarch.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1794978000000,
@@ -3985,7 +5243,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T06:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/launchtowerloot.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1794978000000,
@@ -4019,7 +5277,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T06:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/night.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1794978000000,
@@ -4053,7 +5311,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T05:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/arcfrigate.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1794974400000,
@@ -4087,7 +5345,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T05:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/harvester.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1794974400000,
@@ -4121,7 +5379,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T05:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/coldsnap.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1794974400000,
@@ -4155,7 +5413,7 @@
     "durationMinutes": 60,
     "endTime": "2026-11-18T05:00:00",
     "icon": "https://static.metaforge.app/arc-raiders/custom/lush.webp",
-    "lastSeenAt": "2026-11-18T03:16:08.739000",
+    "lastSeenAt": "2026-11-18T11:59:29.809000",
     "regionTimestamps": {
       "europe": [
         1794974400000,
